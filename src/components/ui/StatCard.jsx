@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { LucideIcon } from "lucide-react";
 
 // PropTypes for runtime prop validation
 import PropTypes from "prop-types";
