@@ -12,7 +12,7 @@ const ModuleCard = ({ title, description, icon: Icon, emoji, variant = "blue", p
   const isComplete = progress === 100;
 
   return (
-    <div className={cn("bg-card rounded-2xl p-6 border-4 transition-all duration-200 hover:translate-y-[-4px]", borderColors[variant], bgColors[variant], shadowColors[variant], "hover:shadow-[0_12px_0_hsl(200_50%_80%)]", className)}>
+    <div className={cn("bg-card rounded-2xl p-8 border-4 transition-all duration-200 hover:translate-y-[-4px]", borderColors[variant], bgColors[variant], shadowColors[variant], "hover:shadow-[0_12px_0_hsl(200_50%_80%)]", className)}>
       <div className="flex items-start gap-4">
         <div className="relative">
           {Icon ? (

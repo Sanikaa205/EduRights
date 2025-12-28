@@ -130,7 +130,7 @@ const Index = () => {
       {/* Stats Section */}
       <section className="py-12 bg-card relative">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {stats.map((stat, index) => (
               <div
                 key={index}
@@ -175,7 +175,7 @@ const Index = () => {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className={`card-cartoon text-center ${feature.color} p-6`}
+                className={`card-cartoon text-center ${feature.color} p-8`}
               >
                 <div className="text-6xl mb-4 bounce-animation" style={{ animationDelay: `${index * 0.15}s` }}>
                   {feature.emoji}
@@ -206,7 +206,7 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center gradient-hero rounded-[3rem] p-10 md:p-14 shadow-[0_12px_0_hsl(280_70%_45%),0_20px_60px_hsl(280_85%_60%/0.3)]">
+          <div className="max-w-3xl mx-auto text-center gradient-hero rounded-[3rem] p-12 md:p-20 shadow-[0_12px_0_hsl(280_70%_45%),0_20px_60px_hsl(280_85%_60%/0.3)]">
             <div className="text-7xl mb-6 bounce-animation">🚀</div>
             <h2 className="font-display font-bold text-3xl md:text-5xl text-primary-foreground mb-4">
               Ready to Become a Rights Champion?
@@ -216,9 +216,9 @@ const Index = () => {
             </p>
             <Link to="/register">
               <Button 
-                variant="secondary" 
+                variant="hero" 
                 size="xl" 
-                className="gap-3"
+                className="gap-3 shadow-[0_18px_40px_rgba(2,6,23,0.12)] hover:shadow-[0_28px_70px_rgba(2,6,23,0.18)] transform-gpu -translate-y-1 hover:-translate-y-2 transition-transform duration-200"
               >
                 <Award className="w-6 h-6" />
                 Get Started Free

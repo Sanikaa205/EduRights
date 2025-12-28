@@ -24,7 +24,7 @@ const StatCard = ({
   return (
     <div
       className={cn(
-        "card-cartoon text-card p-6 rounded-3xl transition-all duration-200 hover:translate-y-[-4px]",
+        "card-cartoon text-card p-8 rounded-3xl transition-all duration-200 hover:translate-y-[-4px]",
         gradientClasses[variant],
         className
       )}

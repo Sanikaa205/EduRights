@@ -88,7 +88,7 @@ const Modules = () => {
           </div>
 
           {/* Progress Overview */}
-          <div className="card-playful rounded-2xl bg-card text-foreground grid md:grid-cols-3 gap-4 items-center mb-10 p-6 shadow-lg relative overflow-hidden">
+          <div className="card-playful rounded-2xl bg-card text-foreground grid md:grid-cols-3 gap-6 items-center mb-10 p-8 shadow-lg relative overflow-hidden">
             <div className="absolute -top-3 left-6 right-6 h-1 rounded-full bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 opacity-80" aria-hidden="true" />
 
             <div className="flex items-center gap-4 md:col-span-1">

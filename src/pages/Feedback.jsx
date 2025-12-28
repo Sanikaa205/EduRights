@@ -27,7 +27,7 @@ const Feedback = () => {
 
         <main className="flex-1 flex items-center justify-center py-12 px-4 relative z-10">
           <div className="max-w-md w-full text-center">
-            <div className="feedback-panel mx-auto w-full bg-card rounded-2xl p-6 shadow-lg text-center">
+            <div className="feedback-panel mx-auto w-full bg-card rounded-2xl p-8 shadow-lg text-center">
               <div className="card-playful animate-bounce-in bg-transparent p-0">
               <div className="w-20 h-20 gradient-card-green rounded-full flex items-center justify-center mx-auto mb-6">
                 <CheckCircle className="w-10 h-10 text-success-foreground" />
@@ -69,7 +69,7 @@ const Feedback = () => {
 
       <main className="flex-1 py-8 md:py-12 relative z-10">
         <div className="container mx-auto px-4">
-          <div className="feedback-panel mx-auto max-w-2xl bg-card rounded-2xl p-6 md:p-8 shadow-lg">
+          <div className="feedback-panel mx-auto max-w-2xl bg-card rounded-2xl p-8 md:p-10 shadow-lg">
           {/* Header */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-20 h-20 gradient-hero rounded-3xl shadow-button mb-6">

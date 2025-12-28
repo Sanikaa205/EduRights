@@ -201,6 +201,81 @@
     background: linear-gradient(135deg, hsl(85 75% 50%) 0%, hsl(95 70% 55%) 100%);
   }
 
+  /* FAQ search styles */
+  .faq-search {
+    @apply text-sm rounded-lg;
+  }
+
+  .faq-search input {
+    @apply placeholder:text-muted-foreground;
+  }
+
+  /* Accordion animation */
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.28s ease;
+  }
+
+  .accordion-content.open {
+    max-height: 480px; /* enough for a couple of paragraphs */
+  }
+
+  /* Article card hover
+     Uses existing shadow variables for consistency */
+  .article-card {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .article-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Resources page specific styles */
+  .resources-hero {
+    background: linear-gradient(180deg, hsl(200 100% 50% / 0.06), transparent 40%);
+    border: 1px solid hsl(var(--border) / 0.9);
+  }
+
+  .resources-card {
+    border: 1px solid hsl(var(--border) / 0.8);
+    background: linear-gradient(180deg, hsl(var(--card) / 0.9), hsl(var(--card) / 0.95));
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .resources-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .resources-help-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .resources-help-card .btn-primary {
+    background: linear-gradient(135deg, hsl(200 100% 50%), hsl(280 85% 60%));
+    color: white;
+  }
+
+  /* Slightly stronger muted background for FAQ answers to improve contrast */
+  .accordion-content .bg-muted\/50 {
+    background: linear-gradient(180deg, hsl(var(--muted) / 0.9), hsl(var(--muted) / 0.7));
+  }
+
+  /* Illustration styles for hero */
+  .resources-hero-illustration {
+    width: 16rem;
+    height: 16rem;
+    max-width: 100%;
+    filter: drop-shadow(0 12px 24px rgba(3, 102, 214, 0.08));
+    transform-origin: center;
+  }
+
+  @media (min-width: 768px) {
+    .resources-hero-illustration { transform: translateY(0); animation: float-slow 6s ease-in-out infinite; }
+  }
+
   .text-gradient {
     background: linear-gradient(135deg, hsl(200 100% 50%), hsl(280 85% 60%), hsl(330 90% 60%));
     -webkit-background-clip: text;
