@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProgressBar from "@/components/ui/ProgressBar";
 import StatCard from "@/components/ui/StatCard";
-import { Trophy, Star, Award, BookOpen, Brain, HelpCircle, ArrowRight, Zap } from "lucide-react";
+import { Trophy, Star, Award, BookOpen, Brain, HelpCircle, ArrowRight, Zap, Lock } from "lucide-react";
 
 const Dashboard = () => {
   // Demo user data
@@ -17,16 +17,16 @@ const Dashboard = () => {
   };
 
   const badges = [
-    { name: "First Steps", emoji: "👶", earned: true },
-    { name: "Quiz Master", emoji: "🧠", earned: true },
-    { name: "Safety Star", emoji: "⭐", earned: true },
-    { name: "Rights Hero", emoji: "🦸", earned: true },
-    { name: "Super Learner", emoji: "📚", earned: true },
-    { name: "Helper Badge", emoji: "🤝", earned: true },
-    { name: "Champion", emoji: "🏆", earned: true },
-    { name: "Explorer", emoji: "🔍", earned: true },
-    { name: "Equality Pro", emoji: "⚖️", earned: false },
-    { name: "Voice Hero", emoji: "📢", earned: false },
+    { name: "First Steps", earned: true },
+    { name: "Quiz Master", earned: true },
+    { name: "Safety Star", earned: true },
+    { name: "Rights Hero", earned: true },
+    { name: "Super Learner", earned: true },
+    { name: "Helper Badge", earned: true },
+    { name: "Champion", earned: true },
+    { name: "Explorer", earned: true },
+    { name: "Equality Pro", earned: false },
+    { name: "Voice Hero", earned: false },
   ];
 
   const quickActions = [
@@ -34,7 +34,6 @@ const Dashboard = () => {
       title: "Learning Modules",
       description: "Continue learning about your rights",
       icon: BookOpen,
-      emoji: "📖",
       href: "/modules",
       gradient: "gradient-card-blue",
       shadow: "shadow-[0_8px_0_hsl(210_90%_45%)]",
@@ -43,7 +42,6 @@ const Dashboard = () => {
       title: "Quiz Zone",
       description: "Test your knowledge and earn points",
       icon: Brain,
-      emoji: "🎯",
       href: "/quiz",
       gradient: "gradient-card-purple",
       shadow: "shadow-[0_8px_0_hsl(290_75%_50%)]",
@@ -52,7 +50,6 @@ const Dashboard = () => {
       title: "Resources",
       description: "Find helpful articles and FAQs",
       icon: HelpCircle,
-      emoji: "💡",
       href: "/resources",
       gradient: "gradient-card-green",
       shadow: "shadow-[0_8px_0_hsl(145_80%_32%)]",
@@ -64,24 +61,19 @@ const Dashboard = () => {
       <Navbar />
 
       <main className="flex-1 py-8 md:py-12 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-10 right-10 text-4xl float-slow opacity-60">⭐</div>
-        <div className="absolute bottom-20 left-10 text-5xl float-animation opacity-60">🎈</div>
-        <div className="absolute top-1/3 right-[5%] text-3xl float-animation stagger-2 opacity-60">✨</div>
-
-        <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4">
           {/* Welcome Header */}
           <div className="mb-8 animate-slide-up">
             <div className="flex items-center gap-4 mb-2">
-              <div className="w-16 h-16 gradient-hero rounded-2xl flex items-center justify-center shadow-[0_6px_0_hsl(280_70%_45%)] bounce-animation">
-                <span className="text-3xl">👋</span>
+              <div className="w-16 h-16 gradient-hero rounded-2xl flex items-center justify-center shadow-[0_6px_0_hsl(280_70%_45%)]">
+                <Trophy className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
                 <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground">
-                  Hi {user.name}! <span className="inline-block animate-bounce-in">🎉</span>
+                  Welcome back, {user.name}.
                 </h1>
                 <p className="font-body font-semibold text-muted-foreground text-lg">
-                  Ready to continue your learning adventure? Let's go!
+                  Continue where you left off and track your progress.
                 </p>
               </div>
             </div>
@@ -98,12 +90,12 @@ const Dashboard = () => {
                   Your Progress
                 </h2>
                 <p className="font-body font-semibold text-muted-foreground">
-                  Keep going, you're doing amazing! ⭐
+                  Keep up the progress — you're at {user.progress}%.
                 </p>
               </div>
               <div className="ml-auto hidden md:flex items-center gap-2 bg-secondary/20 px-4 py-2 rounded-xl">
                 <Zap className="w-5 h-5 text-secondary" />
-                <span className="font-display font-bold text-secondary-foreground">5 Day Streak!</span>
+                <span className="font-display font-bold text-secondary-foreground">5-day streak</span>
               </div>
             </div>
             <ProgressBar value={user.progress} variant="rainbow" size="lg" />
@@ -115,21 +107,18 @@ const Dashboard = () => {
               title="Current Level"
               value={user.level}
               icon={Trophy}
-              emoji="🎮"
               variant="yellow"
             />
             <StatCard
               title="Total Points"
               value={user.points.toLocaleString()}
               icon={Star}
-              emoji="⭐"
               variant="purple"
             />
             <StatCard
               title="Badges Earned"
               value={user.badges}
               icon={Award}
-              emoji="🏆"
               variant="green"
             />
           </div>
@@ -137,7 +126,7 @@ const Dashboard = () => {
           {/* Badges Section */}
           <div className="card-cartoon mb-8 border-4 border-secondary/30">
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-4xl">🏅</span>
+              <Award className="w-6 h-6 text-primary-foreground" />
               <h2 className="font-display font-bold text-2xl text-foreground">
                 Your Badges
               </h2>
@@ -153,13 +142,14 @@ const Dashboard = () => {
                   }`}
                   style={{ animationDelay: `${index * 0.05}s` }}
                 >
-                  <span className="text-2xl">{badge.emoji}</span>
+                  {badge.earned ? (
+                    <Award className="w-5 h-5 text-secondary-foreground" />
+                  ) : (
+                    <Lock className="w-4 h-4 text-muted-foreground" />
+                  )}
                   <span className="text-sm text-foreground">
                     {badge.name}
                   </span>
-                  {!badge.earned && (
-                    <span className="text-xs">🔒</span>
-                  )}
                 </div>
               ))}
             </div>
@@ -167,7 +157,7 @@ const Dashboard = () => {
 
           {/* Quick Actions */}
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-4xl">🚀</span>
+            <span className="text-4xl"><Zap className="w-6 h-6" /></span>
             <h2 className="font-display font-bold text-2xl text-foreground">
               Continue Learning
             </h2>
@@ -178,8 +168,8 @@ const Dashboard = () => {
                 <div
                   className={`card-cartoon p-6 ${action.gradient} ${action.shadow} h-full hover:translate-y-[-6px] hover:shadow-[0_12px_0_hsl(200_50%_40%)]`}
                 >
-                  <div className="text-5xl mb-4 bounce-animation" style={{ animationDelay: `${index * 0.15}s` }}>
-                    {action.emoji}
+                  <div className="mb-4" style={{ animationDelay: `${index * 0.15}s` }}>
+                    <action.icon className="w-10 h-10" />
                   </div>
                   <div className="w-12 h-12 bg-primary-foreground/20 rounded-2xl flex items-center justify-center mb-4">
                     <action.icon className="w-6 h-6 text-primary-foreground" />
