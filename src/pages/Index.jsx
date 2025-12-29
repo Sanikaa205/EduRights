@@ -69,16 +69,16 @@ const Index = () => {
         <div className="container mx-auto px-4 relative">
           <div className="max-w-4xl mx-auto text-center">
             {/* Mascot */}
-            <div className="inline-flex items-center justify-center w-28 h-28 md:w-36 md:h-36 gradient-hero rounded-[2.5rem] shadow-[0_10px_0_hsl(280_70%_45%),0_15px_40px_hsl(280_85%_60%/0.4)] mb-8 animate-bounce-in">
+            {/* <div className="inline-flex items-center justify-center w-28 h-28 md:w-36 md:h-36 gradient-hero rounded-[2.5rem] shadow-[0_10px_0_hsl(280_70%_45%),0_15px_40px_hsl(280_85%_60%/0.4)] mb-8 animate-bounce-in">
               <span className="text-6xl md:text-7xl">📚</span>
-            </div>
+            </div> */}
 
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground rounded-full px-6 py-3 mb-6 font-display font-bold text-base shadow-[0_4px_0_hsl(var(--secondary-depth))] animate-pop-in">
+            {/* <div className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground rounded-full px-6 py-3 mb-6 font-display font-bold text-base shadow-[0_4px_0_hsl(var(--secondary-depth))] animate-pop-in">
               <Sparkles className="w-5 h-5" />
               Fun Learning for Ages 8-16
               <Zap className="w-5 h-5" />
-            </div>
+            </div> */}
 
             {/* Main heading */}
             <h1 className="font-display font-bold text-5xl md:text-7xl lg:text-8xl text-foreground mb-6 leading-tight animate-slide-up">
