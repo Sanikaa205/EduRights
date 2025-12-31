@@ -7,6 +7,7 @@ import StatCard from "@/components/ui/StatCard";
 import { Trophy, Star, Award, BookOpen, Brain, HelpCircle, ArrowRight, Zap, Lock } from "lucide-react";
 
 const Dashboard = () => {
+
   // Demo user data
   const user = {
     name: "Alex",
