@@ -1,140 +1,172 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { Badge } from "@/components/ui/badge"
 import { useNavigate } from "react-router-dom"
 import Navbar from "@/components/layout/Navbar"
 import Footer from "@/components/layout/Footer"
-
 
 export default function EducationalGames() {
   const navigate = useNavigate()
 
   return (
     <>
-    <Navbar/>
-    <div className="container mx-auto px-4 py-10">
+    <Navbar />
+    <div className="container mx-auto px-4 py-8">
 
-      {/* 🌈 HERO SECTION */}
-      <section className="mb-12 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-          🎮 Let’s Play & Learn Your Rights!
+      {/* ===================== HERO SECTION ===================== */}
+      <section className="mb-10 text-center">
+        <h1 className="text-4xl font-extrabold mb-3">
+          🎮 Learn Your Rights Through Games!
         </h1>
 
-        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-          Complete fun missions, earn stars ⭐ and become a <b>Legal Hero</b>!
+        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          Play fun missions, earn stars ⭐, and become a Legal Hero 🦸‍♂️  
+          Learning your rights has never been this exciting!
         </p>
 
         <div className="mt-6 flex justify-center gap-4">
-          <Badge className="text-sm px-4 py-1">Beginner Friendly</Badge>
-          <Badge variant="secondary" className="text-sm px-4 py-1">
-            Ages 8–12
+          <Badge className="text-base px-4 py-2">⭐ Earn Rewards</Badge>
+          <Badge variant="secondary" className="text-base px-4 py-2">
+            🏆 Level Up
           </Badge>
         </div>
       </section>
 
-      {/* 🧠 PROGRESS MOTIVATOR */}
-      <section className="mb-12 max-w-xl mx-auto">
-        <Card className="shadow-md">
-          <CardContent className="pt-6">
-            <p className="font-semibold mb-2 text-center">
-              🌟 Your Hero Progress
-            </p>
-            <Progress value={30} />
-            <p className="text-sm text-muted-foreground text-center mt-2">
-              Complete games to level up!
-            </p>
-          </CardContent>
-        </Card>
+      {/* ===================== PROGRESS BAR ===================== */}
+      <section className="mb-10 max-w-xl mx-auto">
+        <div className="flex justify-between mb-2 text-sm font-medium">
+          <span>Your Learning Journey</span>
+          <span>40%</span>
+        </div>
+        <Progress value={40} />
       </section>
 
-      {/* 🎯 GAMES GRID */}
-      <section className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {/* ===================== GAMES GRID ===================== */}
+      <section className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
 
-        {/* 🎮 RIGHTS RESCUE */}
-        <Card className="group hover:scale-[1.03] transition-transform duration-300 shadow-lg">
+        {/* -------- Rights Rescue -------- */}
+        <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
           <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              Rights Rescue
-              <Badge>⭐ 50 pts</Badge>
+            <CardTitle className="flex items-center gap-2">
+              🚨 Rights Rescue
             </CardTitle>
           </CardHeader>
 
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              Help kids in real-life situations by choosing the right action.
+            <p className="text-muted-foreground mb-4">
+              Help children by choosing the right action in real-life situations.
+              Every good choice earns you stars!
             </p>
 
-            <div className="mb-4">
-              <p className="text-xs font-semibold mb-1">
-                Skills You’ll Learn
-              </p>
-              <div className="flex gap-2 flex-wrap">
-                <Badge variant="secondary">Education</Badge>
-                <Badge variant="secondary">Safety</Badge>
-                <Badge variant="secondary">Equality</Badge>
-              </div>
+            <div className="flex items-center justify-between mb-4">
+              <Badge>⭐ Beginner</Badge>
+              <Badge variant="secondary">🎯 Story Game</Badge>
             </div>
 
             <Button
-              className="w-full group-hover:animate-pulse"
+              className="w-full text-lg"
               onClick={() => navigate("/games/rights-rescue")}
             >
-              🚀 Start Mission
+              Start Mission 🚀
             </Button>
           </CardContent>
         </Card>
 
-        {/* 🧩 MATCH THE RIGHT */}
-        <Card className="opacity-80">
+        {/* -------- Match The Right -------- */}
+        <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
           <CardHeader>
-            <CardTitle>Match the Right</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              🧩 Match The Right
+            </CardTitle>
           </CardHeader>
+
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-muted-foreground mb-4">
               Drag and match situations with the correct child rights.
+              Think fast and score more!
             </p>
-            <Button variant="outline" className="w-full">
-              🔒 Unlock Soon
+
+            <div className="flex items-center justify-between mb-4">
+              <Badge>⭐ Easy</Badge>
+              <Badge variant="secondary">🧠 Puzzle</Badge>
+            </div>
+
+            <Button variant="outline" className="w-full text-lg">
+              Coming Soon
             </Button>
           </CardContent>
         </Card>
 
-        {/* ⚡ RIGHT OR WRONG */}
-        <Card className="opacity-80">
+        {/* -------- Right or Wrong -------- */}
+        <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
           <CardHeader>
-            <CardTitle>Right or Wrong</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              ⚡ Right or Wrong
+            </CardTitle>
           </CardHeader>
+
           <CardContent>
-            <p className="text-sm text-muted-foreground mb-4">
-              Quick tap game to test your rights knowledge.
+            <p className="text-muted-foreground mb-4">
+              Read the statement and decide quickly!
+              Be careful — speed matters!
             </p>
-            <Button variant="outline" className="w-full">
-              🔒 Unlock Soon
+
+            <div className="flex items-center justify-between mb-4">
+              <Badge>⭐ Medium</Badge>
+              <Badge variant="secondary">⏱ Speed Game</Badge>
+            </div>
+
+            <Button variant="outline" className="w-full text-lg">
+              Coming Soon
             </Button>
           </CardContent>
         </Card>
 
+        {/* -------- Legal Hero Journey -------- */}
+        <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              🦸‍♀️ Legal Hero Journey
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <p className="text-muted-foreground mb-4">
+              Complete levels, unlock badges, and become a true Legal Hero.
+              Your journey starts here!
+            </p>
+
+            <div className="flex items-center justify-between mb-4">
+              <Badge>⭐ Adventure</Badge>
+              <Badge variant="secondary">🗺 Levels</Badge>
+            </div>
+
+            <Button variant="outline" className="w-full text-lg">
+              Coming Soon
+            </Button>
+          </CardContent>
+        </Card>
       </section>
 
-      {/* 💡 FUN FACT */}
-      <section className="mt-16 max-w-2xl mx-auto">
+      {/* ===================== FUN FACT BUBBLE ===================== */}
+      <section className="mt-12 max-w-2xl mx-auto">
         <Card className="bg-muted">
-          <CardContent className="pt-6 text-center">
-            <p className="font-semibold mb-2">
-              🤔 Did You Know?
+          <CardContent className="text-center py-6">
+            <p className="text-lg font-semibold">
+              💡 Did you know?
             </p>
-            <p className="text-sm text-muted-foreground">
-              Every child in India has the right to free and compulsory education
-              until the age of 14.
+            <p className="text-muted-foreground mt-2">
+              Every child has the right to education, safety, and to be heard.
+              Learning your rights helps you protect yourself and others!
             </p>
           </CardContent>
         </Card>
       </section>
 
     </div>
-  
-    <Footer/>
-  </>
+    <Footer />
+    </>
   )
 }
