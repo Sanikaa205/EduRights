@@ -12,6 +12,8 @@ import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
+import EducationalGames from "./pages/EducationalGames/EducationalGames"
+
 
 const queryClient = new QueryClient();
 
@@ -30,6 +32,8 @@ const App = () => (
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/games" element={<EducationalGames />} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
