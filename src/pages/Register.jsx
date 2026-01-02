@@ -16,11 +16,23 @@ const Register = () => {
     age: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Demo - just redirect
-    window.location.href = "/dashboard";
-  };
+ const handleSubmit = (e) => {
+  e.preventDefault();
+
+  // Save user data
+  localStorage.setItem(
+    "user",
+    JSON.stringify({
+      name: formData.name,
+      email: formData.email,
+      age: formData.age,
+    })
+  );
+
+  // Redirect to dashboard
+  window.location.href = "/dashboard";
+};
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

@@ -143,9 +143,13 @@ export default function EducationalGames() {
               <Badge variant="secondary">🗺 Levels</Badge>
             </div>
 
-            <Button variant="outline" className="w-full text-lg">
-              Coming Soon
-            </Button>
+            <Button
+  className="w-full text-lg"
+  onClick={() => navigate("/games/legal-hero-journey")}
+>
+  Start Journey 🗺
+</Button>
+
           </CardContent>
         </Card>
       </section>

@@ -13,6 +13,8 @@ import Resources from "./pages/Resources";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 import EducationalGames from "./pages/EducationalGames/EducationalGames"
+import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHeroJourney";
+import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelOneHomeRights";
 
 
 const queryClient = new QueryClient();
@@ -33,6 +35,8 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/games" element={<EducationalGames />} />
+          <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />}/>
+          <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />}/>
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

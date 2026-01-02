@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
@@ -8,14 +10,26 @@ import { Trophy, Star, Award, BookOpen, Brain, HelpCircle, ArrowRight, Zap, Lock
 
 const Dashboard = () => {
 
-  // Demo user data
-  const user = {
-    name: "Alex",
-    level: 5,
-    points: 1250,
-    badges: 8,
-    progress: 65,
-  };
+const [user, setUser] = useState({
+  name: "Alex",
+  level: 1,
+  points: 0,
+  badges: 0,
+  progress: 0,
+});
+useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+
+  if (storedUser) {
+    const parsedUser = JSON.parse(storedUser);
+
+    setUser((prev) => ({
+      ...prev,
+      name: parsedUser.name || prev.name,
+    }));
+  }
+}, []);
+
 
   const badges = [
     { name: "First Steps", earned: true },
