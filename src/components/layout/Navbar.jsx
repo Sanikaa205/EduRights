@@ -11,6 +11,7 @@ const Navbar = () => {
     { path: "/", label: "Home", icon: Home },
     { path: "/dashboard", label: "Dashboard", icon: Trophy },
     { path: "/modules", label: "Learn", icon: BookOpen },
+    { path: "/games", label: "Games", icon: Sparkles },
     { path: "/resources", label: "Help", icon: HelpCircle },
     { path: "/feedback", label: "Feedback", icon: MessageSquare },
   ];
