@@ -15,7 +15,10 @@ import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 
 import EducationalGames from "./pages/EducationalGames/EducationalGames";
+import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHeroJourney";
+import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelOneHomeRights";
 import BuildYourSchool from "./pages/EducationalGames/BuildYourSchool/BuildYourSchool";
+
 
 const queryClient = new QueryClient();
 
@@ -32,6 +35,8 @@ export default function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/modules" element={<Modules />} />
             <Route path="/games" element={<EducationalGames />} />
+            <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />} />
+            <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />} />  
             <Route
               path="/games/build-your-school"
               element={<BuildYourSchool />}
