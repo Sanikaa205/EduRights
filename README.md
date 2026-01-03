@@ -19,3 +19,5 @@ npm install @fontsource/fredoka @fontsource/nunito
 
 # 7. (Optional, but used in your project) Install chart and query libraries
 npm install recharts @tanstack/react-query
+
+npm install react-dnd react-dnd-html5-backend
