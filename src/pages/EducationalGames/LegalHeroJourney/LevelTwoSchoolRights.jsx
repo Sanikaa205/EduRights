@@ -5,23 +5,43 @@ import Footer from "@/components/layout/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import LevelUpAnimation from "./LevelUpAnimation";
 
-import Riya from "@/assets/riya.png"; // 👧 character image
+import Aryan from "@/assets/aryan.png"; // 👦 character image
 
-export default function LevelOneHomeRights() {
+export default function LevelTwoSchoolRights() {
   const [answered, setAnswered] = useState(false);
   const [correct, setCorrect] = useState(false);
-  const [showLevelUp, setShowLevelUp] = useState(false);
 
   const handleAnswer = (isCorrect) => {
     setAnswered(true);
     setCorrect(isCorrect);
 
     if (isCorrect) {
-      localStorage.setItem("legalHeroLevel", "2");
-      setShowLevelUp(true);
-      setTimeout(() => setShowLevelUp(false), 2000);
+      unlockNextLevel();
+      saveProgress();
+    }
+  };
+
+  // ✅ Unlock Level 3
+  const unlockNextLevel = () => {
+    localStorage.setItem("legalHeroLevel", "3");
+  };
+
+  // ✅ Save to backend
+  const saveProgress = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      await fetch("http://localhost:5000/api/game/complete-level", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          level: 2,
+          badge: "🏫 School Hero",
+        }),
+      });
+    } catch (err) {
+      console.error("Failed to save Level 2:", err);
     }
   };
 
@@ -29,26 +49,25 @@ export default function LevelOneHomeRights() {
     <>
       <Navbar />
 
-      <LevelUpAnimation show={showLevelUp} badge="⭐ Home Hero" />
-
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <h1 className="text-3xl font-bold mb-2 text-center">
-          🏠 Level 1: Home Rights
+          🏫 Level 2: School Rights
         </h1>
 
         <p className="text-center text-muted-foreground mb-6">
-          Help Riya feel safe at home
+          Help Aryan make the right choice at school
         </p>
 
-        {/* 👧 Character */}
+        {/* 👦 Character */}
         <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           className="flex justify-center mb-4"
         >
           <img
-            src={Riya}
-            alt="Riya"
+            src={Aryan}
+            alt="Aryan"
             className="w-40 h-40 object-contain"
           />
         </motion.div>
@@ -56,9 +75,9 @@ export default function LevelOneHomeRights() {
         <Card>
           <CardContent className="py-8">
             <p className="text-lg mb-6 text-center">
-              😢 Riya feels unsafe at home because someone is shouting at her.
+              😟 Aryan sees a classmate being bullied at school.
               <br />
-              <strong>What should she do?</strong>
+              <strong>What should he do?</strong>
             </p>
 
             {!answered ? (
@@ -69,7 +88,7 @@ export default function LevelOneHomeRights() {
                     variant="destructive"
                     onClick={() => handleAnswer(false)}
                   >
-                    Stay quiet and do nothing 😔
+                    Ignore it 😔
                   </Button>
                 </motion.div>
 
@@ -78,7 +97,7 @@ export default function LevelOneHomeRights() {
                     className="w-full"
                     onClick={() => handleAnswer(true)}
                   >
-                    Talk to a trusted adult or teacher 🧑‍🏫
+                    Report to a teacher or counselor 🧑‍🏫
                   </Button>
                 </motion.div>
               </div>
@@ -95,7 +114,7 @@ export default function LevelOneHomeRights() {
                     </motion.p>
 
                     <p className="mb-4">
-                      Every child has the right to safety and care at home.
+                      Every child has the right to feel safe at school.
                     </p>
 
                     <motion.div
@@ -105,7 +124,7 @@ export default function LevelOneHomeRights() {
                       className="mb-4"
                     >
                       <Badge className="text-lg px-4 py-2">
-                        ⭐ Home Hero Badge Earned!
+                        🏫 School Hero Badge Earned!
                       </Badge>
                     </motion.div>
 
@@ -122,14 +141,14 @@ export default function LevelOneHomeRights() {
                   <>
                     <motion.p
                       initial={{ x: -10 }}
-                      animate={{ x: [ -10, 10, -10, 0 ] }}
+                      animate={{ x: [-10, 10, -10, 0] }}
                       className="text-red-600 text-lg font-semibold mb-3"
                     >
                       ❌ Not quite!
                     </motion.p>
 
                     <p className="mb-4">
-                      Children should always tell a trusted adult when they feel unsafe.
+                      Bullying should always be reported to keep everyone safe.
                     </p>
 
                     <Button onClick={() => setAnswered(false)}>
