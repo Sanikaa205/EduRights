@@ -35,10 +35,13 @@ const App = () => (
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/feedback" element={<Feedback />} />
+
           <Route path="/games" element={<EducationalGames />} />
           <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />}/>
           <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />}/>
           <Route path="/games/broken-story" element={<BrokenStory />}/>
+
+
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
