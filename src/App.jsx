@@ -19,6 +19,10 @@ import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHer
 import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelOneHomeRights";
 import BuildYourSchool from "./pages/EducationalGames/BuildYourSchool/BuildYourSchool";
 
+import Module1Start from "./pages/module1/Module1Start";
+import Module1Story from "./pages/module1/Module1Story";
+import Module1Explanation from "./pages/module1/Module1Explanation";
+import Module1Quiz from "./pages/module1/Module1Quiz";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +50,12 @@ export default function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/module-1" element={<Module1Start />} />
+            <Route path="/module-1/story" element={<Module1Story />} />
+            <Route path="/module-1/explanation" element={<Module1Explanation />} />
+            <Route path="/module-1/quiz" element={<Module1Quiz />} />
+
+
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
