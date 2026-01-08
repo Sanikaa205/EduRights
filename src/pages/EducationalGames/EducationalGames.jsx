@@ -100,29 +100,23 @@ export default function EducationalGames() {
         </Card>
 
         {/* -------- Right or Wrong -------- */}
-        <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              ⚡ Right or Wrong
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              Read the statement and decide quickly!
-              Be careful — speed matters!
-            </p>
-
-            <div className="flex items-center justify-between mb-4">
-              <Badge>⭐ Medium</Badge>
-              <Badge variant="secondary">⏱ Speed Game</Badge>
-            </div>
-
-            <Button variant="outline" className="w-full text-lg">
-              Coming Soon
-            </Button>
-          </CardContent>
-        </Card>
+       <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
+  <CardHeader>
+    <CardTitle className="flex items-center gap-2">🛠️ Broken Story</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-muted-foreground mb-4">
+      Scenes are broken and need fixing! Drag and drop items to restore them and learn about children's rights through interactive puzzles.
+    </p>
+    <div className="flex items-center justify-between mb-4">
+      <Badge>⭐ Interactive</Badge>
+      <Badge variant="secondary">🧩 Puzzle</Badge>
+    </div>
+    <Button className="w-full text-lg" onClick={() => navigate("/games/broken-story")}>
+      Fix the Scene 🚀
+    </Button>
+  </CardContent>
+</Card>
 
         {/* -------- Legal Hero Journey -------- */}
         <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
