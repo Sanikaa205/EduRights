@@ -23,7 +23,7 @@ export default function Module1Explanation() {
           <div className="flex gap-4 mt-10">
             <Button
               variant="secondary"
-              onClick={() => navigate("/module-1?openBook=true")}
+              onClick={() => navigate("/module-1/start?openBook=true")}
             >
               🔁 Re-learn
             </Button>
