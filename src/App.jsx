@@ -19,6 +19,11 @@ import EducationalGames from "./pages/EducationalGames/EducationalGames";
 import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHeroJourney";
 import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelOneHomeRights";
 import BuildYourSchool from "./pages/EducationalGames/BuildYourSchool/BuildYourSchool";
+import LevelTwoSchoolRights from "@/pages/EducationalGames/LegalHeroJourney/LevelTwoSchoolRights.jsx";
+import LevelUpAnimation from "@/pages/EducationalGames/LegalHeroJourney/LevelUpAnimation.jsx";
+import LevelThreeOnlineSafety from "@/pages/EducationalGames/LegalHeroJourney/LevelThreeOnlineSafety.jsx";
+import LevelFourWorkplace  from "@/pages/EducationalGames/LegalHeroJourney/LevelFourWorkplace.jsx";
+
 
 import Module1Start from "./pages/module1/Module1Start";
 import Module1Story from "./pages/module1/Module1Story";
@@ -27,41 +32,34 @@ import Module1Quiz from "./pages/module1/Module1Quiz";
 
 const queryClient = new QueryClient();
 
-export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/modules" element={<Modules />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/games" element={<EducationalGames />} />
+          <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />}/>
+          <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />}/>
+          <Route path="/games/legal-hero-journey/level-2" element={<LevelTwoSchoolRights />} />
+          <Route path="/games/legal-hero-journey/level-up-animation" element={<LevelUpAnimation />} />\
+          <Route path="/games/legal-hero-journey/level-3" element={<LevelThreeOnlineSafety />} />
+          <Route path="/games/legal-hero-journey/level-4" element={<LevelFourWorkplace />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/modules" element={<Modules />} />
-            <Route path="/games" element={<EducationalGames />} />
-            <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />} />
-            <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />} />  
-              
-            <Route
-              path="/games/build-your-school"
-              element={<BuildYourSchool />}
-            />
-            <Route path="/feedback" element={<Feedback />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/module-1" element={<Module1Start />} />
-            <Route path="/module-1/story" element={<Module1Story />} />
-            <Route path="/module-1/explanation" element={<Module1Explanation />} />
-            <Route path="/module-1/quiz" element={<Module1Quiz />} />
-             <Route path="/games/broken-story" element={<BrokenStory />}/>
-
-
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-}
+export default App;
