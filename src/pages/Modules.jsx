@@ -102,12 +102,11 @@ const Modules = () => {
 
   const modulesWithProgress = modules.map((m, i) => {
     const progress = progresses[i];
-    // Module 1 is always unlocked
-    const locked = i > 0 && progresses[i - 1] < 100;
+    // All modules are always unlocked
     return {
       ...m,
       progress,
-      locked
+      locked: false
     };
   });
 
