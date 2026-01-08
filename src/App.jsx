@@ -11,6 +11,7 @@ import Modules from "./pages/Modules";
 import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import Feedback from "./pages/Feedback";
+
 import NotFound from "./pages/NotFound";
 import EducationalGames from "./pages/EducationalGames/EducationalGames"
 import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHeroJourney";
@@ -36,10 +37,13 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/feedback" element={<Feedback />} />
 
+
           <Route path="/games" element={<EducationalGames />} />
           <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />}/>
           <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />}/>
           <Route path="/games/broken-story" element={<BrokenStory />}/>
+
+
 
 
 
