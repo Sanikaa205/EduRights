@@ -15,6 +15,11 @@ import NotFound from "./pages/NotFound";
 import EducationalGames from "./pages/EducationalGames/EducationalGames"
 import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHeroJourney";
 import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelOneHomeRights";
+import LevelTwoSchoolRights from "@/pages/EducationalGames/LegalHeroJourney/LevelTwoSchoolRights.jsx";
+import LevelUpAnimation from "@/pages/EducationalGames/LegalHeroJourney/LevelUpAnimation.jsx";
+import LevelThreeOnlineSafety from "@/pages/EducationalGames/LegalHeroJourney/LevelThreeOnlineSafety.jsx";
+import LevelFourWorkplace  from "@/pages/EducationalGames/LegalHeroJourney/LevelFourWorkplace.jsx";
+
 
 
 const queryClient = new QueryClient();
@@ -37,7 +42,10 @@ const App = () => (
           <Route path="/games" element={<EducationalGames />} />
           <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />}/>
           <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />}/>
-
+          <Route path="/games/legal-hero-journey/level-2" element={<LevelTwoSchoolRights />} />
+          <Route path="/games/legal-hero-journey/level-up-animation" element={<LevelUpAnimation />} />\
+          <Route path="/games/legal-hero-journey/level-3" element={<LevelThreeOnlineSafety />} />
+          <Route path="/games/legal-hero-journey/level-4" element={<LevelFourWorkplace />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
