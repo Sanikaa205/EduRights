@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import BrokenStory from "./pages/EducationalGames/BrokenStory/BrokenStory";
+
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -12,15 +14,21 @@ import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
-import EducationalGames from "./pages/EducationalGames/EducationalGames"
+
+import EducationalGames from "./pages/EducationalGames/EducationalGames";
 import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHeroJourney";
 import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelOneHomeRights";
+import BuildYourSchool from "./pages/EducationalGames/BuildYourSchool/BuildYourSchool";
 import LevelTwoSchoolRights from "@/pages/EducationalGames/LegalHeroJourney/LevelTwoSchoolRights.jsx";
 import LevelUpAnimation from "@/pages/EducationalGames/LegalHeroJourney/LevelUpAnimation.jsx";
 import LevelThreeOnlineSafety from "@/pages/EducationalGames/LegalHeroJourney/LevelThreeOnlineSafety.jsx";
 import LevelFourWorkplace  from "@/pages/EducationalGames/LegalHeroJourney/LevelFourWorkplace.jsx";
 
 
+import Module1Start from "./pages/module1/Module1Start";
+import Module1Story from "./pages/module1/Module1Story";
+import Module1Explanation from "./pages/module1/Module1Explanation";
+import Module1Quiz from "./pages/module1/Module1Quiz";
 
 const queryClient = new QueryClient();
 
