@@ -11,7 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 
 // Import images - Broken and Fixed versions
 // Scene 2: Right to Safety
-import safetyBrokenBg from "@/assets/child_labour.png";
+import safetyBrokenBg from "@/assets/protection_broken.jpeg";
+import safetyFixedBg from "@/assets/protection_fixed.jpeg";
 // Scene 3: Right to Equality
 import equalityBrokenBg from "@/assets/equality_broken.jpeg";
 import equalityFixedBg from "@/assets/euality_fixed.jpeg";
@@ -22,12 +23,22 @@ import playFixedBg from "@/assets/righttoplay_fixed.jpeg";
 import healthBrokenBg from "@/assets/health_broken.jpeg";
 import healthFixedBg from "@/assets/health_fixed.jpeg";
 
+// Fisher-Yates shuffle algorithm for randomizing array order
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 // SCENE DATA - Unordered solutions with zone-based validation
 const SCENES = [
   {
     id: 1,
     title: "Right to Education",
-    description: "Every child deserves quality education. Help unlock the gate, prepare the student, and assign a teacher to ensure learning happens!",
+    description: "Every child deserves quality education. Help unlock the gate, arrange the classroom, and assign a teacher to ensure learning happens!",
     brokenBg: "/assets/school-bg.png",
     fixedBg: "/assets/school-bg.png", // Using same for now
     bgColor: "#87CEEB",
@@ -36,7 +47,7 @@ const SCENES = [
     // ALL items in tray (correct + distractors) - shown together, ANY order works
     trayItems: [
       { id: "key", label: "Key", icon: "🔑" },
-      { id: "bag", label: "Backpack", icon: "🎒" },
+      { id: "desk", label: "Desk", icon: "🪑" },
       { id: "teacher", label: "Teacher", icon: "👩‍🏫" },
       { id: "book", label: "Book", icon: "📚" },
       { id: "apple", label: "Apple", icon: "🍎" },
@@ -45,13 +56,13 @@ const SCENES = [
     // Mapping: which item goes to which drop zone (NO ORDER requirement)
     correctPlacements: {
       "key": "gate",
-      "bag": "student",
+      "desk": "classroom",
       "teacher": "school"
     },
     // Drop zones - where items can be placed
     zones: [
       { id: "gate", label: "Unlock Gate" },
-      { id: "student", label: "Prepare Student" },
+      { id: "classroom", label: "Arrange Classroom" },
       { id: "school", label: "Assign Teacher" }
     ],
     scoring: { action: 1, completion: 2 }
@@ -61,7 +72,7 @@ const SCENES = [
     title: "Right to Safety",
     description: "Children have the right to live safely and be protected from harm. Install street lights, add security, and provide protective gear!",
     brokenBg: safetyBrokenBg,
-    fixedBg: safetyBrokenBg, // Using same for now (no fixed version available)
+    fixedBg: safetyFixedBg,
     bgColor: "#2C3E50",
     emoji: "🛡️",
     brokenVisuals: ["darkStreet", "scaredChild", "noProtection"],
@@ -89,7 +100,7 @@ const SCENES = [
   {
     id: 3,
     title: "Right to Equality",
-    description: "All children are equal regardless of abilities. Create an inclusive playground with welcome signs, shared toys, and accessible ramps!",
+    description: "All children are equal regardless of abilities. Create an inclusive playground with welcome signs, inclusive activities, and accessible ramps!",
     brokenBg: equalityBrokenBg,
     fixedBg: equalityFixedBg,
     bgColor: "#7CB342",
@@ -97,7 +108,7 @@ const SCENES = [
     brokenVisuals: ["exclusivePlayground", "leftOutChild", "noAccess"],
     trayItems: [
       { id: "sign", label: "Welcome Sign", icon: "🪧" },
-      { id: "ball", label: "Football", icon: "⚽" },
+      { id: "hands", label: "Friendship", icon: "🤝" },
       { id: "ramp", label: "Ramp", icon: "♿" },
       { id: "bench", label: "Bench", icon: "🪑" },
       { id: "slide", label: "Slide", icon: "🛝" },
@@ -105,12 +116,12 @@ const SCENES = [
     ],
     correctPlacements: {
       "sign": "entrance",
-      "ball": "play",
+      "hands": "inclusion",
       "ramp": "access"
     },
     zones: [
       { id: "entrance", label: "Welcome All" },
-      { id: "play", label: "Share Toys" },
+      { id: "inclusion", label: "Include Everyone" },
       { id: "access", label: "Make Accessible" }
     ],
     scoring: { action: 1, completion: 2 }
@@ -190,6 +201,8 @@ const BrokenStory = () => {
   const [rejectedItemId, setRejectedItemId] = useState(null); // For shake animation
   const [showCelebration, setShowCelebration] = useState(false); // Celebration state
   const [showCompletionModal, setShowCompletionModal] = useState(false); // Delayed completion popup
+  const [sceneActionCount, setSceneActionCount] = useState(0); // Track actions in current scene
+  const [shuffledTrayItems, setShuffledTrayItems] = useState([]); // Shuffled items for current scene
   
   // Store drop zone elements for measuring
   const dropZoneRefs = useRef({});
@@ -202,7 +215,9 @@ const BrokenStory = () => {
   const placedCorrectCount = Object.keys(fixedItems).filter(
     id => currentScene.correctPlacements[id]
   ).length;
-  const isLevelComplete = placedCorrectCount === correctItemCount;
+  const isLevelComplete =
+    correctItemCount > 0 &&
+    placedCorrectCount === correctItemCount;
   const progress = (placedCorrectCount / correctItemCount) * 100;
 
   // Persist score to localStorage
@@ -231,21 +246,30 @@ const BrokenStory = () => {
     setRejectedItemId(null);
     setShowCelebration(false);
     setShowCompletionModal(false);
+    setSceneActionCount(0); // Reset action count for new scene
     dropZoneRefs.current = {};
     setDropZonePositions({});
-  }, [currentSceneIndex]);
+    // Shuffle tray items for new scene to make game unpredictable
+    setShuffledTrayItems(shuffleArray(currentScene.trayItems));
+  }, [currentSceneIndex, currentScene.trayItems]);
 
   // Trigger celebration when scene is completed, then show modal after delay
   useEffect(() => {
-    if (isLevelComplete && !showCelebration && !showCompletionModal) {
+    // EXPLICIT GUARD: sceneActionCount must be > 0 to prevent premature completion
+    if (sceneActionCount === 0) return;
+    
+    if (
+      isLevelComplete &&
+      !showCelebration &&
+      !showCompletionModal
+    ) {
       setShowCelebration(true);
       
       // Play celebration sound (soft, one-time)
       try {
-        if (!celebrationSoundRef.current) {
-          celebrationSoundRef.current = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjiR1/LMeSwFJHfH8N2QQAo=');
-          celebrationSoundRef.current.volume = 0.3; // Soft volume
-        }
+        // Force create new audio with updated sound
+        celebrationSoundRef.current = new Audio('https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3');
+        celebrationSoundRef.current.volume = 0.35; // Soft, kid-friendly volume
         celebrationSoundRef.current.currentTime = 0;
         celebrationSoundRef.current.play().catch(err => console.log('Audio play failed:', err));
       } catch (error) {
@@ -262,7 +286,7 @@ const BrokenStory = () => {
         setShowCompletionModal(true);
       }, 2500);
     }
-  }, [isLevelComplete, showCelebration, showCompletionModal]);
+  }, [sceneActionCount, isLevelComplete, showCelebration, showCompletionModal]);
 
   // Validate drop: Check if item matches the zone's expected item
   const checkDropZone = (itemId, dragX, dragY) => {
@@ -291,6 +315,7 @@ const BrokenStory = () => {
     
     if (isValid) {
       // ✅ CORRECT - Item placed on its correct zone
+      setSceneActionCount(prev => prev + 1); // Increment action count
       const item = currentScene.trayItems.find(i => i.id === itemId);
       setFixedItems(prev => ({ ...prev, [itemId]: true }));
       setTotalScore(prev => prev + currentScene.scoring.action);
@@ -314,6 +339,10 @@ const BrokenStory = () => {
   };
 
   const handleNextScene = () => {
+    // CRITICAL: Close modal and celebration before transitioning
+    setShowCompletionModal(false);
+    setShowCelebration(false);
+    
     if (currentSceneIndex < SCENES.length - 1) {
       setCurrentSceneIndex(prev => prev + 1);
     } else {
@@ -566,7 +595,9 @@ const BrokenStory = () => {
                       >
                         🔒
                       </motion.div>
-                      <p className="text-xl font-semibold text-white">Scene Locked</p>
+                      <p className="text-xl font-semibold text-white">
+                        {currentScene.id === 1 ? 'School Locked' : 'Scene Locked'}
+                      </p>
                       <p className="text-sm text-slate-200 mt-2">Start placing items to repair</p>
                     </div>
                   </motion.div>
@@ -705,52 +736,6 @@ const BrokenStory = () => {
               })}
             </div>
 
-            {/* Winning Overlay */}
-            <AnimatePresence>
-              {showCompletionModal && (
-                <motion.div 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }}
-                  className="absolute inset-0 bg-black/50 backdrop-blur-md z-50 flex items-center justify-center p-4"
-                >
-                  <motion.div
-                    initial={{ scale: 0.5, y: 50 }}
-                    animate={{ scale: 1, y: 0 }}
-                    className="w-full"
-                  >
-                    <Card className="max-w-md w-full p-10 text-center shadow-2xl border-2 border-slate-200 bg-white">
-                      <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 3 }}>
-                        <Sparkles className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                      </motion.div>
-                      <Badge variant="secondary" className="mb-6 py-2 px-6 text-base">
-                        Scene {currentScene.id} of {SCENES.length} Complete
-                      </Badge>
-                      <h2 className="text-4xl font-black text-slate-800 mb-4">
-                        Excellent Work!
-                      </h2>
-                      <p className="text-slate-600 mb-4 text-base leading-relaxed">
-                        You've successfully repaired the scene and protected the {currentScene.title}!
-                      </p>
-                      <div className="bg-blue-50 rounded-lg p-4 mb-6">
-                        <p className="text-2xl font-black text-slate-800">Score: {totalScore}</p>
-                        <p className="text-xs text-slate-600 mt-1">
-                          {currentSceneIndex < SCENES.length - 1 
-                            ? `${SCENES.length - currentSceneIndex - 1} scene${SCENES.length - currentSceneIndex - 1 > 1 ? 's' : ''} remaining` 
-                            : 'All scenes complete!'}
-                        </p>
-                      </div>
-                      <Button 
-                        size="lg" 
-                        className="w-full gap-2 text-base py-6" 
-                        onClick={handleNextScene}
-                      >
-                        {currentSceneIndex < SCENES.length - 1 ? 'Next Scene' : 'Finish Game'} <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </Card>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </motion.div>
 
           {/* Right Sidebar - Draggable Items */}
@@ -763,7 +748,7 @@ const BrokenStory = () => {
             <Card className="p-6 bg-slate-50 border-2 border-slate-200 rounded-xl h-full">
               <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-6">Available Items</p>
               <div className="flex lg:flex-col gap-4 justify-center flex-wrap">
-                {currentScene.trayItems.map(item => (
+                {shuffledTrayItems.map(item => (
                   !fixedItems[item.id] && (
                     <DraggableItem 
                       key={item.id}
@@ -788,6 +773,53 @@ const BrokenStory = () => {
             </Card>
           </motion.div>
         </div>
+
+        {/* Winning Modal - Outside Game Container */}
+        <AnimatePresence>
+          {showCompletionModal && (
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            >
+              <motion.div
+                initial={{ scale: 0.5, y: 50 }}
+                animate={{ scale: 1, y: 0 }}
+                className="flex items-center justify-center"
+              >
+                <Card className="max-w-md w-full p-10 text-center shadow-2xl border-2 border-slate-200 bg-white">
+                  <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 3 }}>
+                    <Sparkles className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+                  </motion.div>
+                  <Badge variant="secondary" className="mb-6 py-2 px-6 text-base">
+                    Scene {currentScene.id} of {SCENES.length} Complete
+                  </Badge>
+                  <h2 className="text-4xl font-black text-slate-800 mb-4">
+                    Excellent Work!
+                  </h2>
+                  <p className="text-slate-600 mb-4 text-base leading-relaxed">
+                    You've successfully repaired the scene and protected the {currentScene.title}!
+                  </p>
+                  <div className="bg-blue-50 rounded-lg p-4 mb-6">
+                    <p className="text-2xl font-black text-slate-800">Score: {totalScore}</p>
+                    <p className="text-xs text-slate-600 mt-1">
+                      {currentSceneIndex < SCENES.length - 1 
+                        ? `${SCENES.length - currentSceneIndex - 1} scene${SCENES.length - currentSceneIndex - 1 > 1 ? 's' : ''} remaining` 
+                        : 'All scenes complete!'}
+                    </p>
+                  </div>
+                  <Button 
+                    size="lg" 
+                    className="w-full gap-2 text-base py-6" 
+                    onClick={handleNextScene}
+                  >
+                    {currentSceneIndex < SCENES.length - 1 ? 'Next Scene' : 'Finish Game'} <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Card>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
       <Footer />
     </div>
@@ -809,7 +841,7 @@ const DraggableItem = ({ id, label, icon, isRejected, onDrop }) => {
     }
   }, [isRejected, controls]);
 
-  const handleDragEnd = async () => {
+  const handleDragEnd = () => {
     if (!ref.current) return;
 
     const rect = ref.current.getBoundingClientRect();
@@ -820,7 +852,7 @@ const DraggableItem = ({ id, label, icon, isRejected, onDrop }) => {
 
     if (!success) {
       // ❌ REJECTED - Snap back with shake animation
-      await controls.start({ x: 0, y: 0, transition: { type: "spring", stiffness: 300, damping: 20 } });
+      controls.start({ x: 0, y: 0, transition: { type: "spring", stiffness: 300, damping: 20 } });
     }
   };
 
