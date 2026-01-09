@@ -7,21 +7,72 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import LevelUpAnimation from "./LevelUpAnimation";
 
-import Riya from "@/assets/riya.png"; // 👧 character image
+import Riya from "@/assets/riya.png";
+import correctSound from "@/assets/correct.mp3";
 
 export default function LevelOneHomeRights() {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answered, setAnswered] = useState(false);
   const [correct, setCorrect] = useState(false);
   const [showLevelUp, setShowLevelUp] = useState(false);
+
+  const playCorrectSound = () => {
+    const audio = new Audio(correctSound);
+    audio.play();
+  };
+
+  const questions = [
+    {
+      text: "😢 Riya feels unsafe because someone is shouting at her.",
+      question: "What should she do?",
+      options: [
+        { text: "Stay quiet and do nothing 😔", correct: false },
+        { text: "Talk to a trusted adult or teacher 🧑‍🏫", correct: true },
+      ],
+    },
+    {
+      text: "🚪 Riya is locked alone in a room and feels scared.",
+      question: "What is the right step?",
+      options: [
+        { text: "Tell someone she trusts immediately 📞", correct: true },
+        { text: "Hide and stay silent 😶", correct: false },
+      ],
+    },
+    {
+      text: "🍽 Riya is not given enough food at home.",
+      question: "What should she remember?",
+      options: [
+        { text: "Food is a child’s right 🍎", correct: true },
+        { text: "She must accept it silently 😔", correct: false },
+      ],
+    },
+    {
+      text: "💔 Riya is being hurt at home.",
+      question: "What is the BEST thing to do?",
+      options: [
+        { text: "Tell a teacher or helpline 🆘", correct: true },
+        { text: "Keep it a secret 🤐", correct: false },
+      ],
+    },
+  ];
 
   const handleAnswer = (isCorrect) => {
     setAnswered(true);
     setCorrect(isCorrect);
 
     if (isCorrect) {
-      localStorage.setItem("legalHeroLevel", "2");
-      setShowLevelUp(true);
-      setTimeout(() => setShowLevelUp(false), 2000);
+      playCorrectSound();
+
+      setTimeout(() => {
+        if (currentQuestion < questions.length - 1) {
+          setCurrentQuestion(currentQuestion + 1);
+          setAnswered(false);
+        } else {
+          localStorage.setItem("legalHeroLevel", "2");
+          setShowLevelUp(true);
+          setTimeout(() => setShowLevelUp(false), 2000);
+        }
+      }, 1200);
     }
   };
 
@@ -37,7 +88,7 @@ export default function LevelOneHomeRights() {
         </h1>
 
         <p className="text-center text-muted-foreground mb-6">
-          Help Riya feel safe at home
+          Question {currentQuestion + 1} of {questions.length}
         </p>
 
         {/* 👧 Character */}
@@ -46,92 +97,51 @@ export default function LevelOneHomeRights() {
           transition={{ repeat: Infinity, duration: 2 }}
           className="flex justify-center mb-4"
         >
-          <img
-            src={Riya}
-            alt="Riya"
-            className="w-40 h-40 object-contain"
-          />
+          <img src={Riya} alt="Riya" className="w-40 h-40 object-contain" />
         </motion.div>
 
         <Card>
           <CardContent className="py-8">
-            <p className="text-lg mb-6 text-center">
-              😢 Riya feels unsafe at home because someone is shouting at her.
-              <br />
-              <strong>What should she do?</strong>
+            <p className="text-lg mb-2 text-center">
+              {questions[currentQuestion].text}
+            </p>
+            <p className="font-semibold text-center mb-6">
+              {questions[currentQuestion].question}
             </p>
 
             {!answered ? (
               <div className="space-y-4">
-                <motion.div whileHover={{ scale: 1.03 }}>
-                  <Button
-                    className="w-full"
-                    variant="destructive"
-                    onClick={() => handleAnswer(false)}
-                  >
-                    Stay quiet and do nothing 😔
-                  </Button>
-                </motion.div>
-
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button
-                    className="w-full"
-                    onClick={() => handleAnswer(true)}
-                  >
-                    Talk to a trusted adult or teacher 🧑‍🏫
-                  </Button>
-                </motion.div>
+                {questions[currentQuestion].options.map((opt, idx) => (
+                  <motion.div key={idx} whileHover={{ scale: 1.05 }}>
+                    <Button
+                      className="w-full"
+                      variant={opt.correct ? "default" : "destructive"}
+                      onClick={() => handleAnswer(opt.correct)}
+                    >
+                      {opt.text}
+                    </Button>
+                  </motion.div>
+                ))}
               </div>
             ) : (
-              <div className="text-center">
+              <div className="text-center mt-4">
                 {correct ? (
-                  <>
-                    <motion.p
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="text-green-600 text-xl font-semibold mb-3"
-                    >
-                      ✅ Correct!
-                    </motion.p>
-
-                    <p className="mb-4">
-                      Every child has the right to safety and care at home.
-                    </p>
-
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="mb-4"
-                    >
-                      <Badge className="text-lg px-4 py-2">
-                        ⭐ Home Hero Badge Earned!
-                      </Badge>
-                    </motion.div>
-
-                    <Button
-                      className="mt-4"
-                      onClick={() =>
-                        (window.location.href = "/games/legal-hero-journey")
-                      }
-                    >
-                      Back to Map 🗺
-                    </Button>
-                  </>
+                  <motion.p
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="text-green-600 text-xl font-semibold"
+                  >
+                    ✅ Great choice!
+                  </motion.p>
                 ) : (
                   <>
                     <motion.p
                       initial={{ x: -10 }}
-                      animate={{ x: [ -10, 10, -10, 0 ] }}
+                      animate={{ x: [-10, 10, -10, 0] }}
                       className="text-red-600 text-lg font-semibold mb-3"
                     >
-                      ❌ Not quite!
+                      ❌ Try again!
                     </motion.p>
-
-                    <p className="mb-4">
-                      Children should always tell a trusted adult when they feel unsafe.
-                    </p>
-
                     <Button onClick={() => setAnswered(false)}>
                       Try Again 🔄
                     </Button>
@@ -141,6 +151,23 @@ export default function LevelOneHomeRights() {
             )}
           </CardContent>
         </Card>
+
+        {showLevelUp && (
+          <div className="text-center mt-6">
+            <Badge className="text-lg px-4 py-2">
+              ⭐ Home Hero Badge Earned!
+            </Badge>
+
+            <Button
+              className="mt-4"
+              onClick={() =>
+                (window.location.href = "/games/legal-hero-journey")
+              }
+            >
+              Back to Map 🗺
+            </Button>
+          </div>
+        )}
       </div>
 
       <Footer />
