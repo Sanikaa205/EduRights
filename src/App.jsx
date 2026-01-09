@@ -24,9 +24,14 @@ import Module1Start from "./pages/module1/Module1Start";
 import Module1Story from "./pages/module1/Module1Story";
 import Module1Explanation from "./pages/module1/Module1Explanation";
 import Module1Quiz from "./pages/module1/Module1Quiz";
+
 import Module2Start from "./pages/module2/Module2Start";
 import Module2Explanation from "./pages/module2/Module2Explanation";
 import Module2Quiz from "./pages/module2/Module2Quiz";
+
+import Module3Start from "./pages/module3/Module3Start";
+import Module3Explanation from "./pages/module3/Module3Explanation";
+import Module3Quiz from "./pages/module3/Module3Quiz";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +67,10 @@ export default function App() {
             <Route path="/module-2" element={<Module2Start />} />
             <Route path="/module-2/explanation" element={<Module2Explanation />} />
             <Route path="/module-2/quiz" element={<Module2Quiz />} />
+
+            <Route path="/module-3" element={<Module3Start />} />
+            <Route path="/module-3/explanation" element={<Module3Explanation />} />
+            <Route path="/module-3/quiz" element={<Module3Quiz />} />
              <Route path="/games/broken-story" element={<BrokenStory />}/>
 
 
