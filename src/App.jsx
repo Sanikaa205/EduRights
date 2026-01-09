@@ -18,6 +18,9 @@ import NotFound from "./pages/NotFound";
 import EducationalGames from "./pages/EducationalGames/EducationalGames";
 import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHeroJourney";
 import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelOneHomeRights";
+import LevelTwoSchoolRights from "./pages/EducationalGames/LegalHeroJourney/LevelTwoSchoolRights";
+import LevelThreeOnlineSafety from "./pages/EducationalGames/LegalHeroJourney/LevelThreeOnlineSafety";  
+import LevelFourWorkplace from "./pages/EducationalGames/LegalHeroJourney/LevelFourWorkplace";
 import BuildYourSchool from "./pages/EducationalGames/BuildYourSchool/BuildYourSchool";
 
 import Module1Start from "./pages/module1/Module1Start";
@@ -27,6 +30,9 @@ import Module1Quiz from "./pages/module1/Module1Quiz";
 import Module2Start from "./pages/module2/Module2Start";
 import Module2Explanation from "./pages/module2/Module2Explanation";
 import Module2Quiz from "./pages/module2/Module2Quiz";
+import ComicStory from "@/pages/ComicStory";
+
+
 
 const queryClient = new QueryClient();
 
@@ -63,7 +69,11 @@ export default function App() {
             <Route path="/module-2/explanation" element={<Module2Explanation />} />
             <Route path="/module-2/quiz" element={<Module2Quiz />} />
              <Route path="/games/broken-story" element={<BrokenStory />}/>
+              <Route path="/comic/:id" element={<ComicStory />} />
 
+              <Route path="/games/legal-hero-journey/level-2" element={<LevelTwoSchoolRights />} />
+              <Route path="/games/legal-hero-journey/level-3" element={<LevelThreeOnlineSafety />} />
+              <Route path="/games/legal-hero-journey/level-4" element={<LevelFourWorkplace />} />
 
           </Routes>
         </BrowserRouter>
