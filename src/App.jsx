@@ -1,3 +1,6 @@
+import Module4Start from "./pages/module4/Module4Start";
+import Module4Explanation from "./pages/module4/Module4Explanation";
+import Module4Quiz from "./pages/module4/Module4Quiz";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -77,6 +80,9 @@ export default function App() {
             <Route path="/module-3" element={<Module3Start />} />
             <Route path="/module-3/explanation" element={<Module3Explanation />} />
             <Route path="/module-3/quiz" element={<Module3Quiz />} />
+            <Route path="/module-4" element={<Module4Start />} />
+            <Route path="/module-4/explanation" element={<Module4Explanation />} />
+            <Route path="/module-4/quiz" element={<Module4Quiz />} />
              <Route path="/games/broken-story" element={<BrokenStory />}/>
               <Route path="/comic/:id" element={<ComicStory />} />
 
