@@ -14,7 +14,6 @@ export default function Module5Quiz() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
   const [answered, setAnswered] = useState(false);
-  const [showSummary, setShowSummary] = useState(false);
   const navigate = useNavigate();
 
   const handleSelect = (idx) => {
@@ -53,59 +52,6 @@ export default function Module5Quiz() {
     "Mental health is just as important as physical health for overall wellbeing.",
   ];
 
-  if (showResult && showSummary) {
-    return (
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-cyan-100 to-green-100 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <div className="absolute top-20 left-[15%] text-6xl float-animation stagger-1">⭐</div>
-          <div className="absolute top-40 right-[20%] text-5xl float-slow stagger-2">🌟</div>
-          <div className="absolute bottom-32 left-[10%] text-4xl float-animation stagger-3">✨</div>
-        </div>
-        <Navbar />
-        <main className="flex-1 flex flex-col items-center justify-center px-4 z-10 py-8">
-          <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-2xl w-full border-0 animate__animated animate__fadeIn">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-4xl">�</span>
-              <h2 className="text-4xl font-black text-gray-800">What Did You Learn?</h2>
-            </div>
-
-            <ul className="space-y-4 mb-8">
-              {keyLearnings.map((learning, idx) => (
-                <li key={idx} className="flex items-start gap-3 p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200">
-                  <span className="text-2xl flex-shrink-0">✓</span>
-                  <span className="text-lg font-semibold text-gray-800 leading-relaxed">{learning}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="flex gap-4">
-              <Button
-                onClick={() => {
-                  setShowResult(false);
-                  setShowSummary(false);
-                  setCurrent(0);
-                  setSelected(null);
-                  setScore(0);
-                  setAnswered(false);
-                }}
-                className="flex-1 bg-gradient-to-r from-yellow-400 to-orange-400 text-white font-black shadow-xl rounded-full text-lg py-4 px-8 hover:scale-105 transition-transform border-4 border-yellow-500 uppercase tracking-wider"
-              >
-                <span className="text-xl mr-2">🔄</span> Re-learn
-              </Button>
-              <Button
-                onClick={handleFinish}
-                className="flex-1 bg-gradient-to-r from-pink-300 to-yellow-300 text-white font-black shadow-xl rounded-full text-lg py-4 px-8 hover:scale-105 transition-transform border-4 border-pink-400 uppercase tracking-wider"
-              >
-                <span className="text-xl mr-2">🏁</span> Go to Quiz
-              </Button>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
   if (showResult) {
     const percentage = Math.round((score / questions.length) * 100);
     return (
@@ -124,7 +70,7 @@ export default function Module5Quiz() {
         <main className="flex-1 flex flex-col items-center justify-center px-4 z-10">
           <div className="bg-white rounded-3xl shadow-2xl p-12 max-w-md w-full text-center border-8 border-yellow-400 animate__animated animate__fadeIn flex flex-col items-center relative">
             <div className="mb-4 animate__animated animate__bounceIn">
-              <span className="text-8xl drop-shadow-lg">🦉</span>
+              <span className="text-8xl drop-shadow-lg">🏥</span>
             </div>
             <h2 className="text-5xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">🎉 Quiz Complete!</h2>
 
@@ -140,10 +86,10 @@ export default function Module5Quiz() {
             {percentage < 60 && <p className="text-orange-600 text-3xl font-black mb-6 drop-shadow-lg">💪 Keep Practicing!</p>}
 
             <Button
-              onClick={() => setShowSummary(true)}
+              onClick={handleFinish}
               className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white font-black shadow-xl rounded-full text-lg py-4 px-10 hover:scale-110 transition-transform w-full border-4 border-pink-600 uppercase tracking-wider"
             >
-              What Did You Learn? →
+              Back to Modules
             </Button>
           </div>
         </main>
@@ -187,7 +133,7 @@ export default function Module5Quiz() {
 
           {/* Mascot */}
           <div className="flex justify-center mb-6 animate__animated animate__bounceIn">
-            <span className="text-7xl drop-shadow-lg">🦉</span>
+            <span className="text-7xl drop-shadow-lg">🏥</span>
           </div>
 
           {/* Question */}

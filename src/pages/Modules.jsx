@@ -14,69 +14,70 @@ import {
   Trophy
 } from "lucide-react";
 
+// ================= MODULE DATA =================
+const MODULES = [
+  {
+    title: "Right to Education",
+    description:
+      "Every child has the right to learn and go to school. Discover why education is important for their future.",
+    icon: BookOpen,
+    variant: "blue",
+    key: "module-1-progress",
+    route: "/module-1"
+  },
+  {
+    title: "Right to Safety",
+    description:
+      "You deserve to feel safe at home, school, and everywhere. Learn how to stay protected.",
+    icon: Shield,
+    variant: "green",
+    key: "module-2-progress",
+    route: "/module-2"
+  },
+  {
+    title: "Right to Equality",
+    description:
+      "Everyone deserves to be treated fairly. Explore what equality means.",
+    icon: Star,
+    variant: "purple",
+    key: "module-3-progress",
+    route: "/module-3"
+  },
+  {
+    title: "Right to Play",
+    description:
+      "Playing is important for growing up healthy and happy. Learn about your right to recreation.",
+    icon: Zap,
+    variant: "yellow",
+    key: "module-4-progress",
+    route: "/module-4"
+  },
+  {
+    title: "Right to Health",
+    description:
+      "You have the right to be healthy and receive medical care when needed.",
+    icon: Heart,
+    variant: "pink",
+    key: "module-5-progress",
+    route: "/module-5"
+  },
+  {
+    title: "Right to Be Heard",
+    description:
+      "Your voice matters. Learn how to share your thoughts and be heard.",
+    icon: MessageSquare,
+    variant: "orange",
+    key: "module-6-progress",
+    route: "/module-6"
+  }
+];
+
 const Modules = () => {
-  // ================= MODULE DATA =================
-  const modules = [
-    {
-      title: "Right to Education",
-      description:
-        "Every child has the right to learn and go to school. Discover why education is important for their future.",
-      icon: BookOpen,
-      variant: "blue",
-      key: "module-1-progress",
-      route: "/module-1"
-    },
-    {
-      title: "Right to Safety",
-      description:
-        "You deserve to feel safe at home, school, and everywhere. Learn how to stay protected.",
-      icon: Shield,
-      variant: "green",
-      key: "module-2-progress",
-      route: "/module-2"
-    },
-    {
-      title: "Right to Equality",
-      description:
-        "Everyone deserves to be treated fairly. Explore what equality means.",
-      icon: Star,
-      variant: "purple",
-      key: "module-3-progress",
-      route: "/module-3"
-    },
-    {
-      title: "Right to Play",
-      description:
-        "Playing is important for growing up healthy and happy. Learn about your right to recreation.",
-      icon: Zap,
-      variant: "yellow",
-      key: "module-4-progress",
-      route: "/module-4"
-    },
-    {
-      title: "Right to Health",
-      description:
-        "You have the right to be healthy and receive medical care when needed.",
-      icon: Heart,
-      variant: "pink",
-      key: "module-5-progress",
-      route: "/module-5"
-    },
-    {
-      title: "Right to Be Heard",
-      description:
-        "Your voice matters. Learn how to share your thoughts and be heard.",
-      icon: MessageSquare,
-      variant: "orange",
-      key: "module-6-progress",
-      route: "/module-6"
-    }
-  ];
 
 
   // Dynamic progress state
   const [progresses, setProgresses] = useState(() =>
-    modules.map((m) => {
+    MODULES.map((m) => {
       if (typeof window === "undefined") return 0;
       const value = localStorage.getItem(m.key);
       return value ? parseInt(value, 10) : 0;
@@ -86,21 +87,34 @@ const Modules = () => {
   useEffect(() => {
     const updateProgress = () => {
       setProgresses(
-        modules.map((m) => {
+        MODULES.map((m) => {
           const value = localStorage.getItem(m.key);
           return value ? parseInt(value, 10) : 0;
         })
       );
     };
-    window.addEventListener("focus", updateProgress);
-    window.addEventListener("storage", updateProgress);
-    return () => {
-      window.removeEventListener("focus", updateProgress);
-      window.removeEventListener("storage", updateProgress);
-    };
-  }, [modules]);
 
-  const modulesWithProgress = modules.map((m, i) => {
+    // Update immediately when component mounts
+    updateProgress();
+
+    // Listen for storage changes from other tabs
+    window.addEventListener("storage", updateProgress);
+
+    // Listen for visibility changes (returning to tab)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        updateProgress();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("storage", updateProgress);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const modulesWithProgress = MODULES.map((m, i) => {
     const progress = progresses[i];
     // All modules are always unlocked
     return {
@@ -158,7 +172,7 @@ const Modules = () => {
                   Modules Completed
                 </p>
                 <p className="font-display font-bold text-3xl">
-                  {completedCount} / {modules.length}
+                  {completedCount} / {MODULES.length}
                 </p>
               </div>
             </div>
