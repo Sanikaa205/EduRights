@@ -70,7 +70,7 @@ export default function LevelOneHomeRights() {
         } else {
           localStorage.setItem("legalHeroLevel", "2");
           setShowLevelUp(true);
-          setTimeout(() => setShowLevelUp(false), 2000);
+          // Do not auto-hide the popup; let it stay until user clicks
         }
       }, 1200);
     }
@@ -153,19 +153,22 @@ export default function LevelOneHomeRights() {
         </Card>
 
         {showLevelUp && (
-          <div className="text-center mt-6">
-            <Badge className="text-lg px-4 py-2">
-              ⭐ Home Hero Badge Earned!
-            </Badge>
-
-            <Button
-              className="mt-4"
-              onClick={() =>
-                (window.location.href = "/games/legal-hero-journey")
-              }
-            >
-              Back to Map 🗺
-            </Button>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md mx-auto text-center animate-bounceIn">
+              <h2 className="text-3xl font-bold mb-2">🎉 Congratulations!</h2>
+              <p className="text-lg mb-4">You completed Level 1: Home Rights</p>
+              <Badge className="text-lg px-4 py-2 mb-4 block mx-auto">
+                ⭐ Home Hero Badge Earned!
+              </Badge>
+              <Button
+                className="mt-2 w-full bg-yellow-400 text-black hover:bg-yellow-500"
+                onClick={() =>
+                  (window.location.href = "/games/legal-hero-journey")
+                }
+              >
+                🗺 Back to Map
+              </Button>
+            </div>
           </div>
         )}
       </div>
