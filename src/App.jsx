@@ -17,7 +17,7 @@ import BrokenStoryLevels from "./pages/EducationalGames/BrokenStory/BrokenStoryL
 
 // For now, use the same BrokenStory component for all levels (can be split later)
 import MatchTheRight from "./pages/EducationalGames/MatchTheRight/MatchTheRight";
-
+import MatchTheRightLevels from "./pages/EducationalGames/MatchTheRight/MatchTheRightLevels";
 
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -33,7 +33,7 @@ import EducationalGames from "./pages/EducationalGames/EducationalGames";
 import LegalHeroJourney from "@/pages/EducationalGames/LegalHeroJourney/LegalHeroJourney";
 import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelOneHomeRights";
 import LevelTwoSchoolRights from "./pages/EducationalGames/LegalHeroJourney/LevelTwoSchoolRights";
-import LevelThreeOnlineSafety from "./pages/EducationalGames/LegalHeroJourney/LevelThreeOnlineSafety";  
+import LevelThreeOnlineSafety from "./pages/EducationalGames/LegalHeroJourney/LevelThreeOnlineSafety";
 import LevelFourWorkplace from "./pages/EducationalGames/LegalHeroJourney/LevelFourWorkplace";
 import BuildYourSchool from "./pages/EducationalGames/BuildYourSchool/BuildYourSchool";
 
@@ -69,8 +69,8 @@ export default function App() {
             <Route path="/modules" element={<Modules />} />
             <Route path="/games" element={<EducationalGames />} />
             <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />} />
-            <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />} />  
-              
+            <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />} />
+
             <Route path="/games/build-your-school" element={<BuildYourSchool />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/login" element={<Login />} />
@@ -97,27 +97,28 @@ export default function App() {
             <Route path="/module-6" element={<Module6Start />} />
             <Route path="/module-6/explanation" element={<Module6Explanation />} />
             <Route path="/module-6/quiz" element={<Module6Quiz />} />
-             <Route path="/games/broken-story" element={<BrokenStoryLevels />}/>
-             <Route path="/games/broken-story/levels" element={<BrokenStoryLevels />}/>
-             <Route path="/games/broken-story/level:levelId" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level1" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level2" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level3" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level4" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level5" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level6" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level7" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level8" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level9" element={<BrokenStory />}/>
-             <Route path="/games/broken-story/level10" element={<BrokenStory />}/>
-             
-            
-              <Route path="/comic/:id" element={<ComicStory />} />
+            <Route path="/games/broken-story" element={<BrokenStoryLevels />} />
+            <Route path="/games/broken-story/levels" element={<BrokenStoryLevels />} />
+            <Route path="/games/broken-story/level:levelId" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level1" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level2" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level3" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level4" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level5" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level6" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level7" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level8" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level9" element={<BrokenStory />} />
+            <Route path="/games/broken-story/level10" element={<BrokenStory />} />
 
-              <Route path="/games/legal-hero-journey/level-2" element={<LevelTwoSchoolRights />} />
-              <Route path="/games/legal-hero-journey/level-3" element={<LevelThreeOnlineSafety />} />
-              <Route path="/games/legal-hero-journey/level-4" element={<LevelFourWorkplace />} />
-                <Route path="/games/match-the-right" element={<MatchTheRight />} />
+
+            <Route path="/comic/:id" element={<ComicStory />} />
+
+            <Route path="/games/legal-hero-journey/level-2" element={<LevelTwoSchoolRights />} />
+            <Route path="/games/legal-hero-journey/level-3" element={<LevelThreeOnlineSafety />} />
+            <Route path="/games/legal-hero-journey/level-4" element={<LevelFourWorkplace />} />
+            <Route path="/games/match-the-right" element={<MatchTheRightLevels />} />
+            <Route path="/games/match-the-right/level/:levelId" element={<MatchTheRight />} />
 
           </Routes>
         </BrowserRouter>
