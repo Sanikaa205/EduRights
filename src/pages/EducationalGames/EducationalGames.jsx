@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -101,27 +100,29 @@ export default function EducationalGames() {
             </CardContent>
           </Card>
 
-          {/* -------- Right or Wrong -------- */}
+          {/* -------- Broken Story -------- */}
           <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                ⚡ Right or Wrong
+                🧩 Broken Story
               </CardTitle>
             </CardHeader>
 
             <CardContent>
               <p className="text-muted-foreground mb-4">
-                Read the statement and decide quickly!
-                Be careful — speed matters!
+                Fix the broken story by placing the right items in the right spots. Learn about rights as you repair each scene!
               </p>
 
               <div className="flex items-center justify-between mb-4">
                 <Badge>⭐ Medium</Badge>
-                <Badge variant="secondary">⏱ Speed Game</Badge>
+                <Badge variant="secondary">🧠 Logic Game</Badge>
               </div>
 
-              <Button variant="outline" className="w-full text-lg">
-                Coming Soon
+              <Button
+                className="w-full text-lg"
+                onClick={() => navigate("/games/broken-story")}
+              >
+                Play Now 🛠️
               </Button>
             </CardContent>
           </Card>
