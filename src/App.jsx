@@ -10,6 +10,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BrokenStory from "./pages/EducationalGames/BrokenStory/BrokenStory";
+import MatchTheRight from "./pages/EducationalGames/MatchTheRight/MatchTheRight";
+
 
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -63,10 +65,7 @@ export default function App() {
             <Route path="/games/legal-hero-journey" element={<LegalHeroJourney />} />
             <Route path="/games/legal-hero-journey/level-1" element={<LevelOneHomeRights />} />  
               
-            <Route
-              path="/games/build-your-school"
-              element={<BuildYourSchool />}
-            />
+            <Route path="/games/build-your-school" element={<BuildYourSchool />} />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -95,6 +94,7 @@ export default function App() {
               <Route path="/games/legal-hero-journey/level-2" element={<LevelTwoSchoolRights />} />
               <Route path="/games/legal-hero-journey/level-3" element={<LevelThreeOnlineSafety />} />
               <Route path="/games/legal-hero-journey/level-4" element={<LevelFourWorkplace />} />
+                <Route path="/games/match-the-right" element={<MatchTheRight />} />
 
           </Routes>
         </BrowserRouter>
