@@ -51,7 +51,6 @@ export default function EducationalGames() {
                 🏫 Build Your School
               </CardTitle>
             </CardHeader>
-
             <CardContent>
               <p className="text-muted-foreground mb-4">
                 Design a beautiful school by adding classrooms, playgrounds,
@@ -108,32 +107,7 @@ export default function EducationalGames() {
               </CardTitle>
             </CardHeader>
 
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Fix the broken story by placing the right items in the right spots. Learn about rights as you repair each scene!
-              </p>
-
-              <div className="flex items-center justify-between mb-4">
-                <Badge>⭐ Medium</Badge>
-                <Badge variant="secondary">🧠 Logic Game</Badge>
-              </div>
-
-              <Button
-                className="w-full text-lg"
-                onClick={() => navigate("/games/broken-story")}
-              >
-                Play Now 🛠️
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* -------- Legal Hero Journey -------- */}
-          <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🦸‍♀️ Legal Hero Journey
-              </CardTitle>
-            </CardHeader>
+            
 
             <CardContent>
               <p className="text-muted-foreground mb-4">
