@@ -1,52 +1,102 @@
 const questions = [
   {
-    question: "Who is the main character in the story?",
-    options: ["Riya", "Miss Anaya", "Riya's mother", "Amit"],
-    answer: 0
-  },
-  {
-    question: "What did Riya wish for?",
-    options: ["To play outside", "To go to school", "To get a new toy", "To meet Miss Anaya"],
-    answer: 1
-  },
-  {
-    question: "Why did Riya's mother say she couldn't go to school?",
-    options: ["She was too young", "School was far away", "School costs money", "She didn't want to go"],
+    question: "Which of these best explains the Right to Education?",
+    options: [
+      "Only rich children can go to school",
+      "Every child must go to school",
+      "Every child has the right to free and compulsory education",
+      "Only boys can study"
+    ],
     answer: 2
   },
   {
-    question: "Who explained the right to education to Riya?",
-    options: ["Her mother", "Her friend", "Miss Anaya", "Her father"],
+    question: "If a school refuses admission because a child is poor, which right is being broken?",
+    options: [
+      "Right to Play",
+      "Right to Equality",
+      "Right to Education",
+      "Right to Health"
+    ],
     answer: 2
   },
   {
-    question: "What age group has the right to free education?",
-    options: ["6–14 years", "3–5 years", "15–18 years", "All ages"],
-    answer: 0
-  },
-  {
-    question: "What did Miss Anaya say about education?",
-    options: ["It is a favor", "It is a right", "It is expensive", "It is only for boys"],
+    question: "Which of these children is MOST protected by the Right to Education?",
+    options: [
+      "A child who wants to skip school",
+      "A child who is forced to work in a shop",
+      "A child who loves sports",
+      "A child who travels daily"
+    ],
     answer: 1
   },
   {
-    question: "What happened after Riya learned about her right?",
-    options: ["She stayed home", "She went to school", "She moved away", "She cried"],
+    question: "Why is education called a powerful right?",
+    options: [
+      "It gives children money",
+      "It gives children strength",
+      "It gives children knowledge to protect themselves",
+      "It makes children famous"
+    ],
+    answer: 2
+  },
+  {
+    question: "What should the government do to support the Right to Education?",
+    options: [
+      "Close small schools",
+      "Build more playgrounds",
+      "Provide free schools and teachers",
+      "Give only online classes"
+    ],
+    answer: 2
+  },
+  {
+    question: "If a child cannot go to school because of distance, what should happen?",
+    options: [
+      "Child should stop studying",
+      "School should come closer or provide transport",
+      "Child should work instead",
+      "Child should stay at home"
+    ],
     answer: 1
   },
   {
-    question: "What must government schools NOT do?",
-    options: ["Teach children", "Charge fees", "Give homework", "Have uniforms"],
+    question: "Which situation shows the Right to Education is being respected?",
+    options: [
+      "Children working in farms",
+      "Children sitting at home",
+      "Children attending school happily",
+      "Children selling items"
+    ],
+    answer: 2
+  },
+  {
+    question: "Education helps children to:",
+    options: [
+      "Become stronger than adults",
+      "Make better life decisions",
+      "Earn only money",
+      "Travel the world"
+    ],
     answer: 1
   },
   {
-    question: "Can a child be stopped from school because of money, caste, or gender?",
-    options: ["Yes", "No", "Sometimes", "Only for boys"],
-    answer: 1
+    question: "If a school only allows children who can pay fees, what should be done?",
+    options: [
+      "Nothing",
+      "Close the school",
+      "Remind them about Right to Education",
+      "Ignore it"
+    ],
+    answer: 2
   },
   {
-    question: "How did Riya feel when she finally went to school?",
-    options: ["Sad", "Angry", "Confident and happy", "Scared"],
+    question: "What is the BIGGEST benefit of the Right to Education?",
+    options: [
+      "Children get uniforms",
+      "Children get books",
+      "Children get a better future",
+      "Children get holidays"
+    ],
     answer: 2
   }
 ];

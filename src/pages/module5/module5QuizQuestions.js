@@ -1,43 +1,103 @@
 const questions = [
   {
-    question: "What is the main right discussed in this module?",
-    options: ["Right to Health", "Right to Play", "Right to Food", "Right to Equality"],
-    answer: 0
+    question: "What does the Right to Health mainly ensure?",
+    options: [
+      "Only rich people get treatment",
+      "Everyone can stay healthy",
+      "Only adults can visit hospitals",
+      "Only athletes need health care"
+    ],
+    answer: 1
   },
   {
-    question: "Why is health important for children?",
-    options: ["It helps them grow strong and learn", "It is not important", "It makes them tired", "It is only for adults"],
-    answer: 0
+    question: "Which place helps protect our right to health?",
+    options: [
+      "Shopping mall",
+      "Hospital or clinic",
+      "Cinema hall",
+      "Playground"
+    ],
+    answer: 1
   },
   {
-    question: "Who should have access to doctors and medicine?",
-    options: ["Only adults", "Only boys", "All children", "Only girls"],
+    question: "Which action helps keep children healthy?",
+    options: [
+      "Skipping meals",
+      "Drinking dirty water",
+      "Washing hands before eating",
+      "Sleeping very late"
+    ],
     answer: 2
   },
   {
-    question: "What helps you stay healthy?",
-    options: ["Eating well and exercising", "Skipping meals", "Never playing", "Only sleeping"],
+    question: "If a child is sick but cannot afford medicine, what should happen?",
+    options: [
+      "They should stay sick",
+      "They should be ignored",
+      "They should get medical help",
+      "They should work harder"
+    ],
+    answer: 2
+  },
+  {
+    question: "Which of these is part of mental health?",
+    options: [
+      "Being happy and calm",
+      "Being rich",
+      "Being popular",
+      "Being loud"
+    ],
     answer: 0
   },
   {
-    question: "What should you do if you feel sick?",
-    options: ["Tell a trusted adult", "Ignore it", "Go to school anyway", "Hide it"],
+    question: "Why is clean drinking water important for health?",
+    options: [
+      "It looks nice",
+      "It stops thirst only",
+      "It prevents diseases",
+      "It makes food taste better"
+    ],
+    answer: 2
+  },
+  {
+    question: "Which habit best supports the Right to Health?",
+    options: [
+      "Playing outside safely",
+      "Eating junk food daily",
+      "Never exercising",
+      "Avoiding sleep"
+    ],
     answer: 0
   },
   {
-    question: "How does good health help you?",
-    options: ["Learn, play, and grow strong", "Nothing", "Be bored", "Stay tired"],
-    answer: 0
+    question: "If someone feels sad or stressed for a long time, what should they do?",
+    options: [
+      "Hide it forever",
+      "Talk to a trusted adult",
+      "Get angry",
+      "Ignore everyone"
+    ],
+    answer: 1
   },
   {
-    question: "What is a healthy habit?",
-    options: ["Washing hands before eating", "Never brushing teeth", "Skipping breakfast", "Eating only candy"],
-    answer: 0
+    question: "Which of these shows respect for the Right to Health?",
+    options: [
+      "Making fun of sick people",
+      "Helping someone go to the doctor",
+      "Ignoring injured friends",
+      "Laughing at illness"
+    ],
+    answer: 1
   },
   {
-    question: "Who has the right to health?",
-    options: ["All children", "Only some children", "Only adults", "Only boys"],
-    answer: 0
+    question: "What is the BEST message about the Right to Health?",
+    options: [
+      "Only some people deserve care",
+      "Health is a basic right for everyone",
+      "Health is a luxury",
+      "Only adults need doctors"
+    ],
+    answer: 1
   }
 ];
 
