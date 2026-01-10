@@ -2,6 +2,9 @@ import Module4Start from "./pages/module4/Module4Start";
 import Module5Start from "./pages/module5/Module5Start";
 import Module5Quiz from "./pages/module5/Module5Quiz";
 import Module5Explanation from "./pages/module5/Module5Explanation";
+import Module6Start from "./pages/module6/Module6Start";
+import Module6Quiz from "./pages/module6/Module6Quiz";
+import Module6Explanation from "./pages/module6/Module6Explanation";
 import Module4Explanation from "./pages/module4/Module4Explanation";
 import Module4Quiz from "./pages/module4/Module4Quiz";
 import { Toaster } from "@/components/ui/toaster";
@@ -88,6 +91,9 @@ export default function App() {
             <Route path="/module-5" element={<Module5Start />} />
             <Route path="/module-5/explanation" element={<Module5Explanation />} />
             <Route path="/module-5/quiz" element={<Module5Quiz />} />
+            <Route path="/module-6" element={<Module6Start />} />
+            <Route path="/module-6/explanation" element={<Module6Explanation />} />
+            <Route path="/module-6/quiz" element={<Module6Quiz />} />
              <Route path="/games/broken-story" element={<BrokenStory />}/>
               <Route path="/comic/:id" element={<ComicStory />} />
 
