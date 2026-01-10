@@ -133,7 +133,7 @@ export default function Module2Quiz() {
 
           {/* Mascot */}
           <div className="flex justify-center mb-6 animate__animated animate__bounceIn">
-            <span className="text-7xl drop-shadow-lg">🦉</span>
+            <span className="text-7xl drop-shadow-lg">🛡️</span>
           </div>
 
           {/* Question */}
