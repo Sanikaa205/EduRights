@@ -12,7 +12,7 @@ export const levels = [
                 ],
                 rights: [
                     { name: "Right to Education", color: "bg-blue-100 border-blue-400" },
-                    { name: "Right to Equality", color: "bg-green-100 border-green-400" },
+                    { name: "Right to Equality", color: "bg-red-100 border-red-400" },
                 ],
                 answers: {
                     "Free and compulsory schooling": "Right to Education",
@@ -66,7 +66,7 @@ export const levels = [
                 rights: [
                     { name: "Right to Expression", color: "bg-purple-100 border-purple-400" },
                     { name: "Right to Health", color: "bg-red-200 border-red-500" },
-                    { name: "Right to Recreation", color: "bg-green-200 border-green-500" },
+                    { name: "Right to Recreation", color: "bg-teal-200 border-teal-500" },
                     { name: "Right to Shelter", color: "bg-blue-200 border-blue-500" },
                 ],
                 answers: {
@@ -99,7 +99,7 @@ export const levels = [
                     { name: "Right to Privacy", color: "bg-purple-200 border-purple-500" },
                     { name: "Right to Information", color: "bg-blue-300 border-blue-600" },
                     { name: "Right to Protection", color: "bg-yellow-200 border-yellow-500" },
-                    { name: "Right to Justice", color: "bg-green-200 border-green-500" },
+                    { name: "Right to Justice", color: "bg-teal-200 border-teal-500" },
                 ],
                 answers: {
                     "Every child should have a birth certificate": "Right to Identity",
@@ -131,7 +131,7 @@ export const levels = [
                 ],
                 rights: [
                     { name: "Right to Health", color: "bg-red-200 border-red-500" },
-                    { name: "Right to Safe Environment", color: "bg-green-200 border-green-500" },
+                    { name: "Right to Safe Environment", color: "bg-teal-200 border-teal-500" },
                     { name: "Right to Participation", color: "bg-blue-200 border-blue-500" },
                     { name: "Right to Safety", color: "bg-yellow-200 border-yellow-500" },
                     { name: "Right to Preparedness", color: "bg-purple-100 border-purple-400" },
@@ -175,7 +175,7 @@ export const levels = [
                     { name: "Right against Trafficking", color: "bg-red-200 border-red-500" },
                     { name: "Right to Free Choice", color: "bg-yellow-200 border-yellow-500" },
                     { name: "Right to Legal Aid", color: "bg-blue-200 border-blue-500" },
-                    { name: "Right to Peace", color: "bg-green-200 border-green-500" },
+                    { name: "Right to Peace", color: "bg-cyan-200 border-cyan-500" },
                     { name: "Right to Protection from Exploitation", color: "bg-purple-100 border-purple-400" },
                     { name: "Right to Mental Health", color: "bg-violet-200 border-violet-500" },
                     { name: "Right to Recovery", color: "bg-indigo-200 border-indigo-500" },
@@ -221,13 +221,13 @@ export const levels = [
                 rights: [
                     { name: "Right to Non-Discrimination", color: "bg-red-200 border-red-500" },
                     { name: "Right under International Law", color: "bg-blue-200 border-blue-500" },
-                    { name: "Right to Asylum", color: "bg-green-200 border-green-500" },
+                    { name: "Right to Asylum", color: "bg-sky-100 border-sky-500" },
                     { name: "Right to Assistance", color: "bg-yellow-200 border-yellow-500" },
                     { name: "Right to Digital Access", color: "bg-purple-100 border-purple-400" },
                     { name: "Right to Global Participation", color: "bg-violet-200 border-violet-500" },
                     { name: "Right to Climate Safety", color: "bg-teal-200 border-teal-500" },
                     { name: "Right to Inclusive Learning", color: "bg-indigo-200 border-indigo-500" },
-                    { name: "Right to Balanced Life", color: "bg-red-300 border-red-600" },
+                    { name: "Right to Balanced Life", color: "bg-red-100 border-red-600" },
                     { name: "Right to International Protection", color: "bg-cyan-100 border-cyan-500" },
                 ],
                 answers: {
