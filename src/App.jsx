@@ -1,5 +1,6 @@
 import Module4Start from "./pages/module4/Module4Start";
 import Module5Start from "./pages/module5/Module5Start";
+import Module5Quiz from "./pages/module5/Module5Quiz";
 import Module5Explanation from "./pages/module5/Module5Explanation";
 import Module4Explanation from "./pages/module4/Module4Explanation";
 import Module4Quiz from "./pages/module4/Module4Quiz";
@@ -87,6 +88,7 @@ export default function App() {
             <Route path="/module-4/quiz" element={<Module4Quiz />} />
             <Route path="/module-5" element={<Module5Start />} />
             <Route path="/module-5/explanation" element={<Module5Explanation />} />
+            <Route path="/module-5/quiz" element={<Module5Quiz />} />
              <Route path="/games/broken-story" element={<BrokenStory />}/>
               <Route path="/comic/:id" element={<ComicStory />} />
 
