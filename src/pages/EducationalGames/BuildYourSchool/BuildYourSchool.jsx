@@ -271,6 +271,12 @@ export default function BuildYourSchool(){
                 <h2 className="text-3xl font-bold mb-2">🏆 Amazing Work!</h2>
                 <p className="text-lg mb-2">You didn’t just build a school —<br/>you built a fair and safe place for children 💙</p>
                 <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition" onClick={() => window.location.reload()}>Build Again</button>
+                <button
+                  className="mt-3 px-6 py-2 bg-yellow-400 text-black rounded-lg font-bold text-lg hover:bg-yellow-500 transition"
+                  onClick={() => window.location.href = "/games"}
+                >
+                  🏠 Go to Games
+                </button>
               </div>
             </div>
           )}

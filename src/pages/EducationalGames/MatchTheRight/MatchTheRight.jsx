@@ -161,27 +161,42 @@ export default function MatchTheRight() {
                     {/* RIGHT – Rights */}
                     <div>
                         <h3 className="font-bold mb-3">Child Rights</h3>
-                        {round.rights.map((right) => (
-                            <motion.div
-                                key={right.name}
-                                onDragOver={(e) => !timeUp && e.preventDefault()}
-                                onDrop={(e) =>
-                                    !timeUp &&
-                                    handleDrop(
-                                        e.dataTransfer.getData("text/plain"),
-                                        right.name
-                                    )
-                                }
-                                animate={
-                                    shakeId === right.name
-                                        ? { x: [-5, 5, -5, 5, 0] }
-                                        : {}
-                                }
-                                className={`border-2 border-dashed rounded-xl p-5 text-center mb-4 ${right.color}`}
-                            >
-                                {right.name}
-                            </motion.div>
-                        ))}
+                        {round.rights.map((right) => {
+                            // Check if this right has been matched
+                            const isMatched = matched.some(
+                                (sit) => round.answers[sit] === right.name
+                            );
+                            return (
+                                <motion.div
+                                    key={right.name}
+                                    onDragOver={(e) => !timeUp && e.preventDefault()}
+                                    onDrop={(e) =>
+                                        !timeUp &&
+                                        handleDrop(
+                                            e.dataTransfer.getData("text/plain"),
+                                            right.name
+                                        )
+                                    }
+                                    animate={
+                                        shakeId === right.name
+                                            ? { x: [-5, 5, -5, 5, 0] }
+                                            : {}
+                                    }
+                                    className={`border-2 rounded-xl p-5 text-center mb-4 transition-all duration-300 ${
+                                        isMatched
+                                            ? "bg-green-100 border-green-500 text-green-700 border-2"
+                                            : "border-2 border-dashed " + right.color
+                                    }`}
+                                >
+                                    <span className="flex items-center justify-center gap-2">
+                                        {right.name}
+                                        {isMatched && (
+                                            <svg className="inline w-5 h-5 text-green-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                                        )}
+                                    </span>
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -219,6 +234,12 @@ export default function MatchTheRight() {
                                             Restart Game 🔄
                                         </button>
                                     )}
+                                    <button
+                                        onClick={() => window.location.href = "/games"}
+                                        className="w-full mt-3 px-8 py-3 bg-yellow-400 text-black rounded-xl font-semibold hover:bg-yellow-500 transition"
+                                    >
+                                        🏠 Go to Games
+                                    </button>
                                 </CardContent>
                             </Card>
                         </motion.div>
