@@ -6,17 +6,30 @@ import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Eye, EyeOff, LogIn, Sparkles } from "lucide-react";
-
+import axios from "axios";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Demo - just redirect
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth/login", {
+      email,
+      password,
+    });
+
+    localStorage.setItem("user", JSON.stringify(res.data.user));
     window.location.href = "/dashboard";
-  };
+  } catch (err) {
+    alert(err.response.data.message);
+  }
+};
+
+
+
+  
 
   return (
     <div className="min-h-screen flex flex-col bg-background">

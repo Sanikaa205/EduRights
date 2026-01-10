@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Eye, EyeOff, UserPlus, Sparkles, Star } from "lucide-react";
-
+ import axios from "axios";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -16,21 +16,19 @@ const Register = () => {
     age: "",
   });
 
- const handleSubmit = (e) => {
+
+
+const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Save user data
-  localStorage.setItem(
-    "user",
-    JSON.stringify({
-      name: formData.name,
-      email: formData.email,
-      age: formData.age,
-    })
-  );
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth/register", formData);
 
-  // Redirect to dashboard
-  window.location.href = "/dashboard";
+    alert("Registered Successfully 🎉");
+    window.location.href = "/login";
+  } catch (err) {
+    alert(err.response.data.message);
+  }
 };
 
 
