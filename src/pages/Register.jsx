@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Eye, EyeOff, UserPlus, Sparkles, Star } from "lucide-react";
- import axios from "axios";
+import axios from "axios";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -18,18 +18,19 @@ const Register = () => {
 
 
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const res = await axios.post("http://localhost:5000/api/auth/register", formData);
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", formData);
 
-    alert("Registered Successfully 🎉");
-    window.location.href = "/login";
-  } catch (err) {
-    alert(err.response.data.message);
-  }
-};
+      alert("Registered Successfully 🎉");
+      window.location.href = "/login";
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || err.message || "Registration failed";
+      alert(errorMessage);
+    }
+  };
 
 
   const handleChange = (e) => {
