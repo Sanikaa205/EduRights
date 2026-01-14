@@ -45,6 +45,13 @@ export default function Module2Quiz() {
     navigate("/modules");
   };
 
+  const keyLearnings = [
+    "Every child deserves to feel safe at home, school, and everywhere.",
+    "Adults have a responsibility to protect children from harm and danger.",
+    "You have the right to speak up if you don't feel safe.",
+    "Safe spaces and trusted people help children grow and thrive.",
+  ];
+
   if (showResult) {
     const percentage = Math.round((score / questions.length) * 100);
     return (
@@ -63,7 +70,7 @@ export default function Module2Quiz() {
         <main className="flex-1 flex flex-col items-center justify-center px-4 z-10">
           <div className="bg-white rounded-3xl shadow-2xl p-12 max-w-md w-full text-center border-8 border-yellow-400 animate__animated animate__fadeIn flex flex-col items-center relative">
             <div className="mb-4 animate__animated animate__bounceIn">
-              <span className="text-8xl drop-shadow-lg">🦉</span>
+              <span className="text-8xl drop-shadow-lg">🛡️</span>
             </div>
             <h2 className="text-5xl font-extrabold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">🎉 Quiz Complete!</h2>
 
@@ -126,7 +133,7 @@ export default function Module2Quiz() {
 
           {/* Mascot */}
           <div className="flex justify-center mb-6 animate__animated animate__bounceIn">
-            <span className="text-7xl drop-shadow-lg">🦉</span>
+            <span className="text-7xl drop-shadow-lg">🛡️</span>
           </div>
 
           {/* Question */}

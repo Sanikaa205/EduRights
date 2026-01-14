@@ -44,6 +44,13 @@ export default function Module6Quiz() {
     navigate("/modules");
   };
 
+  const keyLearnings = [
+    "Your voice matters and deserves to be heard by others.",
+    "You have the right to express your thoughts, feelings, and opinions.",
+    "Children's views should be considered in decisions that affect them.",
+    "Speaking up helps make positive changes in your community.",
+  ];
+
   if (showResult) {
     const percentage = Math.round((score / questions.length) * 100);
     return (
