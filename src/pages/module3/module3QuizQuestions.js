@@ -1,103 +1,103 @@
 const questions = [
   {
-    question: "What does the Right to Play mainly support?",
+    question: "What does the Right to Equality mean?",
     options: [
-      "Only academic learning",
-      "Children's right to rest, play, and enjoy life",
-      "Children working after school",
-      "Children staying busy all the time"
+      "Only rich people are important",
+      "Everyone should be treated the same",
+      "Only adults have rights",
+      "Only boys should go to school"
     ],
     answer: 1
   },
   {
-    question: "Why is play important in a child's daily life?",
+    question: "Which situation BEST shows equality?",
     options: [
-      "It wastes time",
-      "It helps children grow physically and mentally",
-      "It makes children lazy",
-      "It is only for fun"
+      "Only one student gets all the chances",
+      "Everyone follows the same rules",
+      "Only strong kids can play",
+      "Only tall kids sit in front"
     ],
     answer: 1
   },
   {
-    question: "Which child's Right to Play is being violated?",
+    question: "If a child is treated badly because of their caste or religion, which right is being broken?",
     options: [
-      "A child playing with friends after school",
-      "A child reading a story book",
-      "A child forced to work all day with no time to play",
-      "A child drawing during free time"
+      "Right to Play",
+      "Right to Safety",
+      "Right to Equality",
+      "Right to Privacy"
     ],
     answer: 2
   },
   {
-    question: "How does playing help children emotionally?",
+    question: "What should you do if you see someone being treated unfairly?",
     options: [
-      "It makes them careless",
-      "It helps them express feelings and reduce stress",
-      "It makes them angry",
-      "It stops learning"
+      "Laugh at them",
+      "Ignore it",
+      "Stand up for them",
+      "Join in"
+    ],
+    answer: 2
+  },
+  {
+    question: "Which of these actions supports equality in school?",
+    options: [
+      "Only choosing best friends for group work",
+      "Giving everyone a fair chance",
+      "Ignoring new students",
+      "Making fun of others"
     ],
     answer: 1
   },
   {
-    question: "Which situation BEST shows respect for the Right to Play?",
+    question: "Why is equality important in society?",
     options: [
-      "Children studying without breaks",
-      "Children allowed safe time for games and fun",
-      "Children working after school",
-      "Children staying indoors always"
+      "So only some people feel happy",
+      "So people can feel safe and respected",
+      "So rules become confusing",
+      "So no one makes friends"
     ],
     answer: 1
   },
   {
-    question: "Why should all children be allowed to play together?",
+    question: "Which is an example of discrimination?",
     options: [
-      "To waste time",
-      "To learn teamwork and fairness",
-      "To avoid studying",
-      "To compete only"
+      "Helping a friend",
+      "Sharing lunch",
+      "Not letting someone play because they look different",
+      "Listening to others"
+    ],
+    answer: 2
+  },
+  {
+    question: "Who deserves equal rights?",
+    options: [
+      "Only children",
+      "Only adults",
+      "Only citizens",
+      "Every human being"
+    ],
+    answer: 3
+  },
+  {
+    question: "What does equality teach us?",
+    options: [
+      "To judge people",
+      "To respect differences",
+      "To ignore others",
+      "To compete unfairly"
     ],
     answer: 1
   },
   {
-    question: "Which action goes against the Right to Play?",
+    question: "Which message best supports the Right to Equality?",
     options: [
-      "Providing safe playgrounds",
-      "Encouraging outdoor games",
-      "Stopping some children from playing because of their background",
-      "Allowing free time"
+      "Some people are better than others",
+      "Everyone deserves respect",
+      "Only strong people matter",
+      "Only smart people win"
     ],
-    answer: 2
-  },
-  {
-    question: "Who is responsible for protecting a child's Right to Play?",
-    options: [
-      "Only parents",
-      "Only schools",
-      "Parents, schools, and society",
-      "Only children themselves"
-    ],
-    answer: 2
-  },
-  {
-    question: "What can happen if children never get time to play?",
-    options: [
-      "They become healthier",
-      "They become more creative",
-      "They may feel stressed and unhappy",
-      "They learn faster"
-    ],
-    answer: 2
-  },
-  {
-    question: "What is the biggest benefit of the Right to Play?",
-    options: [
-      "Children get toys",
-      "Children get holidays",
-      "Children grow into happy and balanced individuals",
-      "Children avoid school"
-    ],
-    answer: 2
+    answer: 1
   }
 ];
 

@@ -1,101 +1,101 @@
 const questions = [
   {
-    question: "What does the Right to Play mainly support?",
+    question: "Why is play considered a right for children?",
     options: [
-      "Only academic learning",
-      "Children's right to rest, play, and enjoy life",
+      "Because it wastes time",
+      "Because it helps children relax and grow",
+      "Because it makes children tired",
+      "Because only small kids play"
+    ],
+    answer: 1
+  },
+  {
+    question: "Which of these best shows the Right to Play?",
+    options: [
       "Children working after school",
-      "Children staying busy all the time"
-    ],
-    answer: 1
-  },
-  {
-    question: "Why is play important in a child's daily life?",
-    options: [
-      "It wastes time",
-      "It helps children grow physically and mentally",
-      "It makes children lazy",
-      "It is only for fun"
-    ],
-    answer: 1
-  },
-  {
-    question: "Which child's Right to Play is being violated?",
-    options: [
-      "A child playing with friends after school",
-      "A child reading a story book",
-      "A child forced to work all day with no time to play",
-      "A child drawing during free time"
+      "Children studying all day",
+      "Children playing freely in a park",
+      "Children sitting silently"
     ],
     answer: 2
   },
   {
-    question: "How does playing help children emotionally?",
+    question: "If a child is never allowed to play, what may happen?",
     options: [
-      "It makes them careless",
-      "It helps them express feelings and reduce stress",
-      "It makes them angry",
-      "It stops learning"
-    ],
-    answer: 1
-  },
-  {
-    question: "Which situation BEST shows respect for the Right to Play?",
-    options: [
-      "Children studying without breaks",
-      "Children allowed safe time for games and fun",
-      "Children working after school",
-      "Children staying indoors always"
-    ],
-    answer: 1
-  },
-  {
-    question: "Why should all children be allowed to play together?",
-    options: [
-      "To waste time",
-      "To learn teamwork and fairness",
-      "To avoid studying",
-      "To compete only"
-    ],
-    answer: 1
-  },
-  {
-    question: "Which action goes against the Right to Play?",
-    options: [
-      "Providing safe playgrounds",
-      "Encouraging outdoor games",
-      "Stopping some children from playing because of their background",
-      "Allowing free time"
+      "They become stronger",
+      "They become happier",
+      "They may feel stressed and sad",
+      "They become rich"
     ],
     answer: 2
   },
   {
-    question: "Who is responsible for protecting a child's Right to Play?",
+    question: "Which place is BEST for children to enjoy their Right to Play?",
     options: [
-      "Only parents",
-      "Only schools",
-      "Parents, schools, and society",
-      "Only children themselves"
+      "A busy road",
+      "A safe playground",
+      "A factory",
+      "A crowded market"
+    ],
+    answer: 1
+  },
+  {
+    question: "What skill do children learn MOST from playing together?",
+    options: [
+      "Fighting",
+      "Teamwork",
+      "Sleeping",
+      "Ignoring others"
+    ],
+    answer: 1
+  },
+  {
+    question: "If a school removes all playtime, which right is being ignored?",
+    options: [
+      "Right to Education",
+      "Right to Health",
+      "Right to Play",
+      "Right to Privacy"
     ],
     answer: 2
   },
   {
-    question: "What can happen if children never get time to play?",
+    question: "Which activity supports a child’s Right to Play?",
     options: [
-      "They become healthier",
-      "They become more creative",
-      "They may feel stressed and unhappy",
-      "They learn faster"
+      "Doing homework all day",
+      "Watching TV all day",
+      "Playing games with friends",
+      "Working in a shop"
     ],
     answer: 2
   },
   {
-    question: "What is the biggest benefit of the Right to Play?",
+    question: "Why do children need free time to play?",
     options: [
-      "Children get toys",
-      "Children get holidays",
-      "Children grow into happy and balanced individuals",
-      "Children avoid school"
+      "To become lazy",
+      "To learn life skills and feel happy",
+      "To avoid school",
+      "To get into trouble"
+    ],
+    answer: 1
+  },
+  {
+    question: "What should adults do to protect the Right to Play?",
+    options: [
+      "Stop children from playing",
+      "Give children only toys",
+      "Create safe spaces to play",
+      "Make children work more"
+    ],
+    answer: 2
+  },
+  {
+    question: "Which of these messages best supports the Right to Play?",
+    options: [
+      "Children should only study",
+      "Children should only work",
+      "Children should study and also have time to play",
+      "Children should never play"
     ],
     answer: 2
   }
