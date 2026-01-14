@@ -1,43 +1,103 @@
 const questions = [
   {
-    question: "What is the main right discussed in this module?",
-    options: ["Right to Education", "Right to Play", "Right to Food", "Right to Equality"],
+    question: "What does the Right to Play mainly support?",
+    options: [
+      "Only academic learning",
+      "Children's right to rest, play, and enjoy life",
+      "Children working after school",
+      "Children staying busy all the time"
+    ],
     answer: 1
   },
   {
-    question: "Why is play important for children?",
-    options: ["It helps them learn and grow", "It makes them tired", "It is not important", "It is only for fun"],
-    answer: 0
+    question: "Why is play important in a child's daily life?",
+    options: [
+      "It wastes time",
+      "It helps children grow physically and mentally",
+      "It makes children lazy",
+      "It is only for fun"
+    ],
+    answer: 1
   },
   {
-    question: "Where should children have safe places to play?",
-    options: ["Only at home", "Only at school", "Everywhere", "Only in parks"],
+    question: "Which child's Right to Play is being violated?",
+    options: [
+      "A child playing with friends after school",
+      "A child reading a story book",
+      "A child forced to work all day with no time to play",
+      "A child drawing during free time"
+    ],
     answer: 2
   },
   {
-    question: "What can you learn from playing with others?",
-    options: ["Teamwork and friendship", "Nothing", "How to be alone", "How to win always"],
-    answer: 0
-  },
-  {
-    question: "Who has the right to play?",
-    options: ["Only some children", "All children", "Only boys", "Only girls"],
+    question: "How does playing help children emotionally?",
+    options: [
+      "It makes them careless",
+      "It helps them express feelings and reduce stress",
+      "It makes them angry",
+      "It stops learning"
+    ],
     answer: 1
   },
   {
-    question: "What should you do if you see someone left out during play?",
-    options: ["Invite them to join", "Ignore them", "Tell them to go home", "Laugh at them"],
-    answer: 0
+    question: "Which situation BEST shows respect for the Right to Play?",
+    options: [
+      "Children studying without breaks",
+      "Children allowed safe time for games and fun",
+      "Children working after school",
+      "Children staying indoors always"
+    ],
+    answer: 1
   },
   {
-    question: "How does play help your health?",
-    options: ["It keeps you active and happy", "It makes you tired", "It is boring", "It is not healthy"],
-    answer: 0
+    question: "Why should all children be allowed to play together?",
+    options: [
+      "To waste time",
+      "To learn teamwork and fairness",
+      "To avoid studying",
+      "To compete only"
+    ],
+    answer: 1
   },
   {
-    question: "What is a safe place to play?",
-    options: ["A place with caring adults and safe equipment", "A busy street", "A dark alley", "A place with no rules"],
-    answer: 0
+    question: "Which action goes against the Right to Play?",
+    options: [
+      "Providing safe playgrounds",
+      "Encouraging outdoor games",
+      "Stopping some children from playing because of their background",
+      "Allowing free time"
+    ],
+    answer: 2
+  },
+  {
+    question: "Who is responsible for protecting a child's Right to Play?",
+    options: [
+      "Only parents",
+      "Only schools",
+      "Parents, schools, and society",
+      "Only children themselves"
+    ],
+    answer: 2
+  },
+  {
+    question: "What can happen if children never get time to play?",
+    options: [
+      "They become healthier",
+      "They become more creative",
+      "They may feel stressed and unhappy",
+      "They learn faster"
+    ],
+    answer: 2
+  },
+  {
+    question: "What is the biggest benefit of the Right to Play?",
+    options: [
+      "Children get toys",
+      "Children get holidays",
+      "Children grow into happy and balanced individuals",
+      "Children avoid school"
+    ],
+    answer: 2
   }
 ];
 
