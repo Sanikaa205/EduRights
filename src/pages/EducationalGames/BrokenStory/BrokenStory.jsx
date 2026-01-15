@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 
 // ✅ SINGLE SOURCE OF DATA
 import { sceneData } from "./SceneData";
+import { levels } from "./levelsData";
 
 // shuffle helper
 const shuffleArray = (array) => {
@@ -29,10 +30,18 @@ const BrokenStory = () => {
   // Level logic
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
   const LEVELS_KEY = "brokenStoryUnlockedLevels";
+  const COMPLETION_KEY = "brokenStoryCompletedLevels";
   const location = useLocation();
   // Extract level from path, default to 1
   const match = location.pathname.match(/level(\d+)/);
   const levelId = match ? parseInt(match[1], 10) : 1;
+  
+  // Get scenes for this level
+  const levelData = levels.find((l) => l.id === levelId);
+  const levelScenes = levelData
+    ? sceneData.filter((scene) => levelData.sceneIds.includes(scene.id))
+    : [];
+
   const [totalScore, setTotalScore] = useState(0);
   const [fixedItems, setFixedItems] = useState({});
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -44,7 +53,7 @@ const BrokenStory = () => {
 
   const celebrationRef = useRef(false);
 
-  const currentScene = sceneData[currentSceneIndex];
+  const currentScene = levelScenes[currentSceneIndex];
 
   // ✅ COUNTS BASED ON correctZone
   const correctItemCount = currentScene.items.filter(
@@ -70,23 +79,30 @@ const BrokenStory = () => {
 
   // Unlock next level when all scenes are complete
   useEffect(() => {
-    if (showCompletionModal && currentSceneIndex === sceneData.length - 1) {
+    if (showCompletionModal && currentSceneIndex === levelScenes.length - 1) {
       // All scenes complete for this level
       let unlocked = [1];
+      let completed = [];
       try {
         unlocked = JSON.parse(localStorage.getItem(LEVELS_KEY)) || [1];
+        completed = JSON.parse(localStorage.getItem(COMPLETION_KEY)) || [];
       } catch {}
+      
+      // Mark this level as completed
+      if (!completed.includes(levelId)) {
+        completed.push(levelId);
+        localStorage.setItem(COMPLETION_KEY, JSON.stringify(completed));
+      }
+      
       const nextLevel = levelId + 1;
-      if (!unlocked.includes(nextLevel) && nextLevel <= 4) {
+      if (!unlocked.includes(nextLevel) && nextLevel <= levels.length) {
         unlocked.push(nextLevel);
         localStorage.setItem(LEVELS_KEY, JSON.stringify(unlocked));
       }
-      // If last level, unlock all
-      if (levelId === 4) {
-        localStorage.setItem(LEVELS_KEY, JSON.stringify([1,2,3,4]));
-      }
+      // Save next level progress
+      localStorage.setItem("brokenStoryLevel", Math.max(levelId + 1, nextLevel).toString());
     }
-  }, [showCompletionModal, currentSceneIndex, levelId]);
+  }, [showCompletionModal, currentSceneIndex, levelId, levelScenes.length]);
 
   // celebration + modal
   useEffect(() => {
@@ -154,7 +170,7 @@ const BrokenStory = () => {
     setShowCompletionModal(false);
     setShowCelebration(false);
 
-    if (currentSceneIndex < sceneData.length - 1) {
+    if (currentSceneIndex < levelScenes.length - 1) {
       setCurrentSceneIndex((i) => i + 1);
     } else {
       // Finished all scenes in this level, go to level selection page
@@ -170,17 +186,17 @@ const BrokenStory = () => {
         {/* HEADER */}
         <div className="mb-8">
           <div className="flex items-center gap-3">
-            <span className="text-5xl">{currentScene.emoji}</span>
+            <span className="text-5xl">{currentScene?.emoji}</span>
             <div>
               <p className="text-sm font-semibold text-slate-500">
-                Scene {currentSceneIndex + 1} of {sceneData.length}
+                Scene {currentSceneIndex + 1} of {levelScenes.length}
               </p>
               <h1 className="text-3xl font-black text-slate-800">
-                {currentScene.title}
+                {currentScene?.title}
               </h1>
             </div>
           </div>
-          <p className="text-slate-600 mt-2">{currentScene.hint}</p>
+          <p className="text-slate-600 mt-2">{currentScene?.hint}</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 min-h-[600px]">
@@ -203,7 +219,7 @@ const BrokenStory = () => {
           <div className="flex-1 bg-white rounded-2xl shadow-xl border overflow-hidden">
             <div className="relative w-full aspect-[16/9] bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center">
               <img
-                src={isLevelComplete ? currentScene.fixedBg : currentScene.brokenBg}
+                src={isLevelComplete ? currentScene?.fixedBg : currentScene?.brokenBg}
                 alt="Scene background"
                 className="w-full h-full object-contain rounded-xl border border-slate-300 shadow"
                 style={{ background: 'transparent' }}
@@ -234,8 +250,8 @@ const BrokenStory = () => {
 
             {/* ZONES */}
             <div className="p-6 flex gap-4 justify-center flex-wrap">
-              {currentScene.zones.map((zone) => {
-                const isFixed = currentScene.items.some(
+              {currentScene?.zones.map((zone) => {
+                const isFixed = currentScene?.items.some(
                   (i) => i.correctZone === zone.id && fixedItems[i.id]
                 );
                 return (
@@ -297,7 +313,7 @@ const BrokenStory = () => {
 
         {/* Scene Complete Badge */}
         <div className="inline-block bg-yellow-400 text-black text-sm font-semibold px-5 py-1.5 rounded-full mb-4">
-          Scene {currentSceneIndex + 1} of {sceneData.length} Complete
+          Scene {currentSceneIndex + 1} of {levelScenes.length} Complete
         </div>
 
         {/* Title */}
@@ -308,7 +324,7 @@ const BrokenStory = () => {
         {/* Description */}
         <p className="text-slate-600 text-sm mb-6 leading-relaxed">
           You've successfully repaired the scene and protected the{" "}
-          <strong>{currentScene.title}</strong>!
+          <strong>{currentScene?.title}</strong>!
         </p>
 
         {/* Score Box */}
@@ -317,7 +333,7 @@ const BrokenStory = () => {
             Score: {totalScore}
           </p>
           <p className="text-xs text-slate-500 mt-1">
-            {sceneData.length - currentSceneIndex - 1} scenes remaining
+            {levelScenes.length - currentSceneIndex - 1} scenes remaining
           </p>
         </div>
 
@@ -327,15 +343,15 @@ const BrokenStory = () => {
             onClick={handleNextScene}
             className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition"
           >
-            Next Scene →
+            {currentSceneIndex < levelScenes.length - 1 ? "Next Scene →" : "Level Complete! 🎉"}
           </button>
 
 
           <button
-            onClick={() => navigate("/games")}
+            onClick={() => navigate("/games/broken-story/levels")}
             className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition"
           >
-            🏠 Go to Games
+            📚 Back to Levels
           </button>
         </div>
       </motion.div>

@@ -13,6 +13,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BrokenStory from "./pages/EducationalGames/BrokenStory/BrokenStory";
+import BrokenStoryLevels from "./pages/EducationalGames/BrokenStory/BrokenStoryLevels";
 
 // For now, use the same BrokenStory component for all levels (can be split later)
 import MatchTheRight from "./pages/EducationalGames/MatchTheRight/MatchTheRight";
@@ -96,7 +97,19 @@ export default function App() {
             <Route path="/module-6" element={<Module6Start />} />
             <Route path="/module-6/explanation" element={<Module6Explanation />} />
             <Route path="/module-6/quiz" element={<Module6Quiz />} />
-             <Route path="/games/broken-story" element={<BrokenStory />}/>
+             <Route path="/games/broken-story" element={<BrokenStoryLevels />}/>
+             <Route path="/games/broken-story/levels" element={<BrokenStoryLevels />}/>
+             <Route path="/games/broken-story/level:levelId" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level1" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level2" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level3" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level4" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level5" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level6" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level7" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level8" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level9" element={<BrokenStory />}/>
+             <Route path="/games/broken-story/level10" element={<BrokenStory />}/>
              
             
               <Route path="/comic/:id" element={<ComicStory />} />

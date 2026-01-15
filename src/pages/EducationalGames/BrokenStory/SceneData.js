@@ -33,6 +33,7 @@ export const sceneData = [
   {
     id: "education",
     title: "Right to Education",
+    emoji: "📚",
     hint: "Education needs access, teachers, and a proper learning space.",
     brokenBg: schoolBg,
     fixedBg: schoolFixedBg,
@@ -55,6 +56,7 @@ export const sceneData = [
   {
     id: "safety",
     title: "Right to Safety",
+    emoji: "🛡️",
     hint: "Children stay safe by speaking up and seeking help.",
     brokenBg: safetyBroken,
     fixedBg: safetyFixed,
@@ -77,6 +79,7 @@ export const sceneData = [
   {
     id: "equality",
     title: "Right to Equality",
+    emoji: "⚖️",
     hint: "Equality means fair access for everyone.",
     brokenBg: equalityBroken,
     fixedBg: equalityFixed,
@@ -99,6 +102,7 @@ export const sceneData = [
   {
     id: "play",
     title: "Right to Play",
+    emoji: "⚽",
     hint: "Every child deserves space and opportunity to play.",
     brokenBg: playBroken,
     fixedBg: playFixed,
@@ -121,6 +125,7 @@ export const sceneData = [
   {
     id: "health",
     title: "Right to Health",
+    emoji: "❤️",
     hint: "Health comes from daily care, not just medical tools.",
     brokenBg: healthBroken,
     fixedBg: healthFixed,
@@ -143,6 +148,7 @@ export const sceneData = [
   {
   id: "heard",
   title: "Right to Be Heard",
+  emoji: "💬",
   hint: "Every child has the right to express their thoughts and be listened to.",
   brokenBg: heardBroken,
   fixedBg: heardFixed,
@@ -166,6 +172,7 @@ export const sceneData = [
 {
   id: "dignity",
   title: "Right to Dignity",
+  emoji: "👑",
   hint: "Every child deserves respect, kindness, and to be treated with dignity.",
   brokenBg: dignityBroken,
   fixedBg: dignityFixed,
@@ -191,6 +198,7 @@ export const sceneData = [
 {
   id: "information",
   title: "Right to Information",
+  emoji: "📖",
   hint: "Children have the right to access safe and useful information.",
   brokenBg: infoBroken,
   fixedBg: infoFixed,
@@ -213,11 +221,12 @@ export const sceneData = [
 {
   id: "childlabour",
   title: "Right to Protection from Child Labour",
+  emoji: "✊",
   hint: "Children should learn and grow, not work to survive.",
   brokenBg: labourBroken,
   fixedBg: labourFixed,
   zones: [
-    { id: "education", label: "School not Work" },
+    { id: "education", label: "Books, Not Bricks" },
     { id: "safety", label: "Safe Childhood" },
     { id: "support", label: "Support & Care" }
   ],
@@ -235,6 +244,7 @@ export const sceneData = [
 {
   id: "earlymarriage",
   title: "Right against Early Marriage",
+  emoji: "💪",
   hint: "Children must grow, learn, and decide their future before marriage.",
   brokenBg: marriageBroken,
   fixedBg: marriageFixed,
