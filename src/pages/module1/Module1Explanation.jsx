@@ -40,7 +40,7 @@ export default function Module1Explanation() {
             </Button>
             <Button
               onClick={() => navigate("/module-1/quiz")}
-              className="rounded-full text-lg py-3 px-8 bg-gradient-to-r from-pink-400 to-yellow-400 text-white font-bold shadow-lg hover:scale-105 transition-transform"
+                className="rounded-full text-lg py-3 px-8 bg-gradient-to-r from-pink-400 to-yellow-400 text-black font-bold shadow-lg hover:scale-105 transition-transform"
             >
               🎯 Go to Quiz
             </Button>
