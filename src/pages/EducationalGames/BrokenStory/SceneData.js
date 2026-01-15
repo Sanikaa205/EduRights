@@ -1,24 +1,33 @@
-import schoolBg from "@/assets/edu_broken.jpeg";
-import schoolFixedBg from "@/assets/edu_fixed.jpeg";
 
-import safetyBroken from "@/assets/protection_broken.jpeg";
-import safetyFixed from "@/assets/protection_fixed.jpeg";
+const schoolBg = "/assets/edu_broken.jpeg";
+const schoolFixedBg = "/assets/edu_fixed.jpeg";
 
-import equalityBroken from "@/assets/equality_broken.jpeg";
-import equalityFixed from "@/assets/equality_fixed.jpeg";
+const safetyBroken = "/assets/pro_broken.png";
+const safetyFixed = "/assets/pro_fixed.png";
 
-import playBroken from "@/assets/righttoplay_broken.jpeg";
-import playFixed from "@/assets/righttoplay_fixed.jpeg";
+const equalityBroken = "/assets/equality_broken.jpeg";
+const equalityFixed = "/assets/equality_fixed.jpeg";
 
-import healthBroken from "@/assets/health_broken.jpeg";
-import healthFixed from "@/assets/health_fixed.jpeg";
+const playBroken = "/assets/righttoplay_broken.jpeg";
+const playFixed = "/assets/righttoplay_fixed.jpeg";
 
-import heardBroken from "@/assets/heard_broken.jpeg";
-import heardFixed from "@/assets/heard_fixed.jpeg";
+const healthBroken = "/assets/health_broken.jpeg";
+const healthFixed = "/assets/health_fixed.jpeg";
 
-import dignityBroken from "@/assets/dignity_broken.png";
-import dignityFixed from "@/assets/dignity_fixed.png";
+const heardBroken = "/assets/heard_broken.jpeg";
+const heardFixed = "/assets/heard_fixed.jpeg";
 
+const dignityBroken = "/assets/dignity_broken.png";
+const dignityFixed = "/assets/dignity_fixed.png";
+
+const infoBroken = "/assets/info_broken.png";
+const infoFixed = "/assets/info_fixed.png";
+
+const labourBroken = "/assets/labour_broken.png";
+const labourFixed = "/assets/labour_fixed.png";
+
+const marriageBroken = "/assets/marraige_broken.png";
+const marriageFixed = "/assets/marraige_fixed.png";
 
 export const sceneData = [
   {
@@ -140,7 +149,7 @@ export const sceneData = [
   zones: [
     { id: "voice", label: "Everyone deserves a Voice" },
     { id: "listener", label: "Everyone deserves to be Heard" },
-    { id: "respect", label: "Everyone deserves Respect" }
+    { id: "respect", label: "Everyone opinion is valuable" }
   ],
   items: [
     { id: "raisevoice", text: "🗣️ Speak Up", correctZone: "voice" },
@@ -166,16 +175,86 @@ export const sceneData = [
     { id: "confidence", label: "Everyone deserves Self-Worth" }
   ],
   items: [
-    { id: "kindwords", text: "💖 Kind Words", correctZone: "respect" },
-    { id: "helpinghand", text: "🤝 Helping Hand", correctZone: "care" },
-    { id: "confidence", text: "🌟 Self Confidence", correctZone: "confidence" },
-
     
-    { id: "shout", text: "📢 Shouting", correctZone: null },
-    { id: "pointing", text: "👉 Pointing Finger", correctZone: null },
-    { id: "laugh", text: "😂 Mocking Laugh", correctZone: null }
+    { id: "politetalk", text: "🗣️ Polite Words", correctZone: "respect" },
+    { id: "helpinghand", text: "🤝 Helping Someone", correctZone: "care" },
+    { id: "encourage", text: "🌟 Self Confidence", correctZone: "confidence" },
+
+   
+    { id: "bully", text: "😠 Bullying", correctZone: null },
+    { id: "insult", text: "❌ Insulting Words", correctZone: null },
+    { id: "humiliate", text: "🙈 Public Humiliation", correctZone: null }
+  ]
+},
+
+
+{
+  id: "information",
+  title: "Right to Information",
+  hint: "Children have the right to access safe and useful information.",
+  brokenBg: infoBroken,
+  fixedBg: infoFixed,
+  zones: [
+    { id: "learning", label: "Right Information" },
+    { id: "media", label: "Safe Media" },
+    { id: "guidance", label: "Proper Guidance" }
+  ],
+  items: [
+    { id: "bookinfo", text: "📘 Knowledge Book", correctZone: "learning" },
+    { id: "safeinternet", text: "🌐 Safe Internet", correctZone: "media" },
+    { id: "mentor", text: "🧑‍🏫 Guidance Adult", correctZone: "guidance" },
+
+    { id: "fake", text: "❌ Fake News", correctZone: null },
+    { id: "warning", text: "⚠️ Warning", correctZone: null },
+    { id: "random", text: "📺 Random Media", correctZone: null }
+  ]
+},
+
+{
+  id: "childlabour",
+  title: "Right to Protection from Child Labour",
+  hint: "Children should learn and grow, not work to survive.",
+  brokenBg: labourBroken,
+  fixedBg: labourFixed,
+  zones: [
+    { id: "education", label: "School not Work" },
+    { id: "safety", label: "Safe Childhood" },
+    { id: "support", label: "Support & Care" }
+  ],
+  items: [
+    { id: "schoolbag", text: "🎒 School Bag", correctZone: "education" },
+    { id: "safeplace", text: "🛡️ Safe Environment", correctZone: "safety" },
+    { id: "helpadult", text: "👨‍👩‍👧 Adult Support", correctZone: "support" },
+
+    { id: "tool", text: "🔨 Work Tools", correctZone: null },
+    { id: "brick", text: "🧱 Bricks", correctZone: null },
+    { id: "money", text: "💰 Earn Money", correctZone: null }
+  ]
+},
+
+{
+  id: "earlymarriage",
+  title: "Right against Early Marriage",
+  hint: "Children must grow, learn, and decide their future before marriage.",
+  brokenBg: marriageBroken,
+  fixedBg: marriageFixed,
+  zones: [
+    { id: "education", label: "Education First" },
+    { id: "choice", label: "Right to Choose" },
+    { id: "protection", label: "Protection & Support" }
+  ],
+  items: [
+    { id: "school", text: "🎓 Continue Education", correctZone: "education" },
+    { id: "decision", text: "🗣️ Freedom to Choose", correctZone: "choice" },
+    { id: "support", text: "🛡️ Legal & Family Support", correctZone: "protection" },
+
+    { id: "ring", text: "💍 Marriage Ring", correctZone: null },
+    { id: "calendar", text: "📅 Early Age", correctZone: null },
+    { id: "pressure", text: "⚠️ Family Pressure", correctZone: null }
   ]
 }
+
+
 
 
 ];

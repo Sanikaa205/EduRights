@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useToast } from "@/hooks/use-toast";
@@ -26,7 +26,13 @@ const BrokenStory = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Level logic
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
+  const LEVELS_KEY = "brokenStoryUnlockedLevels";
+  const location = useLocation();
+  // Extract level from path, default to 1
+  const match = location.pathname.match(/level(\d+)/);
+  const levelId = match ? parseInt(match[1], 10) : 1;
   const [totalScore, setTotalScore] = useState(0);
   const [fixedItems, setFixedItems] = useState({});
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -61,6 +67,26 @@ const BrokenStory = () => {
     setShuffledItems(shuffleArray(currentScene.items));
     celebrationRef.current = false;
   }, [currentSceneIndex, currentScene.items]);
+
+  // Unlock next level when all scenes are complete
+  useEffect(() => {
+    if (showCompletionModal && currentSceneIndex === sceneData.length - 1) {
+      // All scenes complete for this level
+      let unlocked = [1];
+      try {
+        unlocked = JSON.parse(localStorage.getItem(LEVELS_KEY)) || [1];
+      } catch {}
+      const nextLevel = levelId + 1;
+      if (!unlocked.includes(nextLevel) && nextLevel <= 4) {
+        unlocked.push(nextLevel);
+        localStorage.setItem(LEVELS_KEY, JSON.stringify(unlocked));
+      }
+      // If last level, unlock all
+      if (levelId === 4) {
+        localStorage.setItem(LEVELS_KEY, JSON.stringify([1,2,3,4]));
+      }
+    }
+  }, [showCompletionModal, currentSceneIndex, levelId]);
 
   // celebration + modal
   useEffect(() => {
@@ -131,7 +157,8 @@ const BrokenStory = () => {
     if (currentSceneIndex < sceneData.length - 1) {
       setCurrentSceneIndex((i) => i + 1);
     } else {
-      navigate("/games");
+      // Finished all scenes in this level, go to level selection page
+      navigate("/games/broken-story/levels");
     }
   };
 
@@ -174,17 +201,14 @@ const BrokenStory = () => {
 
           {/* CENTER */}
           <div className="flex-1 bg-white rounded-2xl shadow-xl border overflow-hidden">
-            <div
-              className="relative h-[420px] bg-cover bg-center"
-              style={{
-                backgroundImage: `url('${
-                  isLevelComplete
-                    ? currentScene.fixedBg
-                    : currentScene.brokenBg
-                }')`,
-              }}
-            >
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <div className="relative w-full aspect-[16/9] bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center">
+              <img
+                src={isLevelComplete ? currentScene.fixedBg : currentScene.brokenBg}
+                alt="Scene background"
+                className="w-full h-full object-contain rounded-xl border border-slate-300 shadow"
+                style={{ background: 'transparent' }}
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                 <motion.div
                   animate={
                     isLevelComplete
@@ -305,6 +329,7 @@ const BrokenStory = () => {
           >
             Next Scene →
           </button>
+
 
           <button
             onClick={() => navigate("/games")}

@@ -13,6 +13,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BrokenStory from "./pages/EducationalGames/BrokenStory/BrokenStory";
+
+// For now, use the same BrokenStory component for all levels (can be split later)
 import MatchTheRight from "./pages/EducationalGames/MatchTheRight/MatchTheRight";
 
 
@@ -95,6 +97,8 @@ export default function App() {
             <Route path="/module-6/explanation" element={<Module6Explanation />} />
             <Route path="/module-6/quiz" element={<Module6Quiz />} />
              <Route path="/games/broken-story" element={<BrokenStory />}/>
+             
+            
               <Route path="/comic/:id" element={<ComicStory />} />
 
               <Route path="/games/legal-hero-journey/level-2" element={<LevelTwoSchoolRights />} />
