@@ -321,11 +321,30 @@ const BrokenStory = () => {
           Excellent Work!
         </h2>
 
+
         {/* Description */}
         <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-          You've successfully repaired the scene and protected the{" "}
-          <strong>{currentScene?.title}</strong>!
+          You've successfully repaired the scene and protected the <strong>{currentScene?.title}</strong>!
         </p>
+
+        {/* Score & Badge Row */}
+        <div className="bg-slate-100 rounded-xl py-4 mb-6 flex flex-col items-center justify-center">
+          {/* Show badge only at level end */}
+          {currentSceneIndex === levelScenes.length - 1 ? (
+            <div className="flex flex-col items-center">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-300 to-yellow-400 text-yellow-900 font-bold text-base px-4 py-2 rounded-full shadow border-2 border-yellow-400">
+                {levelData.badge.split(" ")[0]}
+                <span className="ml-1">You earned <span className="underline decoration-yellow-600">{levelData.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
+              </span>
+              <span className="text-xs text-yellow-700 font-semibold mt-1">Keep going, Rights Champion!</span>
+            </div>
+          ) : (
+            <>
+              <p className="text-xl font-extrabold text-slate-800 mb-0">Score: {totalScore}</p>
+              <p className="text-xs text-slate-500 mt-1">{levelScenes.length - currentSceneIndex - 1} scenes remaining</p>
+            </>
+          )}
+        </div>
 
         {/* Score Box */}
         <div className="bg-slate-100 rounded-xl py-4 mb-6">

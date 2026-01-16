@@ -34,8 +34,11 @@ export default function LevelCard({ level, isUnlocked, isCompleted }) {
         </div>
       )}
 
-      {/* Badge Icon */}
-      <div className="text-5xl mb-3">{level.badge.split(" ")[0]}</div>
+
+      {/* Badge Icon (only show if not completed) */}
+      {!isCompleted && (
+        <div className="text-5xl mb-3">{level.badge.split(" ")[0]}</div>
+      )}
 
       {/* Title */}
       <h3 className="text-lg font-bold text-slate-800 mb-1">{level.title}</h3>
@@ -43,9 +46,10 @@ export default function LevelCard({ level, isUnlocked, isCompleted }) {
       {/* Description */}
       <p className="text-sm text-slate-600 mb-4">{level.description}</p>
 
-      {/* Completion Badge */}
+
+      {/* Completion Badge only */}
       {isCompleted && (
-        <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+        <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold mt-2">
           <Trophy className="w-4 h-4" />
           Completed
         </div>
