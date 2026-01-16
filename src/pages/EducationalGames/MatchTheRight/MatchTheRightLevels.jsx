@@ -48,24 +48,33 @@ const getUnlockedBadges = () => {
 }
 
 export default function MatchTheRightLevels() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const unlockedLevel = useMemo(() => getUnlockedLevel(), [])
-    const completedLevels = useMemo(() => getCompletedLevels(), [])
-    const levelStars = useMemo(() => getLevelStars(), [])
-    const unlockedBadges = useMemo(() => getUnlockedBadges(), [])
+    const unlockedLevel = useMemo(() => getUnlockedLevel(), []);
+    const completedLevels = useMemo(() => getCompletedLevels(), []);
+    const levelStars = useMemo(() => getLevelStars(), []);
+    const unlockedBadges = useMemo(() => getUnlockedBadges(), []);
 
     const stats = useMemo(() => {
-        const total = levels.length
-        const completed = completedLevels.length
-        const unlocked = Math.min(unlockedLevel, total)
-        const totalStars = Object.values(levelStars).reduce((a, b) => a + b, 0)
-        return { total, completed, unlocked, totalStars }
-    }, [completedLevels.length, unlockedLevel, levelStars])
+        const total = levels.length;
+        const completed = completedLevels.length;
+        const unlocked = Math.min(unlockedLevel, total);
+        const totalStars = Object.values(levelStars).reduce((a, b) => a + b, 0);
+        return { total, completed, unlocked, totalStars };
+    }, [completedLevels.length, unlockedLevel, levelStars]);
+
+    // Find the first unlocked but not completed level for 'Continue' button
+    const nextPlayableLevel = useMemo(() => {
+        for (let i = 1; i <= stats.unlocked; i++) {
+            if (!completedLevels.includes(i)) return i;
+        }
+        // If all unlocked are completed, fallback to first unlocked
+        return stats.unlocked;
+    }, [stats.unlocked, completedLevels]);
 
     const handlePlay = (level) => {
-        navigate(`/games/match-the-right/level/${level}`)
-    }
+        navigate(`/games/match-the-right/level/${level}`);
+    };
 
     return (
         <>
@@ -102,32 +111,27 @@ export default function MatchTheRightLevels() {
                     </div>
                 </section>
 
-                {/* PROGRESS BAR */}
-                <section className="mb-10 max-w-2xl mx-auto">
-                    <div className="flex justify-between mb-2 text-sm font-medium">
-                        <span>Overall Progress</span>
-                        <span>{Math.round((stats.completed / stats.total) * 100)}%</span>
-                    </div>
-                    <Progress value={(stats.completed / stats.total) * 100} className="h-3" />
-                </section>
+                
+
+                
 
                 {/* LEVEL GRID */}
                 <section>
                     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                         {levels.map((level, idx) => {
-                            const round = level.rounds[0]
-                            const matches = Object.keys(round.answers).length
+                            const round = level.rounds[0];
+                            const matches = Object.keys(round.answers).length;
 
-                            const unlocked = level.level <= stats.unlocked
-                            const completed = completedLevels.includes(level.level)
+                            const unlocked = level.level <= stats.unlocked;
+                            const completed = completedLevels.includes(level.level);
 
-                            const stars = levelStars[level.level] || 0
+                            const stars = levelStars[level.level] || 0;
 
                             const statusBadge = completed
                                 ? { label: "Completed", className: "bg-emerald-100 text-emerald-800" }
                                 : unlocked
                                     ? { label: "Unlocked", className: "bg-blue-100 text-blue-800" }
-                                    : { label: "Locked", className: "bg-gray-100 text-gray-600" }
+                                    : { label: "Locked", className: "bg-gray-100 text-gray-600" };
 
                             return (
                                 <motion.div
@@ -195,7 +199,7 @@ export default function MatchTheRightLevels() {
                                         </Card>
                                     </div>
                                 </motion.div>
-                            )
+                            );
                         })}
                     </div>
                 </section>
@@ -203,5 +207,5 @@ export default function MatchTheRightLevels() {
 
             <Footer />
         </>
-    )
+    );
 }

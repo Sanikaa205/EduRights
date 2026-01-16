@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import Confetti from "react-confetti"
 
@@ -11,7 +12,11 @@ import { levels } from "./data"
 import mascot from "@/assets/mascot.png"
 
 export default function MatchTheRight() {
-    const [currentLevel, setCurrentLevel] = useState(0)
+    const { levelId } = useParams();
+    const navigate = useNavigate();
+    // Parse levelId from URL, fallback to 1 if not present or invalid
+    const initialLevel = Math.max(1, Math.min(Number(levelId) || 1, levels.length));
+    const [currentLevel, setCurrentLevel] = useState(initialLevel - 1);
     const [matched, setMatched] = useState([])
     const [score, setScore] = useState(0)
     const [message, setMessage] = useState("Drag and match correctly!")
@@ -23,6 +28,18 @@ export default function MatchTheRight() {
 
     const totalCorrect = Object.keys(round.answers).length
     const levelCompleted = score === totalCorrect
+
+    // Unlock next level in localStorage when a level is completed
+    useEffect(() => {
+        if (levelCompleted) {
+            const unlockedKey = "matchTheRightUnlockedLevel";
+            const currentUnlocked = Number(localStorage.getItem(unlockedKey)) || 1;
+            const thisLevel = currentLevel + 1;
+            if (thisLevel >= currentUnlocked && thisLevel < levels.length) {
+                localStorage.setItem(unlockedKey, String(thisLevel + 1));
+            }
+        }
+    }, [levelCompleted, currentLevel]);
 
     /* ================= TIMER ================= */
     useEffect(() => {
@@ -37,13 +54,15 @@ export default function MatchTheRight() {
     }, [timeLeft, levelCompleted])
 
     /* ================= RESET LEVEL ================= */
+    // Sync currentLevel with URL param
     useEffect(() => {
-        setMatched([])
-        setScore(0)
-        setTimeLeft(levels[currentLevel].time)
-        setMessage("Drag and match correctly!")
-        setTimeUp(false)
-    }, [currentLevel])
+        setMatched([]);
+        setScore(0);
+        setTimeLeft(levels[initialLevel - 1].time);
+        setMessage("Drag and match correctly!");
+        setTimeUp(false);
+        setCurrentLevel(initialLevel - 1);
+    }, [levelId]);
 
     /* ================= HANDLE DROP ================= */
     const handleDrop = (situation, rightName) => {
@@ -216,34 +235,34 @@ export default function MatchTheRight() {
                                         Congratulations!
                                     </h3>
 
-                                                                        <p className="text-xl font-semibold text-primary mb-4">
-                                                                                Level {currentLevel + 1} Complete! 🌟
-                                                                        </p>
-                                                                        {/* Motivational Badge Message - Improved Alignment */}
-                                                                        <div className="flex flex-col items-center mb-6 mt-2 w-full">
-                                                                            <div className="flex justify-center w-full">
-                                                                                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-200 to-yellow-400 text-yellow-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-yellow-400 whitespace-nowrap">
-                                                                                    {levels[currentLevel].badge && (
-                                                                                        <>
-                                                                                            {levels[currentLevel].badge.split(" ")[0]}
-                                                                                            <span className="ml-2">You earned a <span className="underline decoration-yellow-600">{levels[currentLevel].badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
-                                                                                        </>
-                                                                                    )}
-                                                                                </span>
-                                                                            </div>
-                                                                            <span className="text-xs text-yellow-700 font-semibold mt-2 text-center block">Keep going, Rights Champion!</span>
-                                                                        </div>
+                                    <p className="text-xl font-semibold text-primary mb-4">
+                                        Level {currentLevel + 1} Complete! 🌟
+                                    </p>
+                                    {/* Motivational Badge Message - Improved Alignment */}
+                                    <div className="flex flex-col items-center mb-6 mt-2 w-full">
+                                        <div className="flex justify-center w-full">
+                                            <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-200 to-yellow-400 text-yellow-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-yellow-400 whitespace-nowrap">
+                                                {levels[currentLevel].badge && (
+                                                    <>
+                                                        {levels[currentLevel].badge.split(" ")[0]}
+                                                        <span className="ml-2">You earned a <span className="underline decoration-yellow-600">{levels[currentLevel].badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
+                                                    </>
+                                                )}
+                                            </span>
+                                        </div>
+                                        <span className="text-xs text-yellow-700 font-semibold mt-2 text-center block">Keep going, Rights Champion!</span>
+                                    </div>
 
                                     {currentLevel < levels.length - 1 ? (
                                         <button
-                                            onClick={() => setCurrentLevel((l) => l + 1)}
+                                            onClick={() => navigate("/games/match-the-right")}
                                             className="w-full px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition"
                                         >
                                             Next Level 🚀
                                         </button>
                                     ) : (
                                         <button
-                                            onClick={() => setCurrentLevel(0)}
+                                            onClick={() => navigate("/games/match-the-right/level/1")}
                                             className="w-full px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition"
                                         >
                                             Restart Game 🔄
