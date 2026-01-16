@@ -115,10 +115,10 @@ export default function EducationalGames() {
     ((buildSchoolLevel - 1) / schoolLevels.length) * 100
   );
 
-  // Match The Right (assume levels completed, fallback to 0)
-  const matchRightLevel = Number(localStorage.getItem("matchTheRightLevel") || 1);
+  // Match The Right (use unlocked level for progress)
+  const matchRightUnlocked = Number(localStorage.getItem("matchTheRightUnlockedLevel") || 1);
   const matchRightProgress = Math.round(
-    ((matchRightLevel - 1) / matchTheRightLevels.length) * 100
+    ((matchRightUnlocked - 1) / matchTheRightLevels.length) * 100
   );
 
   // Average progress
