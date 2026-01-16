@@ -215,9 +215,24 @@ export default function MatchTheRight() {
                                     <h3 className="text-3xl font-bold mb-2">
                                         Congratulations!
                                     </h3>
-                                    <p className="text-xl font-semibold text-primary mb-4">
-                                        Level {currentLevel + 1} Complete! 🌟
-                                    </p>
+
+                                                                        <p className="text-xl font-semibold text-primary mb-4">
+                                                                                Level {currentLevel + 1} Complete! 🌟
+                                                                        </p>
+                                                                        {/* Motivational Badge Message - Improved Alignment */}
+                                                                        <div className="flex flex-col items-center mb-6 mt-2 w-full">
+                                                                            <div className="flex justify-center w-full">
+                                                                                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-200 to-yellow-400 text-yellow-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-yellow-400 whitespace-nowrap">
+                                                                                    {levels[currentLevel].badge && (
+                                                                                        <>
+                                                                                            {levels[currentLevel].badge.split(" ")[0]}
+                                                                                            <span className="ml-2">You earned a <span className="underline decoration-yellow-600">{levels[currentLevel].badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
+                                                                                        </>
+                                                                                    )}
+                                                                                </span>
+                                                                            </div>
+                                                                            <span className="text-xs text-yellow-700 font-semibold mt-2 text-center block">Keep going, Rights Champion!</span>
+                                                                        </div>
 
                                     {currentLevel < levels.length - 1 ? (
                                         <button
