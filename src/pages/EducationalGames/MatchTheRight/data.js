@@ -3,6 +3,7 @@ export const levels = [
         level: 1,
         title: "Level 1 – Basic Rights",
         time: 10,
+        badge: "📚 Rights Starter",
         rounds: [
             {
                 situations: [
@@ -27,6 +28,7 @@ export const levels = [
         level: 2,
         title: "Level 2 – Safety & Protection",
         time: 15,
+        badge: "🛡️ Safety Pro",
         rounds: [
             {
                 situations: [
@@ -54,6 +56,7 @@ export const levels = [
         level: 3,
         title: "Level 3 – Freedom & Health",
         time: 15,
+        badge: "❤️ Freedom Friend",
         rounds: [
             {
                 situations: [
@@ -82,8 +85,9 @@ export const levels = [
 
     {
         level: 4,
-        title: "Level 4 – Digital & Identity Rights",
-        time: 20,
+        title: "Level 4 – Expression & Shelter",
+        time: 15,
+        badge: "🗣️ Expression Expert",
         rounds: [
             {
                 situations: [
@@ -115,8 +119,9 @@ export const levels = [
 
     {
         level: 5,
-        title: "Level 5 – Community & Environment",
-        time: 30,
+        title: "Level 5 – Equality & Play",
+        time: 15,
+        badge: "⚖️ Equality Achiever",
         rounds: [
             {
                 situations: [
@@ -155,8 +160,9 @@ export const levels = [
 
     {
         level: 6,
-        title: "Level 6 – Advanced Child Protection",
-        time: 40,
+        title: "Level 6 – Nutrition & Care",
+        time: 15,
+        badge: "🍎 Nutrition Ninja",
         rounds: [
             {
                 situations: [
@@ -201,8 +207,9 @@ export const levels = [
 
     {
         level: 7,
-        title: "Level 7 – Global Child Rights Champion",
-        time: 60,
+        title: "Level 7 – Dignity & Respect",
+        time: 15,
+        badge: "👑 Dignity Defender",
         rounds: [
             {
                 situations: [
