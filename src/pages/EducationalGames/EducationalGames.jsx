@@ -1,18 +1,140 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useNavigate } from "react-router-dom";
+import { levels as brokenStoryLevels } from "./BrokenStory/levelsData";
+import { levels as legalHeroLevels } from "./LegalHeroJourney/levelsData";
+import { schoolLevels } from "./BuildYourSchool/schoolElements";
+import { levels as matchTheRightLevels } from "./MatchTheRight/data";
+import { useEffect, useState } from "react";
+import { Trophy } from "lucide-react";
+
+// Custom Large Linear Progress Bar
+function LargeLinearProgress({ value }) {
+  return (
+    <div className="relative w-full h-6 rounded-full bg-white border border-blue-100 overflow-hidden mx-auto" style={{ minWidth: "1800px", maxWidth: "100%" }}>
+      <div
+        className="absolute left-0 top-0 h-full rounded-full"
+        style={{
+          width: `${value}%`,
+          background: "linear-gradient(90deg, #2563eb 0%, #60a5fa 100%)",
+          transition: "width 0.4s cubic-bezier(.4,0,.2,1)",
+        }}
+      />
+      <div className="absolute inset-0 flex items-center justify-center text-lg font-bold text-blue-700">
+        {value}%
+      </div>
+    </div>
+  );
+}
+
+// Custom Progress for game boxes
+function CustomProgress({ value }) {
+  return (
+    <div className="relative w-full h-3 rounded-full bg-white border border-blue-100 overflow-hidden">
+      <div
+        className="absolute left-0 top-0 h-full rounded-full"
+        style={{
+          width: `${value}%`,
+          background: "linear-gradient(90deg, #2563eb 0%, #60a5fa 100%)",
+          transition: "width 0.4s cubic-bezier(.4,0,.2,1)",
+        }}
+      />
+    </div>
+  );
+}
+
+function MainProgressCard({ value }) {
+  return (
+    <div
+      className="bg-white rounded-2xl border-2 border-blue-200 shadow-sm p-6 max-w-3xl mx-auto mb-10 flex flex-col gap-2"
+      style={{ boxShadow: "0 2px 8px 0 #e0f2fe" }}
+    >
+      <div className="flex items-center gap-4 mb-2">
+        <div
+          className="w-12 h-12 rounded-xl flex items-center justify-center"
+          style={{
+            background:
+              "linear-gradient(135deg, #7f9cf5 0%, #38bdf8 100%)",
+          }}
+        >
+          <Trophy className="text-white w-7 h-7" />
+        </div>
+        <div>
+          <div className="text-2xl font-extrabold text-slate-800">
+            Your Progress
+          </div>
+          <div className="text-base text-slate-500">
+            Keep up the progress — you're at {value}%.
+          </div>
+        </div>
+      </div>
+      <div className="w-full mt-2">
+        <div className="relative w-full h-7 rounded-full bg-blue-50 border border-blue-100 overflow-hidden">
+          <div
+            className="absolute left-0 top-0 h-full rounded-full shadow"
+            style={{
+              width: `${value}%`,
+              background: "linear-gradient(90deg, #2563eb 0%, #60a5fa 100%)",
+              transition: "width 0.4s cubic-bezier(.4,0,.2,1)",
+              boxShadow: "0 2px 8px 0 #bae6fd",
+            }}
+          />
+        </div>
+        <div className="text-xs text-slate-500 mt-2">Progress</div>
+      </div>
+    </div>
+  );
+}
 
 export default function EducationalGames() {
   const navigate = useNavigate();
 
+  // Progress calculation helpers
+  // Broken Story
+  const brokenStoryCompleted = JSON.parse(
+    localStorage.getItem("brokenStoryCompletedLevels") || "[]"
+  );
+  const brokenStoryProgress = Math.round(
+    (brokenStoryCompleted.length / brokenStoryLevels.length) * 100
+  );
+
+  // Legal Hero Journey
+  const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
+  const legalHeroProgress = Math.round(
+    ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
+  );
+
+  // Build Your School (assume stars or levels completed, fallback to 0)
+  const buildSchoolLevel = Number(
+    localStorage.getItem("buildYourSchoolLevel") || 1
+  );
+  const buildSchoolProgress = Math.round(
+    ((buildSchoolLevel - 1) / schoolLevels.length) * 100
+  );
+
+  // Match The Right (assume levels completed, fallback to 0)
+  const matchRightLevel = Number(localStorage.getItem("matchTheRightLevel") || 1);
+  const matchRightProgress = Math.round(
+    ((matchRightLevel - 1) / matchTheRightLevels.length) * 100
+  );
+
+  // Average progress
+  const allProgress = [
+    brokenStoryProgress,
+    legalHeroProgress,
+    buildSchoolProgress,
+    matchRightProgress,
+  ];
+  const avgProgress = Math.round(
+    allProgress.reduce((a, b) => a + b, 0) / allProgress.length
+  );
+
   return (
     <>
       <Navbar />
-
       <div className="container mx-auto px-4 py-8">
         {/* ===================== HERO SECTION ===================== */}
         <section className="mb-10 text-center">
@@ -33,17 +155,10 @@ export default function EducationalGames() {
         </section>
 
         {/* ===================== PROGRESS BAR ===================== */}
-        <section className="mb-10 max-w-xl mx-auto">
-          <div className="flex justify-between mb-2 text-sm font-medium">
-            <span>Your Learning Journey</span>
-            <span>40%</span>
-          </div>
-          <Progress value={40} />
-        </section>
+        <MainProgressCard value={avgProgress} />
 
         {/* ===================== GAMES GRID ===================== */}
         <section className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
-
           {/* -------- Build Your School -------- */}
           <Card className="transition-transform hover:scale-[1.04] hover:shadow-xl">
             <CardHeader>
@@ -62,6 +177,12 @@ export default function EducationalGames() {
                 <Badge variant="secondary">🏆 Flagship</Badge>
               </div>
 
+              <div className="flex flex-col items-center mb-2">
+                <CustomProgress value={buildSchoolProgress} />
+                <div className="text-xs text-slate-500 mb-2">
+                  Progress: {buildSchoolProgress}%
+                </div>
+              </div>
               <Button
                 className="w-full text-lg"
                 onClick={() => navigate("/games/build-your-school")}
@@ -90,6 +211,12 @@ export default function EducationalGames() {
                 <Badge variant="secondary">🧠 Puzzle</Badge>
               </div>
 
+              <div className="flex flex-col items-center mb-2">
+                <CustomProgress value={matchRightProgress} />
+                <div className="text-xs text-slate-500 mb-2">
+                  Progress: {matchRightProgress}%
+                </div>
+              </div>
               <Button
                 className="w-full text-lg"
                 onClick={() => navigate("/games/match-the-right")}
@@ -113,6 +240,12 @@ export default function EducationalGames() {
               <div className="flex items-center justify-between mb-4">
                 <Badge>⭐ Medium</Badge>
                 <Badge variant="secondary">🧠 Logic Game</Badge>
+              </div>
+              <div className="flex flex-col items-center mb-2">
+                <CustomProgress value={brokenStoryProgress} />
+                <div className="text-xs text-slate-500 mb-2">
+                  Progress: {brokenStoryProgress}%
+                </div>
               </div>
               <Button
                 className="w-full text-lg"
@@ -138,6 +271,12 @@ export default function EducationalGames() {
               <div className="flex items-center justify-between mb-4">
                 <Badge>⭐ Adventure</Badge>
                 <Badge variant="secondary">🗺 Levels</Badge>
+              </div>
+              <div className="flex flex-col items-center mb-2">
+                <CustomProgress value={legalHeroProgress} />
+                <div className="text-xs text-slate-500 mb-2">
+                  Progress: {legalHeroProgress}%
+                </div>
               </div>
               <Button
                 className="w-full text-lg"
