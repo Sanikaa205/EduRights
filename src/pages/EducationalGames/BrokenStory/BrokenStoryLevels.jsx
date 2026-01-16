@@ -70,9 +70,9 @@ export default function BrokenStoryLevels() {
     <>
       <Navbar />
 
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 py-8 relative">
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-12 flex items-start justify-between">
           <div className="flex items-center gap-4 mb-6">
             <img src={Mascot} alt="Mascot" className="w-20 h-20" />
             <div>
@@ -84,16 +84,21 @@ export default function BrokenStoryLevels() {
               </p>
             </div>
           </div>
-          <div className="flex gap-6">
-            <div className="text-center">
-              <p className="text-3xl font-black text-blue-600">
-                {completedLevels.length}/{maxLevel}
-              </p>
-              <p className="text-sm text-slate-600">Levels Completed</p>
+          {/* Progress Box in top right */}
+          <div className="flex gap-3 absolute right-0 top-0 mt-2 mr-2">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl px-6 py-2 flex flex-col items-center min-w-[80px] shadow-sm">
+              <span className="text-2xl font-bold text-blue-600">
+                {completedLevels.length}
+              </span>
+              <span className="text-xs text-blue-500 font-semibold">
+                Levels Completed
+              </span>
             </div>
-            <div className="text-center">
-              <p className="text-3xl font-black text-green-600">{savedLevel}</p>
-              <p className="text-sm text-slate-600">Current Progress</p>
+            <div className="bg-green-50 border border-green-200 rounded-xl px-6 py-2 flex flex-col items-center min-w-[80px] shadow-sm">
+              <span className="text-2xl font-bold text-green-600">
+                {savedLevel}/{maxLevel}
+              </span>
+              <span className="text-xs text-green-500 font-semibold">Unlocked</span>
             </div>
           </div>
         </div>
