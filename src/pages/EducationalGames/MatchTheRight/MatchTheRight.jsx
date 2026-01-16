@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import Confetti from "react-confetti"
 
@@ -7,22 +8,76 @@ import Footer from "@/components/layout/Footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { levels } from "./data"
+import { checkBadges, playSound } from "./utils"
+import { BADGES } from "./utils"
 
 import mascot from "@/assets/mascot.png"
 
+const UNLOCK_KEY = "matchTheRightUnlockedLevel"
+const COMPLETE_KEY = "matchTheRightCompletedLevels"
+const STARS_KEY = "matchTheRightStars"
+const BADGES_KEY = "matchTheRightBadges"
+
+const clampLevelIndex = (index) => {
+    if (!Number.isFinite(index)) return 0
+    return Math.min(levels.length - 1, Math.max(0, index))
+}
+
+const getStoredNumber = (key, fallback) => {
+    if (typeof window === "undefined") return fallback
+    const parsed = Number(localStorage.getItem(key))
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback
+}
+
+const getStoredArray = (key) => {
+    if (typeof window === "undefined") return []
+    try {
+        const parsed = JSON.parse(localStorage.getItem(key))
+        return Array.isArray(parsed) ? parsed : []
+    } catch {
+        return []
+    }
+}
+
 export default function MatchTheRight() {
-    const [currentLevel, setCurrentLevel] = useState(0)
+    const navigate = useNavigate()
+    const { levelId } = useParams()
+
+    const initialIndex = clampLevelIndex((Number(levelId) || 1) - 1)
+
+    const [currentLevel, setCurrentLevel] = useState(initialIndex)
+    const [unlockedLevel, setUnlockedLevel] = useState(() => getStoredNumber(UNLOCK_KEY, 1))
     const [matched, setMatched] = useState([])
     const [score, setScore] = useState(0)
     const [message, setMessage] = useState("Drag and match correctly!")
     const [shakeId, setShakeId] = useState(null)
-    const [timeLeft, setTimeLeft] = useState(levels[0].time)
+    const [timeLeft, setTimeLeft] = useState(levels[initialIndex].time)
     const [timeUp, setTimeUp] = useState(false)
+    const [retryCount, setRetryCount] = useState(0)
+    const [badgeQueue, setBadgeQueue] = useState([]) // queue for multiple badges
+    const [currentBadge, setCurrentBadge] = useState(null) // currently shown badge
 
-    const round = levels[currentLevel].rounds[0]
+    const levelData = levels[currentLevel] || levels[0]
+    const round = levelData.rounds[0]
+    const levelNumber = currentLevel + 1
+    const totalLevels = levels.length
+    const isLocked = levelNumber > unlockedLevel
 
     const totalCorrect = Object.keys(round.answers).length
     const levelCompleted = score === totalCorrect
+
+    /* ================= GUARD LOCKED LEVELS ================= */
+    useEffect(() => {
+        if (!isLocked) return
+        const fallbackLevel = clampLevelIndex(unlockedLevel - 1)
+        navigate(`/games/match-the-right/level/${fallbackLevel + 1}`, { replace: true })
+    }, [isLocked, unlockedLevel, navigate])
+
+    /* ================= SYNC URL TO STATE ================= */
+    useEffect(() => {
+        const nextIndex = clampLevelIndex((Number(levelId) || 1) - 1)
+        setCurrentLevel(nextIndex)
+    }, [levelId])
 
     /* ================= TIMER ================= */
     useEffect(() => {
@@ -40,10 +95,58 @@ export default function MatchTheRight() {
     useEffect(() => {
         setMatched([])
         setScore(0)
-        setTimeLeft(levels[currentLevel].time)
+        setTimeLeft(levelData.time)
         setMessage("Drag and match correctly!")
         setTimeUp(false)
-    }, [currentLevel])
+        setRetryCount(0)
+        setBadgeQueue([])
+        setCurrentBadge(null)
+    }, [currentLevel, levelData.time])
+
+    /* ================= SAVE PROGRESS & BADGES ================= */
+    useEffect(() => {
+        if (!levelCompleted) return
+
+        const completed = getStoredArray(COMPLETE_KEY)
+        if (!completed.includes(levelNumber)) {
+            const updated = [...completed, levelNumber]
+            localStorage.setItem(COMPLETE_KEY, JSON.stringify(updated))
+        }
+
+        // Check badges
+        const currentBadges = getStoredArray(BADGES_KEY)
+        const isFirstTry = retryCount === 0
+        const newBadges = checkBadges(score, totalCorrect, timeLeft, levelData.time, isFirstTry, completed)
+        console.log("New Badges:", newBadges) // 🔹 debug
+
+        const unlockedNow = newBadges.filter((badgeId) => !currentBadges.includes(badgeId))
+        if (unlockedNow.length > 0) {
+            setBadgeQueue(unlockedNow) // add all new badges to queue
+            playSound("unlock")
+            localStorage.setItem(BADGES_KEY, JSON.stringify([...currentBadges, ...unlockedNow]))
+        }
+
+        const currentUnlocked = getStoredNumber(UNLOCK_KEY, 1)
+        const nextLevelNumber = Math.min(levelNumber + 1, levels.length)
+        const newUnlocked = Math.max(currentUnlocked, nextLevelNumber)
+        if (newUnlocked !== currentUnlocked) {
+            localStorage.setItem(UNLOCK_KEY, String(newUnlocked))
+            setUnlockedLevel(newUnlocked)
+            playSound("levelup")
+        }
+    }, [levelCompleted, levelNumber, totalCorrect, timeLeft, levelData.time, retryCount])
+
+    /* ================= HANDLE BADGE QUEUE ================= */
+    useEffect(() => {
+        if (!currentBadge && badgeQueue.length > 0) {
+            setCurrentBadge(badgeQueue[0])
+        }
+    }, [badgeQueue, currentBadge])
+
+    const handleBadgeClose = () => {
+        setBadgeQueue((queue) => queue.slice(1))
+        setCurrentBadge(null)
+    }
 
     /* ================= HANDLE DROP ================= */
     const handleDrop = (situation, rightName) => {
@@ -51,9 +154,11 @@ export default function MatchTheRight() {
             setMatched([...matched, situation])
             setScore((s) => s + 1)
             setMessage("🎉 Correct! Great job!")
+            playSound("correct")
         } else {
             setShakeId(rightName)
             setMessage("😮 Oops! Try again!")
+            playSound("error")
             setTimeout(() => setShakeId(null), 400)
         }
     }
@@ -62,9 +167,10 @@ export default function MatchTheRight() {
     const handleRetry = () => {
         setMatched([])
         setScore(0)
-        setTimeLeft(levels[currentLevel].time)
+        setTimeLeft(levelData.time)
         setMessage("Drag and match correctly!")
         setTimeUp(false)
+        setRetryCount((r) => r + 1)
     }
 
     return (
@@ -109,9 +215,21 @@ export default function MatchTheRight() {
                 </AnimatePresence>
 
                 {/* ================= HEADER ================= */}
-                <h2 className="text-3xl font-bold text-center mb-4">
-                    {levels[currentLevel].title}
-                </h2>
+                <div className="flex flex-col items-center gap-3 mb-4">
+                    <div className="flex items-center gap-3">
+                        <Badge variant="secondary">Level {levelNumber}/{totalLevels}</Badge>
+                        <Badge variant="secondary">⏱ {levelData.time}s</Badge>
+                    </div>
+                    <h2 className="text-3xl font-bold text-center">
+                        {levelData.title}
+                    </h2>
+                    <button
+                        onClick={() => navigate("/games/match-the-right")}
+                        className="text-sm text-primary font-semibold hover:underline"
+                    >
+                        Back to Level Select
+                    </button>
+                </div>
 
                 {/* ================= MASCOT ================= */}
                 <div className="flex justify-center items-center gap-4 mb-4">
@@ -120,8 +238,8 @@ export default function MatchTheRight() {
                 </div>
 
                 {/* ================= STATS ================= */}
-                <div className="flex justify-center gap-4 mb-8">
-                    <Badge>⭐ {score}/{totalCorrect}</Badge>
+                <div className="flex justify-center gap-4 mb-8 flex-wrap">
+                    <Badge>✓ {score}/{totalCorrect}</Badge>
                     <Badge>⏱ {timeLeft}s</Badge>
                 </div>
 
@@ -130,7 +248,6 @@ export default function MatchTheRight() {
                     className="grid md:grid-cols-2 gap-10"
                     style={{ pointerEvents: timeUp ? "none" : "auto", opacity: timeUp ? 0.5 : 1 }}
                 >
-
                     {/* LEFT – Situations */}
                     <div>
                         <h3 className="font-bold mb-3">Situations</h3>
@@ -162,10 +279,9 @@ export default function MatchTheRight() {
                     <div>
                         <h3 className="font-bold mb-3">Child Rights</h3>
                         {round.rights.map((right) => {
-                            // Check if this right has been matched
                             const isMatched = matched.some(
                                 (sit) => round.answers[sit] === right.name
-                            );
+                            )
                             return (
                                 <motion.div
                                     key={right.name}
@@ -182,11 +298,10 @@ export default function MatchTheRight() {
                                             ? { x: [-5, 5, -5, 5, 0] }
                                             : {}
                                     }
-                                    className={`border-2 rounded-xl p-5 text-center mb-4 transition-all duration-300 ${
-                                        isMatched
-                                            ? "bg-green-100 border-green-500 text-green-700 border-2"
-                                            : "border-2 border-dashed " + right.color
-                                    }`}
+                                    className={`border-2 rounded-xl p-5 text-center mb-4 transition-all duration-300 ${isMatched
+                                        ? "bg-green-100 border-green-500 text-green-700 border-2"
+                                        : "border-2 border-dashed " + right.color
+                                        }`}
                                 >
                                     <span className="flex items-center justify-center gap-2">
                                         {right.name}
@@ -195,7 +310,7 @@ export default function MatchTheRight() {
                                         )}
                                     </span>
                                 </motion.div>
-                            );
+                            )
                         })}
                     </div>
                 </div>
@@ -215,25 +330,34 @@ export default function MatchTheRight() {
                                     <h3 className="text-3xl font-bold mb-2">
                                         Congratulations!
                                     </h3>
-                                    <p className="text-xl font-semibold text-primary mb-4">
+                                    <p className="text-xl font-semibold text-primary mb-6">
                                         Level {currentLevel + 1} Complete! 🌟
                                     </p>
 
                                     {currentLevel < levels.length - 1 ? (
                                         <button
-                                            onClick={() => setCurrentLevel((l) => l + 1)}
+                                            onClick={() => {
+                                                const nextLevel = currentLevel + 2
+                                                navigate(`/games/match-the-right/level/${nextLevel}`)
+                                            }}
                                             className="w-full px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition"
                                         >
                                             Next Level 🚀
                                         </button>
                                     ) : (
                                         <button
-                                            onClick={() => setCurrentLevel(0)}
+                                            onClick={() => navigate("/games/match-the-right/level/1")}
                                             className="w-full px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition"
                                         >
                                             Restart Game 🔄
                                         </button>
                                     )}
+                                    <button
+                                        onClick={() => navigate("/games/match-the-right")}
+                                        className="w-full mt-3 px-8 py-3 bg-white text-primary border border-primary rounded-xl font-semibold hover:bg-primary/5 transition"
+                                    >
+                                        📚 Choose Level
+                                    </button>
                                     <button
                                         onClick={() => window.location.href = "/games"}
                                         className="w-full mt-3 px-8 py-3 bg-yellow-400 text-black rounded-xl font-semibold hover:bg-yellow-500 transition"
