@@ -88,15 +88,38 @@ export default function LevelFiveEquality() {
     }
   };
 
-  const completeLevel = () => {
-    // ✅ IMPORTANT: After Level 5, set to 6 so completion modal triggers on map
+  const completeLevel = async () => {
+  try {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) return;
+
+    const user = JSON.parse(storedUser);
+
+    // 🔥 Save badge in DB
+    await fetch("http://localhost:5000/api/badges/earn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.id,          // ✅ correct user id
+        levelId: 5,
+        badge: "⚖ Equality Guardian",
+      }),
+    });
+
+    // After Level 5 → unlock next
     localStorage.setItem("legalHeroLevel", "6");
 
     setCompleted(true);
     setShowLevelUp(true);
 
     setTimeout(() => setShowLevelUp(false), 2000);
-  };
+  } catch (err) {
+    console.error("❌ Failed to store equality badge:", err);
+  }
+};
+
 
   return (
     <>

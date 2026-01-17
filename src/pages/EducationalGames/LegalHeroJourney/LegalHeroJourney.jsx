@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { levels as initialLevels } from "./levelsData";
+import { levels as initialLevels } from "../../../data/levelsData";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";

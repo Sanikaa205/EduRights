@@ -64,7 +64,7 @@ export default function LevelTwoSchoolRights() {
 
       setTimeout(() => {
         if (currentQuestion < questions.length - 1) {
-          setCurrentQuestion(currentQuestion + 1);
+          setCurrentQuestion((prev) => prev + 1);
           setAnswered(false);
         } else {
           completeLevel();
@@ -73,26 +73,33 @@ export default function LevelTwoSchoolRights() {
     }
   };
 
-  // ✅ Complete Level
+  // ✅ COMPLETE LEVEL + SAVE BADGE IN DB
   const completeLevel = async () => {
-    localStorage.setItem("legalHeroLevel", "3");
-    setCompleted(true);
+  setCompleted(true);
+  localStorage.setItem("legalHeroLevel", "3");
 
-    try {
-      const userId = localStorage.getItem("userId");
-      await fetch("http://localhost:5000/api/game/complete-level", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId,
-          level: 2,
-          badge: "🏫 School Hero",
-        }),
-      });
-    } catch (err) {
-      console.error("Failed to save Level 2:", err);
-    }
-  };
+  try {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) return;
+
+    const user = JSON.parse(storedUser);
+
+    await fetch("http://localhost:5000/api/badges/earn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.id,      // ✅ FIXED
+        levelId: 2,
+        badge: "🏫 School Hero",
+      }),
+    });
+  } catch (err) {
+    console.error("❌ Failed to store badge:", err);
+  }
+};
+
 
   return (
     <>
@@ -107,7 +114,7 @@ export default function LevelTwoSchoolRights() {
           Question {currentQuestion + 1} of {questions.length}
         </p>
 
-        {/* 👦 Character */}
+        {/* Character */}
         <motion.div
           animate={{ y: [0, -10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
@@ -182,15 +189,13 @@ export default function LevelTwoSchoolRights() {
                   🏫 School Hero Badge Earned!
                 </Badge>
 
-                <div>
-                  <Button
-                    onClick={() =>
-                      (window.location.href = "/games/legal-hero-journey")
-                    }
-                  >
-                    Back to Map 🗺
-                  </Button>
-                </div>
+                <Button
+                  onClick={() =>
+                    (window.location.href = "/games/legal-hero-journey")
+                  }
+                >
+                  Back to Map 🗺
+                </Button>
               </div>
             )}
           </CardContent>

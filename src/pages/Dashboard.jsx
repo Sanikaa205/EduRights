@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { levels } from "@/data/levelsData";
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,44 +7,65 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProgressBar from "@/components/ui/ProgressBar";
 import StatCard from "@/components/ui/StatCard";
-import { Trophy, Star, Award, BookOpen, Brain, HelpCircle, ArrowRight, Zap, Lock } from "lucide-react";
+
+import {
+  Trophy,
+  Star,
+  Award,
+  BookOpen,
+  HelpCircle,
+  ArrowRight,
+  Zap,
+  Lock,
+} from "lucide-react";
 
 const Dashboard = () => {
+  // ---------------- STATE ----------------
+  const [user, setUser] = useState({
+    name: "",
+    level: 0,
+    points: 0,
+    badges: 0,
+    progress: 0,
+  });
 
-const [user, setUser] = useState({
-  name: "Alex",
-  level: 1,
-  points: 0,
-  badges: 0,
-  progress: 0,
-});
-useEffect(() => {
+  const [badges, setBadges] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // ---------------- FETCH DASHBOARD ----------------
+ useEffect(() => {
   const storedUser = localStorage.getItem("user");
-
-  if (storedUser) {
-    const parsedUser = JSON.parse(storedUser);
-
-    setUser((prev) => ({
-      ...prev,
-      name: parsedUser.name || prev.name,
-    }));
+  if (!storedUser) {
+    setLoading(false);   // <-- fixed
+    return;
   }
+
+  const userData = JSON.parse(storedUser);
+
+  setUser(prev => ({ ...prev, name: userData.name }));
+
+  fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+    .then((res) => res.json())
+    .then((data) => {
+      setUser({
+        name: data.name,
+        level: data.level,
+        points: data.points,
+        badges: data.badges?.length || 0,
+        progress: data.progress,
+      });
+      setBadges(data.badges || []);
+      setLoading(false);
+    })
+    .catch(() => setLoading(false));
 }, []);
 
 
-  const badges = [
-    { name: "First Steps", earned: true },
-    { name: "Quiz Master", earned: true },
-    { name: "Safety Star", earned: true },
-    { name: "Rights Hero", earned: true },
-    { name: "Super Learner", earned: true },
-    { name: "Helper Badge", earned: true },
-    { name: "Champion", earned: true },
-    { name: "Explorer", earned: true },
-    { name: "Equality Pro", earned: false },
-    { name: "Voice Hero", earned: false },
-  ];
+  // ---------------- BADGE LOGIC ----------------
+const earnedLevelIds = badges.map((b) => b.levelId);
 
+
+  // ---------------- QUICK ACTIONS ----------------
   const quickActions = [
     {
       title: "Learning Modules",
@@ -71,52 +93,40 @@ useEffect(() => {
     },
   ];
 
+  // ---------------- LOADING ----------------
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <span className="text-xl font-bold">Loading Dashboard...</span>
+      </div>
+    );
+  }
+
+  // ---------------- UI ----------------
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
 
-      <main className="flex-1 py-8 md:py-12 relative overflow-hidden">
-          <div className="container mx-auto px-4">
-          {/* Welcome Header */}
-          <div className="mb-8 animate-slide-up">
-            <div className="flex items-center gap-4 mb-2">
-              <div className="w-16 h-16 gradient-hero rounded-2xl flex items-center justify-center shadow-[0_6px_0_hsl(280_70%_45%)]">
-                <Trophy className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground">
-                  Welcome back, {user.name}.
-                </h1>
-                <p className="font-body font-semibold text-muted-foreground text-lg">
-                  Continue where you left off and track your progress.
-                </p>
-              </div>
-            </div>
+      <main className="flex-1 py-8 md:py-12">
+        <div className="container mx-auto px-4">
+
+          {/* WELCOME */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold">
+              Welcome back, {user.name}
+            </h1>
+            <p className="text-muted-foreground">
+              Track your learning journey
+            </p>
           </div>
 
-          {/* Progress Section */}
-          <div className="card-cartoon mb-8 border-4 border-primary/30">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 gradient-hero rounded-2xl flex items-center justify-center shadow-[0_6px_0_hsl(280_70%_45%)]">
-                <Trophy className="w-8 h-8 text-primary-foreground" />
-              </div>
-              <div>
-                <h2 className="font-display font-bold text-2xl text-foreground">
-                  Your Progress
-                </h2>
-                <p className="font-body font-semibold text-muted-foreground">
-                  Keep up the progress — you're at {user.progress}%.
-                </p>
-              </div>
-              <div className="ml-auto hidden md:flex items-center gap-2 bg-secondary/20 px-4 py-2 rounded-xl">
-                <Zap className="w-5 h-5 text-secondary" />
-                <span className="font-display font-bold text-secondary-foreground">5-day streak</span>
-              </div>
-            </div>
-            <ProgressBar value={user.progress} variant="rainbow" size="lg" />
+          {/* PROGRESS */}
+          <div className="mb-8">
+            <h2 className="font-bold text-xl mb-2">Your Progress</h2>
+            <ProgressBar value={user.progress} />
           </div>
 
-          {/* Stats Grid */}
+          {/* STATS */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <StatCard
               title="Current Level"
@@ -126,7 +136,7 @@ useEffect(() => {
             />
             <StatCard
               title="Total Points"
-              value={user.points.toLocaleString()}
+              value={(user.points ?? 0).toLocaleString()}
               icon={Star}
               variant="purple"
             />
@@ -138,71 +148,56 @@ useEffect(() => {
             />
           </div>
 
-          {/* Badges Section */}
-          <div className="card-cartoon mb-8 border-4 border-secondary/30">
-            <div className="flex items-center gap-3 mb-6">
-              <Award className="w-6 h-6 text-primary-foreground" />
-              <h2 className="font-display font-bold text-2xl text-foreground">
-                Your Badges
-              </h2>
-            </div>
+          {/* BADGES */}
+          <div className="mb-10">
+            <h2 className="font-bold text-2xl mb-4">Your Badges</h2>
+
             <div className="flex flex-wrap gap-3">
-              {badges.map((badge, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center gap-2 px-4 py-3 rounded-2xl font-body font-semibold transition-all duration-200 ${
-                    badge.earned
-                      ? "bg-secondary shadow-[0_4px_0_hsl(var(--secondary-depth))] hover:translate-y-[-2px] hover:shadow-[0_6px_0_hsl(var(--secondary-depth))] cursor-pointer"
-                      : "bg-muted opacity-60 shadow-[0_4px_0_hsl(var(--border))]"
-                  }`}
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  {badge.earned ? (
-                    <Award className="w-5 h-5 text-secondary-foreground" />
-                  ) : (
-                    <Lock className="w-4 h-4 text-muted-foreground" />
-                  )}
-                  <span className="text-sm text-foreground">
-                    {badge.name}
-                  </span>
-                </div>
-              ))}
+              {levels.map((level) => {
+                const earned = earnedLevelIds.includes(level.id);
+
+
+                return (
+                  <div
+                    key={level.id}
+                    className={`flex items-center gap-2 px-4 py-3 rounded-xl ${
+                      earned
+                        ? "bg-secondary"
+                        : "bg-muted opacity-60"
+                    }`}
+                  >
+                    {earned ? <Award /> : <Lock />}
+                    <span>{level.badge}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="flex items-center gap-3 mb-6">
-            <span className="text-4xl"><Zap className="w-6 h-6" /></span>
-            <h2 className="font-display font-bold text-2xl text-foreground">
-              Continue Learning
-            </h2>
-          </div>
+          {/* QUICK ACTIONS */}
+          <h2 className="font-bold text-2xl mb-4">Continue Learning</h2>
+
           <div className="grid md:grid-cols-3 gap-6">
             {quickActions.map((action, index) => (
               <Link key={index} to={action.href}>
                 <div
-                  className={`card-cartoon p-6 ${action.gradient} ${action.shadow} h-full hover:translate-y-[-6px] hover:shadow-[0_12px_0_hsl(200_50%_40%)]`}
+                  className={`p-6 rounded-xl ${action.gradient} ${action.shadow}`}
                 >
-                  <div className="mb-4" style={{ animationDelay: `${index * 0.15}s` }}>
-                    <action.icon className="w-10 h-10" />
-                  </div>
-                  <div className="w-12 h-12 bg-primary-foreground/20 rounded-2xl flex items-center justify-center mb-4">
-                    <action.icon className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  <h3 className="font-display font-bold text-xl text-primary-foreground mb-2">
+                  <action.icon className="w-8 h-8 mb-3" />
+                  <h3 className="font-bold text-lg mb-2">
                     {action.title}
                   </h3>
-                  <p className="font-body text-primary-foreground/80 text-sm mb-4">
+                  <p className="text-sm mb-4">
                     {action.description}
                   </p>
-                  <Button variant="secondary" size="sm" className="gap-2">
-                    Go Now
-                    <ArrowRight className="w-4 h-4" />
+                  <Button size="sm" className="gap-2">
+                    Go Now <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
               </Link>
             ))}
           </div>
+
         </div>
       </main>
 

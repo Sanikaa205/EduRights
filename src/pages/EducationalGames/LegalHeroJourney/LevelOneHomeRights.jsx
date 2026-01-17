@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import LevelUpAnimation from "./LevelUpAnimation";
 
+import { levels } from "@/data/levelsData"; // ✅ ADD THIS
+
 import Riya from "@/assets/riya.png";
 import correctSound from "@/assets/correct.mp3";
 
@@ -15,6 +17,9 @@ export default function LevelOneHomeRights() {
   const [answered, setAnswered] = useState(false);
   const [correct, setCorrect] = useState(false);
   const [showLevelUp, setShowLevelUp] = useState(false);
+
+  // ✅ Get Level 1 data from levelsData.js
+  const levelData = levels.find((lvl) => lvl.id === 1);
 
   const playCorrectSound = () => {
     const audio = new Audio(correctSound);
@@ -56,6 +61,7 @@ export default function LevelOneHomeRights() {
     },
   ];
 
+  // ✅ UPDATED HANDLE ANSWER
   const handleAnswer = (isCorrect) => {
     setAnswered(true);
     setCorrect(isCorrect);
@@ -63,14 +69,35 @@ export default function LevelOneHomeRights() {
     if (isCorrect) {
       playCorrectSound();
 
-      setTimeout(() => {
+      setTimeout(async () => {
         if (currentQuestion < questions.length - 1) {
-          setCurrentQuestion(currentQuestion + 1);
+          setCurrentQuestion((prev) => prev + 1);
           setAnswered(false);
         } else {
+          // 🎯 LEVEL COMPLETED
           localStorage.setItem("legalHeroLevel", "2");
           setShowLevelUp(true);
-          // Do not auto-hide the popup; let it stay until user clicks
+
+          // ✅ SAVE BADGE TO DB
+          const user = JSON.parse(localStorage.getItem("user"));
+
+          if (user?.id) {
+            try {
+              await fetch("/api/badges/earn", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  userId: user.id,
+                  levelId: levelData.id,
+                  badge: levelData.badge,
+                }),
+              });
+            } catch (error) {
+              console.error("Failed to save badge:", error);
+            }
+          }
         }
       }, 1200);
     }
@@ -80,11 +107,12 @@ export default function LevelOneHomeRights() {
     <>
       <Navbar />
 
-      <LevelUpAnimation show={showLevelUp} badge="⭐ Home Hero" />
+      {/* ✅ BADGE FROM levelsData */}
+      <LevelUpAnimation show={showLevelUp} badge={levelData.badge} />
 
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <h1 className="text-3xl font-bold mb-2 text-center">
-          🏠 Level 1: Home Rights
+          🏠 Level 1: {levelData.title}
         </h1>
 
         <p className="text-center text-muted-foreground mb-6">
@@ -156,9 +184,11 @@ export default function LevelOneHomeRights() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
             <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md mx-auto text-center animate-bounceIn">
               <h2 className="text-3xl font-bold mb-2">🎉 Congratulations!</h2>
-              <p className="text-lg mb-4">You completed Level 1: Home Rights</p>
+              <p className="text-lg mb-4">
+                You completed Level 1: {levelData.title}
+              </p>
               <Badge className="text-lg px-4 py-2 mb-4 block mx-auto">
-                ⭐ Home Hero Badge Earned!
+                {levelData.badge} Badge Earned!
               </Badge>
               <Button
                 className="mt-2 w-full bg-yellow-400 text-black hover:bg-yellow-500"
