@@ -9,6 +9,24 @@ import SchoolCanvas from "./SchoolCanvas";
 import PopupCard from "./PopupCard";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { Card, CardContent } from "@/components/ui/card";
+
+// Import level completion images
+import level1Img from "@/assets/schoolLevels/level1.png";
+import level2Img from "@/assets/schoolLevels/level2.png";
+import level3Img from "@/assets/schoolLevels/level3.png";
+import level4Img from "@/assets/schoolLevels/level4.png";
+
+// Celebration sound URL
+const CELEBRATION_SOUND_URL = "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3";
+
+// Level completion images map
+const levelImages = {
+  1: level1Img,
+  2: level2Img,
+  3: level3Img,
+  4: level4Img,
+};
 
 const UNLOCK_KEY = "buildSchoolLevel";
 
@@ -70,6 +88,11 @@ export default function BuildYourSchool(){
   const [popup, setPopup] = useState(null);
   const [stars, setStars] = useState(0);
   
+  // Celebration states (like BrokenStory)
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [showLevelCompleteModal, setShowLevelCompleteModal] = useState(false);
+  const celebrationRef = useRef(false);
+  
   // Personalization - load from localStorage if exists
   const [mascot, setMascot] = useState(() => localStorage.getItem("buildSchoolMascot") || "owl");
   const [theme, setTheme] = useState(() => localStorage.getItem("buildSchoolTheme") || "blue");
@@ -93,6 +116,11 @@ export default function BuildYourSchool(){
     
     // Only show personalization on Level 1 if not already personalized
     setShowPersonalize(levelNumber === 1 && !savedName);
+    
+    // Reset celebration state when level changes
+    setShowCelebration(false);
+    setShowLevelCompleteModal(false);
+    celebrationRef.current = false;
   }, [id, levelNumber]);
 
   const mascots = [
@@ -129,9 +157,22 @@ export default function BuildYourSchool(){
     return nextFun ? [...nextRights, nextFun.id] : nextRights;
   };
 
+  // Max elements allowed to place
+  const MAX_ELEMENTS = 5;
+
   // Place a card
   const addElement = (element) => {
     if (builtElements.some(e => e.id === element.id)) return;
+
+    // Check if max limit reached
+    if (builtElements.length >= MAX_ELEMENTS) {
+      setPopup({
+        title: "⚠️ Limit Reached!",
+        message: "You can only place 5 elements. Remove one to add a new one!",
+        type: "hint",
+      });
+      return;
+    }
 
     // Count unlocked but unplaced cards
     const unlockedUnplaced = currentLevel.elements.filter(e => unlocked.includes(e.id) && !builtElements.some(b => b.id === e.id));
@@ -203,8 +244,28 @@ export default function BuildYourSchool(){
     // Optionally: lock again? (for now, keep unlocked)
   };
 
-  const levelCompleted = stars === totalImportant;
+  const levelCompleted = stars === totalImportant && totalImportant > 0;
   const allLevelsCompleted = levelIdx === schoolLevels.length - 1 && levelCompleted;
+
+  // Celebration + modal flow (like BrokenStory)
+  useEffect(() => {
+    if (levelCompleted && !celebrationRef.current) {
+      celebrationRef.current = true;
+      setShowCelebration(true);
+
+      // Play celebration sound
+      try {
+        const audio = new Audio(CELEBRATION_SOUND_URL);
+        audio.volume = 0.35;
+        audio.play().catch(() => {});
+      } catch {}
+
+      // Hide "Yayy!" text after 2 seconds, image stays visible
+      setTimeout(() => setShowCelebration(false), 2000);
+      // Show modal after 5 seconds (image visible for 3 more seconds after Yayy disappears)
+      setTimeout(() => setShowLevelCompleteModal(true), 5000);
+    }
+  }, [levelCompleted]);
 
   return (
     <>
@@ -277,15 +338,34 @@ export default function BuildYourSchool(){
             Think carefully and design a safe & fair school for children
           </p>
           {/* PROGRESS */}
-          <div className="w-full bg-muted rounded-full h-4 overflow-hidden">
-            <div
-              className="h-full bg-primary transition-all"
-              style={{ width: `${(stars / totalImportant) * 100}%` }}
-            />
+          <div className="flex items-center gap-4">
+            {/* Elements placed progress */}
+            <div className="flex-1">
+              <div className="flex justify-between text-sm mb-1">
+                <span>🏗️ Elements Placed</span>
+                <span className="font-bold">{builtElements.length} / {MAX_ELEMENTS}</span>
+              </div>
+              <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
+                <div
+                  className="h-full bg-blue-500 transition-all"
+                  style={{ width: `${(builtElements.length / MAX_ELEMENTS) * 100}%` }}
+                />
+              </div>
+            </div>
+            {/* Rights unlocked progress */}
+            <div className="flex-1">
+              <div className="flex justify-between text-sm mb-1">
+                <span>⭐ Rights Unlocked</span>
+                <span className="font-bold">{stars} / {totalImportant}</span>
+              </div>
+              <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
+                <div
+                  className="h-full bg-yellow-500 transition-all"
+                  style={{ width: `${(stars / totalImportant) * 100}%` }}
+                />
+              </div>
+            </div>
           </div>
-          <p className="text-sm text-center">
-            ⭐ {stars} / {totalImportant} rights unlocked
-          </p>
           {/* TWO COLUMN LAYOUT */}
           <div className="grid grid-cols-2 gap-6">
             {/* LEFT: Card Shelf */}
@@ -300,15 +380,41 @@ export default function BuildYourSchool(){
                 />
               ))}
             </div>
-            {/* RIGHT: School Canvas */}
-            <SchoolCanvas
-              builtElements={builtElements}
-              onDelete={deleteElement}
-              schoolName={schoolName}
-              mascot={mascots.find(m => m.id === mascot)?.icon}
-            />
+            {/* RIGHT: School Canvas or Completion Image */}
+            {levelCompleted ? (
+              <div className="rounded-xl min-h-[420px] flex flex-col items-center justify-center relative overflow-hidden">
+                {/* Final Level Image - covers entire canvas */}
+                <img 
+                  src={levelImages[levelNumber] || levelImages[1]} 
+                  alt={`Level ${levelNumber} Complete`}
+                  className="absolute inset-0 w-full h-full object-cover rounded-xl"
+                />
+                
+                {/* Celebration Text Overlay */}
+                {showCelebration && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-xl z-10">
+                    <div className="text-center animate-bounce">
+                      <div className="text-7xl mb-3">🎉</div>
+                      <h2 className="text-5xl font-black text-white drop-shadow-lg">
+                        Yayy!
+                      </h2>
+                      <p className="text-2xl font-bold text-yellow-300 mt-2 drop-shadow-lg">
+                        School Completed!
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <SchoolCanvas
+                builtElements={builtElements}
+                onDelete={deleteElement}
+                schoolName={schoolName}
+                mascot={mascots.find(m => m.id === mascot)?.icon}
+              />
+            )}
           </div>
-          {popup && (
+          {popup && !levelCompleted && (
             <PopupCard
               title={popup.title}
               message={popup.message}
@@ -316,81 +422,98 @@ export default function BuildYourSchool(){
               onClose={() => setPopup(null)}
             />
           )}
-          {levelCompleted && !allLevelsCompleted && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-              <div className="bg-yellow-100 rounded-2xl shadow-xl p-8 w-full max-w-md mx-auto text-center animate-bounceIn">
-                <div className="text-6xl mb-4">🎉</div>
-                <h2 className="text-3xl font-bold mb-2">Level Complete!</h2>
-                <p className="text-lg mb-4">You finished building: <b>{currentLevel.name}</b></p>
-                
-                {/* Badge earned */}
-                <div className="flex flex-col items-center mb-6">
-                  <div className="flex justify-center w-full">
-                    <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-200 to-yellow-400 text-yellow-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-yellow-400">
-                      {currentLevel.badge && (
-                        <>
-                          {currentLevel.badge.split(" ")[0]}
-                          <span className="ml-1">You earned the <span className="underline decoration-yellow-600">{currentLevel.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
-                        </>
-                      )}
-                    </span>
+          {showLevelCompleteModal && !allLevelsCompleted && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+              <Card className="w-96 shadow-2xl">
+                <CardContent className="p-8 text-center">
+                  <div className="text-6xl mb-4">🎉</div>
+                  <h3 className="text-3xl font-bold mb-2">Congratulations!</h3>
+                  <p className="text-xl font-semibold text-primary mb-4">
+                    Level {levelNumber} Complete! 🌟
+                  </p>
+                  <p className="text-muted-foreground mb-4">You finished building: <b>{currentLevel.name}</b></p>
+                  
+                  {/* Badge earned */}
+                  <div className="flex flex-col items-center mb-6 mt-2 w-full">
+                    <div className="flex justify-center w-full">
+                      <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-200 to-yellow-400 text-yellow-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-yellow-400 whitespace-nowrap">
+                        {currentLevel.badge && (
+                          <>
+                            {currentLevel.badge.split(" ")[0]}
+                            <span className="ml-2">You earned a <span className="underline decoration-yellow-600">{currentLevel.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
+                          </>
+                        )}
+                      </span>
+                    </div>
+                    <span className="text-xs text-yellow-700 font-semibold mt-2 text-center block">Keep building, School Architect! 🏗️</span>
                   </div>
-                  <span className="text-xs text-yellow-700 font-semibold mt-2">Keep building, School Architect! 🏗️</span>
-                </div>
-                
-                <button className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition" onClick={() => {
-                  // Unlock next level
-                  const nextLevel = levelNumber + 1;
-                  const currentUnlocked = getUnlockedLevel();
-                  if (nextLevel > currentUnlocked) {
-                    localStorage.setItem(UNLOCK_KEY, String(nextLevel));
-                  }
-                  // Redirect to levels page
-                  navigate("/games/build-your-school");
-                }}>Back to Levels 🚀</button>
-              </div>
+                  
+                  <button className="w-full px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition" onClick={() => {
+                    // Unlock next level
+                    const nextLevel = levelNumber + 1;
+                    const currentUnlocked = getUnlockedLevel();
+                    if (nextLevel > currentUnlocked) {
+                      localStorage.setItem(UNLOCK_KEY, String(nextLevel));
+                    }
+                    // Redirect to levels page
+                    navigate("/games/build-your-school");
+                  }}>Next Level 🚀</button>
+                  <button
+                    onClick={() => navigate("/games")}
+                    className="w-full mt-3 px-8 py-3 bg-yellow-400 text-black rounded-xl font-semibold hover:bg-yellow-500 transition"
+                  >
+                    🏠 Go to Games
+                  </button>
+                </CardContent>
+              </Card>
             </div>
           )}
-          {allLevelsCompleted && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-              <div className="bg-green-100 rounded-2xl shadow-xl p-8 w-full max-w-md mx-auto text-center animate-bounceIn">
-                <div className="text-6xl mb-4">🏆</div>
-                <h2 className="text-3xl font-bold mb-2">Amazing Work!</h2>
-                <p className="text-lg mb-4">You didn't just build a school —<br/>you built a fair and safe place for children 💙</p>
-                
-                {/* Final Badge earned */}
-                <div className="flex flex-col items-center mb-6">
-                  <div className="flex justify-center w-full">
-                    <span className="inline-flex items-center gap-2 bg-gradient-to-r from-green-200 to-emerald-400 text-emerald-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-emerald-400">
-                      {currentLevel.badge && (
-                        <>
-                          {currentLevel.badge.split(" ")[0]}
-                          <span className="ml-1">You earned the <span className="underline decoration-emerald-600">{currentLevel.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
-                        </>
-                      )}
-                    </span>
+          {showLevelCompleteModal && allLevelsCompleted && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+              <Card className="w-96 shadow-2xl">
+                <CardContent className="p-8 text-center">
+                  <div className="text-6xl mb-4">🏆</div>
+                  <h3 className="text-3xl font-bold mb-2">Amazing Work!</h3>
+                  <p className="text-xl font-semibold text-primary mb-4">
+                    All Levels Complete! 🌟
+                  </p>
+                  <p className="text-muted-foreground mb-4">You didn't just build a school —<br/>you built a fair and safe place for children 💙</p>
+                  
+                  {/* Final Badge earned */}
+                  <div className="flex flex-col items-center mb-6 mt-2 w-full">
+                    <div className="flex justify-center w-full">
+                      <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-200 to-yellow-400 text-yellow-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-yellow-400 whitespace-nowrap">
+                        {currentLevel.badge && (
+                          <>
+                            {currentLevel.badge.split(" ")[0]}
+                            <span className="ml-2">You earned a <span className="underline decoration-yellow-600">{currentLevel.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
+                          </>
+                        )}
+                      </span>
+                    </div>
+                    <div className="mt-3 px-4 py-2 bg-gradient-to-r from-purple-200 to-pink-200 rounded-full border-2 border-purple-300">
+                      <span className="text-purple-800 font-bold">🎓 Master School Builder</span>
+                    </div>
+                    <span className="text-xs text-yellow-700 font-semibold mt-2 text-center block">Keep going, Rights Champion!</span>
                   </div>
-                  <div className="mt-3 px-4 py-2 bg-gradient-to-r from-purple-200 to-pink-200 rounded-full border-2 border-purple-300">
-                    <span className="text-purple-800 font-bold">🎓 Master School Builder - All Levels Complete!</span>
-                  </div>
-                </div>
-                
-                <button className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition" onClick={() => {
-                  // Mark all levels complete
-                  const totalLevels = schoolLevels.length;
-                  const currentUnlocked = getUnlockedLevel();
-                  if (totalLevels + 1 > currentUnlocked) {
-                    localStorage.setItem(UNLOCK_KEY, String(totalLevels + 1));
-                  }
-                  navigate("/games/build-your-school");
-                }}>Back to Levels 🚀</button>
-                <button
-                  className="w-full mt-3 px-6 py-3 bg-yellow-400 text-black rounded-lg font-bold text-lg hover:bg-yellow-500 transition"
-                  onClick={() => navigate("/games")}
-                >
-                  🏠 Go to Games
-                </button>
-              </div>
+                  
+                  <button className="w-full px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition" onClick={() => {
+                    // Mark all levels complete
+                    const totalLevels = schoolLevels.length;
+                    const currentUnlocked = getUnlockedLevel();
+                    if (totalLevels + 1 > currentUnlocked) {
+                      localStorage.setItem(UNLOCK_KEY, String(totalLevels + 1));
+                    }
+                    navigate("/games/build-your-school");
+                  }}>Restart Game 🔄</button>
+                  <button
+                    onClick={() => navigate("/games")}
+                    className="w-full mt-3 px-8 py-3 bg-yellow-400 text-black rounded-xl font-semibold hover:bg-yellow-500 transition"
+                  >
+                    🏠 Go to Games
+                  </button>
+                </CardContent>
+              </Card>
             </div>
           )}
         </div>
