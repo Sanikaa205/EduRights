@@ -86,13 +86,35 @@ export default function LevelThreeOnlineSafety() {
     }
   };
 
-  const completeLevel = () => {
+ const completeLevel = async () => {
+  const storedUser = localStorage.getItem("user");
+  if (!storedUser) return;
+
+  const user = JSON.parse(storedUser);
+
+  try {
+    await fetch("http://localhost:5000/api/badges/earn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.id,
+        levelId: 3,
+        badge: "💻 Online Safety Hero",
+      }),
+    });
+
     localStorage.setItem("legalHeroLevel", "4");
+
     setCompleted(true);
     setShowLevelUp(true);
 
     setTimeout(() => setShowLevelUp(false), 2000);
-  };
+  } catch (err) {
+    console.error("Badge save failed", err);
+  }
+};
 
   return (
     <>

@@ -85,12 +85,36 @@ export default function LevelFourWorkplace() {
     }
   };
 
-  const completeLevel = () => {
+  const completeLevel = async () => {
+  try {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) return;
+
+    const user = JSON.parse(storedUser);
+
+    // 🔥 Save badge in DB
+    await fetch("http://localhost:5000/api/badges/earn", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.id,       // ✅ correct id
+        levelId: 4,
+        badge: "🏢 Workplace Hero",
+      }),
+    });
+
     localStorage.setItem("legalHeroLevel", "5");
     setCompleted(true);
     setShowLevelUp(true);
+
     setTimeout(() => setShowLevelUp(false), 2000);
-  };
+  } catch (err) {
+    console.error("❌ Failed to store workplace badge:", err);
+  }
+};
+
 
   return (
     <>

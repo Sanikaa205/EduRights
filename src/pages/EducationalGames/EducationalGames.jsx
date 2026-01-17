@@ -5,7 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useNavigate } from "react-router-dom";
 import { levels as brokenStoryLevels } from "./BrokenStory/levelsData";
-import { levels as legalHeroLevels } from "./LegalHeroJourney/levelsData";
+import { levels as legalHeroLevels } from "../../data/levelsData";
 import { schoolLevels } from "./BuildYourSchool/schoolElements";
 import { levels as matchTheRightLevels } from "./MatchTheRight/data";
 import { useEffect, useState } from "react";
