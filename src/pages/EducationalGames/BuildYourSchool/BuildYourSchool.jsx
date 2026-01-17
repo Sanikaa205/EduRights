@@ -1,14 +1,21 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { schoolLevels } from "./schoolElements";
-import { useEffect, useRef } from "react";
 import ElementCard from "./ElementCard";
 import SchoolCanvas from "./SchoolCanvas";
 import PopupCard from "./PopupCard";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+
+const UNLOCK_KEY = "buildSchoolLevel";
+
+const getUnlockedLevel = () => {
+  const stored = Number(localStorage.getItem(UNLOCK_KEY));
+  return Number.isFinite(stored) && stored > 0 ? stored : 1;
+};
 
 // Helper: get initial unlocked ids for a level (first 2 rights-based, 1 fun)
 const getInitialUnlocked = (levelIdx = 0) => {
@@ -29,16 +36,64 @@ function shuffleArray(array) {
 }
 
 export default function BuildYourSchool(){
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
+  // Parse level from route param (id is 1-based levelNumber)
+  const levelNumber = Number(id) || 1;
+  const levelIdxFromRoute = levelNumber - 1;
+  
+  // Level index state - initialized from route param
+  const [levelIdx, setLevelIdx] = useState(levelIdxFromRoute);
+  
+  // Anti-cheat: redirect if level is not unlocked
+  useEffect(() => {
+    const unlockedLevel = getUnlockedLevel();
+    if (levelNumber > unlockedLevel || levelIdxFromRoute < 0 || levelIdxFromRoute >= schoolLevels.length) {
+      navigate("/games/build-your-school");
+    }
+  }, [levelNumber, levelIdxFromRoute, navigate]);
+  
+  // Update levelIdx and reset state when route id changes
+  useEffect(() => {
+    if (levelIdxFromRoute >= 0 && levelIdxFromRoute < schoolLevels.length) {
+      setLevelIdx(levelIdxFromRoute);
+      setUnlocked(getInitialUnlocked(levelIdxFromRoute));
+      setBuiltElements([]);
+      setStars(0);
+    }
+  }, [id]);
+
   // Level state
-  const [levelIdx, setLevelIdx] = useState(0);
-  const [unlocked, setUnlocked] = useState(getInitialUnlocked(0));
+  const [unlocked, setUnlocked] = useState(() => getInitialUnlocked(levelIdxFromRoute));
   const [builtElements, setBuiltElements] = useState([]);
   const [popup, setPopup] = useState(null);
   const [stars, setStars] = useState(0);
-  const [showPersonalize, setShowPersonalize] = useState(true);
-  const [mascot, setMascot] = useState("owl");
-  const [theme, setTheme] = useState("blue");
-  const [schoolName, setSchoolName] = useState("");
+  
+  // Personalization - load from localStorage if exists
+  const [mascot, setMascot] = useState(() => localStorage.getItem("buildSchoolMascot") || "owl");
+  const [theme, setTheme] = useState(() => localStorage.getItem("buildSchoolTheme") || "blue");
+  const [schoolName, setSchoolName] = useState(() => localStorage.getItem("buildSchoolName") || "");
+  
+  // Only show personalization on Level 1 if not already set
+  const [showPersonalize, setShowPersonalize] = useState(() => {
+    const savedName = localStorage.getItem("buildSchoolName");
+    return levelNumber === 1 && !savedName;
+  });
+  
+  // Sync personalization from localStorage when navigating between levels
+  useEffect(() => {
+    const savedMascot = localStorage.getItem("buildSchoolMascot");
+    const savedTheme = localStorage.getItem("buildSchoolTheme");
+    const savedName = localStorage.getItem("buildSchoolName");
+    
+    if (savedMascot) setMascot(savedMascot);
+    if (savedTheme) setTheme(savedTheme);
+    if (savedName) setSchoolName(savedName);
+    
+    // Only show personalization on Level 1 if not already personalized
+    setShowPersonalize(levelNumber === 1 && !savedName);
+  }, [id, levelNumber]);
 
   const mascots = [
     { id: "owl", label: "Owl", icon: "🦉" },
@@ -53,13 +108,17 @@ export default function BuildYourSchool(){
     { id: "yellow", label: "Yellow", color: "bg-yellow-200" },
   ];
 
-  const [shuffledElements, setShuffledElements] = useState(() => shuffleArray(schoolLevels[0].elements));
-  const currentLevel = { ...schoolLevels[levelIdx], elements: shuffledElements };
+  const [shuffledElements, setShuffledElements] = useState(() => shuffleArray(schoolLevels[levelIdxFromRoute]?.elements || []));
+  const currentLevel = schoolLevels[levelIdx] 
+    ? { ...schoolLevels[levelIdx], elements: shuffledElements }
+    : { name: "", elements: [] };
   const totalImportant = currentLevel.elements.filter(e => e.type === "important").length;
 
-  // Shuffle elements when level changes
+  // Shuffle elements when levelIdx state changes
   useEffect(() => {
-    setShuffledElements(shuffleArray(schoolLevels[levelIdx].elements));
+    if (schoolLevels[levelIdx]) {
+      setShuffledElements(shuffleArray(schoolLevels[levelIdx].elements));
+    }
   }, [levelIdx]);
 
   // Helper: get unlocks for a card (default: 2 rights, 1 fun, not already unlocked)
@@ -193,7 +252,13 @@ export default function BuildYourSchool(){
             <button
               className="w-full bg-blue-500 text-white rounded-lg py-2 font-bold text-lg mt-2 hover:bg-blue-600 transition"
               disabled={!schoolName.trim()}
-              onClick={() => setShowPersonalize(false)}
+              onClick={() => {
+                // Save personalization to localStorage
+                localStorage.setItem("buildSchoolMascot", mascot);
+                localStorage.setItem("buildSchoolTheme", theme);
+                localStorage.setItem("buildSchoolName", schoolName.trim());
+                setShowPersonalize(false);
+              }}
             >
               Start Building!
             </button>
@@ -254,26 +319,74 @@ export default function BuildYourSchool(){
           {levelCompleted && !allLevelsCompleted && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
               <div className="bg-yellow-100 rounded-2xl shadow-xl p-8 w-full max-w-md mx-auto text-center animate-bounceIn">
-                <h2 className="text-3xl font-bold mb-2">🎉 Level Complete!</h2>
-                <p className="text-lg mb-2">You finished building: <b>{currentLevel.name}</b></p>
-                <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition" onClick={() => {
-                  setLevelIdx(levelIdx + 1);
-                  setUnlocked(getInitialUnlocked(levelIdx + 1));
-                  setBuiltElements([]);
-                  setStars(0);
-                }}>Next Level</button>
+                <div className="text-6xl mb-4">🎉</div>
+                <h2 className="text-3xl font-bold mb-2">Level Complete!</h2>
+                <p className="text-lg mb-4">You finished building: <b>{currentLevel.name}</b></p>
+                
+                {/* Badge earned */}
+                <div className="flex flex-col items-center mb-6">
+                  <div className="flex justify-center w-full">
+                    <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-200 to-yellow-400 text-yellow-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-yellow-400">
+                      {currentLevel.badge && (
+                        <>
+                          {currentLevel.badge.split(" ")[0]}
+                          <span className="ml-1">You earned the <span className="underline decoration-yellow-600">{currentLevel.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
+                        </>
+                      )}
+                    </span>
+                  </div>
+                  <span className="text-xs text-yellow-700 font-semibold mt-2">Keep building, School Architect! 🏗️</span>
+                </div>
+                
+                <button className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition" onClick={() => {
+                  // Unlock next level
+                  const nextLevel = levelNumber + 1;
+                  const currentUnlocked = getUnlockedLevel();
+                  if (nextLevel > currentUnlocked) {
+                    localStorage.setItem(UNLOCK_KEY, String(nextLevel));
+                  }
+                  // Redirect to levels page
+                  navigate("/games/build-your-school");
+                }}>Back to Levels 🚀</button>
               </div>
             </div>
           )}
           {allLevelsCompleted && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
               <div className="bg-green-100 rounded-2xl shadow-xl p-8 w-full max-w-md mx-auto text-center animate-bounceIn">
-                <h2 className="text-3xl font-bold mb-2">🏆 Amazing Work!</h2>
-                <p className="text-lg mb-2">You didn’t just build a school —<br/>you built a fair and safe place for children 💙</p>
-                <button className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition" onClick={() => window.location.reload()}>Build Again</button>
+                <div className="text-6xl mb-4">🏆</div>
+                <h2 className="text-3xl font-bold mb-2">Amazing Work!</h2>
+                <p className="text-lg mb-4">You didn't just build a school —<br/>you built a fair and safe place for children 💙</p>
+                
+                {/* Final Badge earned */}
+                <div className="flex flex-col items-center mb-6">
+                  <div className="flex justify-center w-full">
+                    <span className="inline-flex items-center gap-2 bg-gradient-to-r from-green-200 to-emerald-400 text-emerald-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-emerald-400">
+                      {currentLevel.badge && (
+                        <>
+                          {currentLevel.badge.split(" ")[0]}
+                          <span className="ml-1">You earned the <span className="underline decoration-emerald-600">{currentLevel.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
+                        </>
+                      )}
+                    </span>
+                  </div>
+                  <div className="mt-3 px-4 py-2 bg-gradient-to-r from-purple-200 to-pink-200 rounded-full border-2 border-purple-300">
+                    <span className="text-purple-800 font-bold">🎓 Master School Builder - All Levels Complete!</span>
+                  </div>
+                </div>
+                
+                <button className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg font-bold text-lg hover:bg-blue-600 transition" onClick={() => {
+                  // Mark all levels complete
+                  const totalLevels = schoolLevels.length;
+                  const currentUnlocked = getUnlockedLevel();
+                  if (totalLevels + 1 > currentUnlocked) {
+                    localStorage.setItem(UNLOCK_KEY, String(totalLevels + 1));
+                  }
+                  navigate("/games/build-your-school");
+                }}>Back to Levels 🚀</button>
                 <button
-                  className="mt-3 px-6 py-2 bg-yellow-400 text-black rounded-lg font-bold text-lg hover:bg-yellow-500 transition"
-                  onClick={() => window.location.href = "/games"}
+                  className="w-full mt-3 px-6 py-3 bg-yellow-400 text-black rounded-lg font-bold text-lg hover:bg-yellow-500 transition"
+                  onClick={() => navigate("/games")}
                 >
                   🏠 Go to Games
                 </button>
