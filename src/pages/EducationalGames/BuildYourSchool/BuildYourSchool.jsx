@@ -16,6 +16,8 @@ import level1Img from "@/assets/schoolLevels/level1.png";
 import level2Img from "@/assets/schoolLevels/level2.png";
 import level3Img from "@/assets/schoolLevels/level3.png";
 import level4Img from "@/assets/schoolLevels/level4.png";
+import level5Img from "@/assets/schoolLevels/level5.png";
+import level6Img from "@/assets/schoolLevels/level6.png";
 
 // Celebration sound URL
 const CELEBRATION_SOUND_URL = "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3";
@@ -26,6 +28,8 @@ const levelImages = {
   2: level2Img,
   3: level3Img,
   4: level4Img,
+  5: level5Img,
+  6: level6Img,
 };
 
 const UNLOCK_KEY = "buildSchoolLevel";
