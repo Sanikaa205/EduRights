@@ -92,34 +92,68 @@ function MainProgressCard({ value }) {
 export default function EducationalGames() {
   const navigate = useNavigate();
 
-  // Progress calculation helpers
-  // Broken Story
-  const brokenStoryCompleted = JSON.parse(
-    localStorage.getItem("brokenStoryCompletedLevels") || "[]"
-  );
-  const brokenStoryProgress = Math.round(
-    (brokenStoryCompleted.length / brokenStoryLevels.length) * 100
-  );
+  // State for real-time progress updates
+  const [brokenStoryProgress, setBrokenStoryProgress] = useState(0);
+  const [legalHeroProgress, setLegalHeroProgress] = useState(0);
+  const [buildSchoolProgress, setBuildSchoolProgress] = useState(0);
+  const [matchRightProgress, setMatchRightProgress] = useState(0);
 
-  // Legal Hero Journey
-  const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
-  const legalHeroProgress = Math.round(
-    ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
-  );
+  // Function to calculate all progress from localStorage
+  const calculateProgress = () => {
+    // Broken Story
+    const brokenStoryCompleted = JSON.parse(
+      localStorage.getItem("brokenStoryCompletedLevels") || "[]"
+    );
+    setBrokenStoryProgress(Math.round(
+      (brokenStoryCompleted.length / brokenStoryLevels.length) * 100
+    ));
 
-  // Build Your School (assume stars or levels completed, fallback to 0)
-  const buildSchoolLevel = Number(
-    localStorage.getItem("buildYourSchoolLevel") || 1
-  );
-  const buildSchoolProgress = Math.round(
-    ((buildSchoolLevel - 1) / schoolLevels.length) * 100
-  );
+    // Legal Hero Journey
+    const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
+    setLegalHeroProgress(Math.round(
+      ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
+    ));
 
-  // Match The Right (use unlocked level for progress)
-  const matchRightUnlocked = Number(localStorage.getItem("matchTheRightUnlockedLevel") || 1);
-  const matchRightProgress = Math.round(
-    ((matchRightUnlocked - 1) / matchTheRightLevels.length) * 100
-  );
+    // Build Your School (uses "buildSchoolLevel" key)
+    const buildSchoolLevel = Number(
+      localStorage.getItem("buildSchoolLevel") || 1
+    );
+    setBuildSchoolProgress(Math.round(
+      ((buildSchoolLevel - 1) / schoolLevels.length) * 100
+    ));
+
+    // Match The Right
+    const matchRightUnlocked = Number(localStorage.getItem("matchTheRightUnlockedLevel") || 1);
+    setMatchRightProgress(Math.round(
+      ((matchRightUnlocked - 1) / matchTheRightLevels.length) * 100
+    ));
+  };
+
+  // Calculate on mount and listen for storage changes
+  useEffect(() => {
+    calculateProgress();
+
+    // Listen for localStorage changes (from other tabs or same tab)
+    const handleStorageChange = (e) => {
+      if (e.key === "buildSchoolLevel" || 
+          e.key === "brokenStoryCompletedLevels" || 
+          e.key === "legalHeroLevel" || 
+          e.key === "matchTheRightUnlockedLevel") {
+        calculateProgress();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    // Also recalculate when window gains focus (for same-tab updates)
+    const handleFocus = () => calculateProgress();
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, []);
 
   // Average progress
   const allProgress = [

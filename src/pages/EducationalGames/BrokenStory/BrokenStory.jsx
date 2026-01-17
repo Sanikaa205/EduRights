@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, ArrowRight, Sparkles } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -292,91 +292,81 @@ const BrokenStory = () => {
         </div>
 
         <AnimatePresence>
-  {showCompletionModal && (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center px-4"
-    >
-      <motion.div
-        initial={{ scale: 0.85, y: 40 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.85, y: 40 }}
-        transition={{ type: "spring", stiffness: 180, damping: 18 }}
-        className="bg-white rounded-3xl w-full max-w-sm shadow-2xl p-8 text-center"
-      >
-        {/* Top Spark Icon */}
-        <div className="flex justify-center mb-4">
-          <div className="text-4xl">✨</div>
-        </div>
+          {showCompletionModal && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 20 }}
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+            >
+              <Card className="w-96 shadow-2xl">
+                <CardContent className="p-8 text-center">
+                  <div className="text-6xl mb-4">🎉</div>
+                  <h3 className="text-3xl font-bold mb-2">
+                    Congratulations!
+                  </h3>
 
-        {/* Scene Complete Badge */}
-        <div className="inline-block bg-yellow-400 text-black text-sm font-semibold px-5 py-1.5 rounded-full mb-4">
-          Scene {currentSceneIndex + 1} of {levelScenes.length} Complete
-        </div>
+                  <p className="text-xl font-semibold text-primary mb-4">
+                    {currentSceneIndex < levelScenes.length - 1 
+                      ? `Scene ${currentSceneIndex + 1} Complete! 🌟`
+                      : `Level Complete! 🌟`
+                    }
+                  </p>
+                  
+                  <p className="text-muted-foreground mb-4">
+                    You've successfully repaired the scene and protected the <strong>{currentScene?.title}</strong>!
+                  </p>
 
-        {/* Title */}
-        <h2 className="text-2xl font-extrabold text-slate-800 mb-2">
-          Excellent Work!
-        </h2>
+                  {/* Motivational Badge Message - Improved Alignment */}
+                  <div className="flex flex-col items-center mb-6 mt-2 w-full">
+                    {currentSceneIndex === levelScenes.length - 1 ? (
+                      <>
+                        <div className="flex justify-center w-full">
+                          <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-200 to-yellow-400 text-yellow-900 font-bold text-base px-6 py-2 rounded-full shadow border-2 border-yellow-400 whitespace-nowrap">
+                            {levelData.badge && (
+                              <>
+                                {levelData.badge.split(" ")[0]}
+                                <span className="ml-2">You earned a <span className="underline decoration-yellow-600">{levelData.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
+                              </>
+                            )}
+                          </span>
+                        </div>
+                        <span className="text-xs text-yellow-700 font-semibold mt-2 text-center block">Keep going, Rights Champion!</span>
+                      </>
+                    ) : (
+                      <div className="bg-slate-100 rounded-xl py-3 px-6 w-full">
+                        <p className="text-lg font-bold text-slate-800">Score: {totalScore}</p>
+                        <p className="text-xs text-slate-500 mt-1">{levelScenes.length - currentSceneIndex - 1} scenes remaining</p>
+                      </div>
+                    )}
+                  </div>
 
-
-        {/* Description */}
-        <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-          You've successfully repaired the scene and protected the <strong>{currentScene?.title}</strong>!
-        </p>
-
-        {/* Score & Badge Row */}
-        <div className="bg-slate-100 rounded-xl py-4 mb-6 flex flex-col items-center justify-center">
-          {/* Show badge only at level end */}
-          {currentSceneIndex === levelScenes.length - 1 ? (
-            <div className="flex flex-col items-center">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-300 to-yellow-400 text-yellow-900 font-bold text-base px-4 py-2 rounded-full shadow border-2 border-yellow-400">
-                {levelData.badge.split(" ")[0]}
-                <span className="ml-1">You earned <span className="underline decoration-yellow-600">{levelData.badge.replace(/^[^ ]+ /, "")}</span> badge!</span>
-              </span>
-              <span className="text-xs text-yellow-700 font-semibold mt-1">Keep going, Rights Champion!</span>
-            </div>
-          ) : (
-            <>
-              <p className="text-xl font-extrabold text-slate-800 mb-0">Score: {totalScore}</p>
-              <p className="text-xs text-slate-500 mt-1">{levelScenes.length - currentSceneIndex - 1} scenes remaining</p>
-            </>
+                  {currentSceneIndex < levelScenes.length - 1 ? (
+                    <button
+                      onClick={handleNextScene}
+                      className="w-full px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition"
+                    >
+                      Next Scene →
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleNextScene}
+                      className="w-full px-8 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition"
+                    >
+                      Next Level 🚀
+                    </button>
+                  )}
+                  <button
+                    onClick={() => navigate("/games")}
+                    className="w-full mt-3 px-8 py-3 bg-yellow-400 text-black rounded-xl font-semibold hover:bg-yellow-500 transition"
+                  >
+                    🏠 Go to Games
+                  </button>
+                </CardContent>
+              </Card>
+            </motion.div>
           )}
-        </div>
-
-        {/* Score Box */}
-        <div className="bg-slate-100 rounded-xl py-4 mb-6">
-          <p className="text-xl font-extrabold text-slate-800">
-            Score: {totalScore}
-          </p>
-          <p className="text-xs text-slate-500 mt-1">
-            {levelScenes.length - currentSceneIndex - 1} scenes remaining
-          </p>
-        </div>
-
-        {/* Buttons */}
-        <div className="flex flex-col gap-3">
-          <button
-            onClick={handleNextScene}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition"
-          >
-            {currentSceneIndex < levelScenes.length - 1 ? "Next Scene →" : "Level Complete! 🎉"}
-          </button>
-
-
-          <button
-            onClick={() => navigate("/games/broken-story/levels")}
-            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-semibold py-3 rounded-xl flex items-center justify-center gap-2 transition"
-          >
-            📚 Back to Levels
-          </button>
-        </div>
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
+        </AnimatePresence>
 
 
       </main>

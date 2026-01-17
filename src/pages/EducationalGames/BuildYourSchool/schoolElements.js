@@ -41,9 +41,9 @@ export const schoolLevels = [
           "Digital learning helps children prepare for the future. Schools should provide basic tech access.",
       },
       {
-        id: "teacher-desk",
-        name: "Teaching & Learning Desk",
-        icon: "🧑‍🏫",
+        id: "playground",
+        name: "Playground",
+        icon: "🛝",
         type: "important",
         right: "Right to Education",
         explanation:
