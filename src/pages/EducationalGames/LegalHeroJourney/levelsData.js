@@ -23,4 +23,11 @@ export const levels = [
     description: "No child labor and safe work",
     badge: "🛡 Worker Protector",
   },
+  {
+  id: 5,
+  title: "Equality & Respect",
+  description: "Everyone deserves equal rights and fair treatment",
+  badge: "⚖ Equality Guardian",
+},
+
 ];
