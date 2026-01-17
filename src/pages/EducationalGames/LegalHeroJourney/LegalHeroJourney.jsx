@@ -48,92 +48,104 @@ export default function LegalHeroJourney() {
     <>
       <Navbar />
 
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold mb-6 text-center">
+      <div className="w-full min-h-screen py-8 px-0 bg-background">
+        <h1 className="text-5xl font-extrabold mb-4 text-center text-primary drop-shadow-lg">
           🗺 Legal Hero Journey
         </h1>
 
-        <p className="text-center text-muted-foreground mb-10 max-w-xl mx-auto">
+        <p className="text-center text-muted-foreground mb-6 max-w-2xl mx-auto text-lg">
           Complete levels, earn badges, and unlock new rights-based adventures.
         </p>
 
-        <div className="overflow-x-auto py-8">
-          <div className="relative flex items-center min-w-[1200px] gap-16">
-            {levels.map((level, index) => {
-              const isEven = index % 2 === 0;
-              const nextLevel = levels[index + 1];
-
-              return (
-                <div
-                  key={level.id}
-                  className="relative flex flex-col items-center"
-                >
-                  {/* Path */}
-                  {nextLevel && (
-                    <svg
-                      className="absolute z-0"
-                      width="120"
-                      height="80"
-                      viewBox="0 0 120 80"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        top: isEven ? "30px" : "auto",
-                        bottom: isEven ? "auto" : "30px",
-                        left: "100%",
-                      }}
-                    >
-                      <path
-                        d={
-                          isEven
-                            ? "M0,40 Q60,0 120,40"
-                            : "M0,40 Q60,80 120,40"
-                        }
-                        stroke="#ccc"
-                        strokeWidth="4"
-                        fill="transparent"
-                      />
-                    </svg>
-                  )}
-
-                  {/* Mascot */}
-                  {level.unlocked && (
-                    <motion.img
-                      src={Mascot}
-                      alt="Mascot"
-                      className="w-14 h-14 mb-2"
-                      animate={{ y: [0, -12, 0] }}
-                      transition={{ duration: 1, repeat: Infinity }}
-                    />
-                  )}
-
-                  {/* Level Button */}
-                  <Button
-                    size="lg"
-                    disabled={!level.unlocked}
-                    className={`w-56 h-20 text-lg flex flex-col justify-center items-center ${
-                      !level.unlocked
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                    }`}
-                    onClick={() =>
-                      (window.location.href = `/games/legal-hero-journey/level-${level.id}`)
-                    }
-                  >
-                    {level.unlocked ? (
-                      `Level ${level.id}: ${level.title}`
-                    ) : (
-                      <Lock className="w-5 h-5" />
-                    )}
-                  </Button>
-
-                  <p className="text-muted-foreground text-sm text-center mt-2 max-w-[150px]">
-                    {level.description}
-                  </p>
-                </div>
-              );
-            })}
+        {/* Progress Indicator */}
+        <div className="flex justify-center mb-10">
+          <div className="flex gap-4">
+            {levels.map((level, idx) => (
+              <div key={level.id} className={`w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold border-2 ${level.unlocked ? 'bg-primary text-white border-primary' : 'bg-white text-primary border-primary/40'} shadow`}>
+                {level.id}
+              </div>
+            ))}
           </div>
+        </div>
+
+        <div className="py-12 flex flex-col items-center gap-12 w-full">
+          {levels.map((level, index) => {
+            const isEven = index % 2 === 0;
+            return (
+              <div
+                key={level.id}
+                className="relative flex flex-col items-center w-full"
+                style={{ minHeight: '160px' }}
+              >
+                {/* Zig-zag connector */}
+                {index !== 0 && (
+                  <svg
+                    width="80" height="80" viewBox="0 0 80 80"
+                    className={`absolute z-0 left-1/2 -translate-x-1/2 -top-16`}
+                    style={{ pointerEvents: 'none' }}
+                  >
+                    <path
+                      d={isEven
+                        ? 'M40,0 Q0,40 40,80' // left curve
+                        : 'M40,0 Q80,40 40,80' // right curve
+                      }
+                      stroke="#bbb" strokeWidth="4" fill="none"
+                    />
+                  </svg>
+                )}
+
+                <div className={`flex w-full justify-center ${isEven ? 'pl-[28rem]' : 'pr-[28rem]'}`}>
+                  <div className={`flex flex-col items-center w-[550px] rounded-3xl shadow-lg border-4 p-4 text-sm transition-all duration-300 ${level.unlocked ? 'bg-gradient-to-br from-white to-blue-50 border-primary/30 hover:shadow-xl hover:scale-[1.02]' : 'bg-gradient-to-br from-stone-100 to-stone-200 border-stone-300'}`}>
+                    {/* Badge/Icon */}
+                    <div className={`mb-2 text-3xl font-display font-bold drop-shadow-md ${level.unlocked ? 'text-primary' : 'text-stone-500'}`}>{level.badge}</div>
+                    
+                    {level.unlocked ? (
+                      <>
+                        {/* Mascot for unlocked */}
+                        <motion.img
+                          src={Mascot}
+                          alt="Mascot"
+                          className="w-14 h-14 mb-2 drop-shadow-lg"
+                          animate={{ y: [0, -12, 0] }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                        />
+                        {/* Level Button */}
+                        <Button
+                          size="lg"
+                          className="w-3/4 h-10 text-lg font-bold flex flex-col justify-center items-center shadow-lg border-2 border-primary/60 hover:scale-105 transition-transform duration-200 bg-gradient-to-r from-primary to-blue-400 text-white rounded-xl"
+                          onClick={() =>
+                            (window.location.href = `/games/legal-hero-journey/level-${level.id}`)
+                          }
+                        >
+                          🚀 Level {level.id}: {level.title}
+                        </Button>
+                        <p className="text-muted-foreground text-sm text-center mt-2 max-w-[400px] font-medium">
+                          {level.description}
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        {/* Locked state - attractive design */}
+                        <motion.div 
+                          className="flex flex-col items-center justify-center py-2"
+                          animate={{ opacity: [0.8, 1, 0.8] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <div className="w-12 h-12 bg-gradient-to-br from-stone-400 to-stone-500 rounded-full flex items-center justify-center shadow-lg mb-2">
+                            <Lock className="w-6 h-6 text-white" />
+                          </div>
+                          <span className="text-xl font-display font-bold text-stone-600 mb-1">Locked</span>
+                          <p className="text-stone-500 text-xs text-center font-medium">
+                            Complete previous level to unlock
+                          </p>
+                        </motion.div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* 🎉 FINAL COMPLETION MODAL */}
@@ -164,6 +176,7 @@ export default function LegalHeroJourney() {
         )}
       </div>
 
+      <div className="mt-20" />
       <Footer />
     </>
   );

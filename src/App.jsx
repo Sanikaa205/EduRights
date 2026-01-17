@@ -35,6 +35,8 @@ import LevelOneHomeRights from "@/pages/EducationalGames/LegalHeroJourney/LevelO
 import LevelTwoSchoolRights from "./pages/EducationalGames/LegalHeroJourney/LevelTwoSchoolRights";
 import LevelThreeOnlineSafety from "./pages/EducationalGames/LegalHeroJourney/LevelThreeOnlineSafety";
 import LevelFourWorkplace from "./pages/EducationalGames/LegalHeroJourney/LevelFourWorkplace";
+import LevelFiveEquality from "./pages/EducationalGames/LegalHeroJourney/LevelFiveEquality";
+
 import BuildYourSchool from "./pages/EducationalGames/BuildYourSchool/BuildYourSchool";
 
 import Module1Start from "./pages/module1/Module1Start";
@@ -117,6 +119,7 @@ export default function App() {
             <Route path="/games/legal-hero-journey/level-2" element={<LevelTwoSchoolRights />} />
             <Route path="/games/legal-hero-journey/level-3" element={<LevelThreeOnlineSafety />} />
             <Route path="/games/legal-hero-journey/level-4" element={<LevelFourWorkplace />} />
+            <Route path="/games/legal-hero-journey/level-5" element={<LevelFiveEquality />} />
             <Route path="/games/match-the-right" element={<MatchTheRightLevels />} />
             <Route path="/games/match-the-right/level/:levelId" element={<MatchTheRight />} />
 
