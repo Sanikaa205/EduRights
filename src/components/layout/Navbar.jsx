@@ -30,27 +30,27 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-card/95 backdrop-blur-lg border-b-4 border-primary/20">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20 md:h-22">
+      <div className="max-w-[95%] xl:max-w-[1400px] mx-auto px-4">
+        <div className="flex items-center justify-between h-16 md:h-18">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-4 group">
-            <div className="w-12 h-12 md:w-14 md:h-14 gradient-hero rounded-2xl flex items-center justify-center shadow-[0_4px_0_hsl(280_70%_45%)] group-hover:shadow-[0_2px_0_hsl(280_70%_45%)] group-hover:translate-y-[2px] transition-all">
-              <span className="text-2xl md:text-3xl">📚</span>
+          <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
+            <div className="w-10 h-10 md:w-11 md:h-11 gradient-hero rounded-xl flex items-center justify-center shadow-[0_3px_0_hsl(280_70%_45%)] group-hover:shadow-[0_1px_0_hsl(280_70%_45%)] group-hover:translate-y-[2px] transition-all">
+              <span className="text-xl md:text-2xl">📚</span>
             </div>
-            <span className="font-display font-bold text-2xl md:text-3xl text-gradient">
+            <span className="font-display font-bold text-xl md:text-2xl text-gradient">
               EduRights
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (
               <Link key={item.path} to={item.path}>
                 <Button
                   variant={isActive(item.path) ? "default" : "ghost"}
-                  size="lg"
-                  className="gap-3 px-5 text-lg font-semibold"
+                  size="default"
+                  className="gap-2 px-4 text-base font-semibold"
                 >
                   <item.icon className="w-5 h-5" />
                   {item.label}
@@ -60,12 +60,12 @@ const Navbar = () => {
           </div>
 
           {/* Auth Buttons - Desktop */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
             <Link to="/login">
               <Button
                 variant="outline"
-                size="lg"
-                className="gap-3 px-6 text-lg font-semibold"
+                size="default"
+                className="gap-2 px-5 text-base font-semibold"
               >
                 <LogIn className="w-5 h-5" />
                 Login
@@ -74,8 +74,8 @@ const Navbar = () => {
             <Link to="/register">
               <Button
                 variant="hero"
-                size="lg"
-                className="gap-3 px-6 text-lg font-semibold"
+                size="default"
+                className="gap-2 px-5 text-base font-semibold"
               >
                 <Sparkles className="w-5 h-5" />
                 Join Free
