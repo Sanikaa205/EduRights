@@ -5,6 +5,29 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import questions from "./module6QuizQuestions";
 
+const API_BASE_URL = "http://localhost:5000/api";
+
+const saveProgressToAPI = async (moduleKey, progress) => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) return;
+
+    await fetch(`${API_BASE_URL}/learn/progress`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: user.id,
+        moduleKey,
+        progress,
+      }),
+    });
+
+    window.dispatchEvent(new Event("learnProgressUpdated"));
+  } catch (error) {
+    console.error("Error saving progress:", error);
+  }
+};
+
 export default function Module6Quiz() {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -36,7 +59,7 @@ export default function Module6Quiz() {
       setCurrent(current + 1);
     } else {
       setShowResult(true);
-      localStorage.setItem("module-6-progress", "100");
+      saveProgressToAPI("module-6-progress", 100);
     }
   };
 

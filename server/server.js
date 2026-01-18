@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import badgeRoutes from "./routes/badges.js";
 import dashboardRoutes from "./routes/dashboard.js";
+import learnRoutes from "./routes/learn.js";
 
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/badges", badgeRoutes);
 app.use("/api", dashboardRoutes);
+app.use("/api/learn", learnRoutes);
 
 
 mongoose
