@@ -14,6 +14,8 @@ import {
   Trophy
 } from "lucide-react";
 
+const API_BASE_URL = "http://localhost:5000/api";
+
 // ================= MODULE DATA =================
 const MODULES = [
   {
@@ -73,43 +75,54 @@ const MODULES = [
 ];
 
 const Modules = () => {
-
-
   // Dynamic progress state
-  const [progresses, setProgresses] = useState(() =>
-    MODULES.map((m) => {
-      if (typeof window === "undefined") return 0;
-      const value = localStorage.getItem(m.key);
-      return value ? parseInt(value, 10) : 0;
-    })
-  );
+  const [progresses, setProgresses] = useState(() => MODULES.map(() => 0));
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const updateProgress = () => {
-      setProgresses(
-        MODULES.map((m) => {
-          const value = localStorage.getItem(m.key);
-          return value ? parseInt(value, 10) : 0;
-        })
-      );
+    const fetchProgress = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (!user || !user.id) {
+          // No user logged in, keep progress at 0
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/learn/progress/${user.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          const progressMap = data.progress || {};
+          
+          setProgresses(
+            MODULES.map((m) => progressMap[m.key] || 0)
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching progress:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    // Update immediately when component mounts
-    updateProgress();
+    fetchProgress();
 
-    // Listen for storage changes from other tabs
-    window.addEventListener("storage", updateProgress);
+    // Listen for custom event when progress is updated from quiz
+    const handleProgressUpdate = () => {
+      fetchProgress();
+    };
+    window.addEventListener("learnProgressUpdated", handleProgressUpdate);
 
     // Listen for visibility changes (returning to tab)
     const handleVisibilityChange = () => {
       if (!document.hidden) {
-        updateProgress();
+        fetchProgress();
       }
     };
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      window.removeEventListener("storage", updateProgress);
+      window.removeEventListener("learnProgressUpdated", handleProgressUpdate);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
