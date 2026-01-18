@@ -167,15 +167,34 @@ export default function EducationalGames() {
   );
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col bg-[#FFF8F0] relative overflow-hidden">
+      {/* Decorative Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Animated blobs */}
+        <div className="absolute -top-20 -right-16 w-72 h-72 bg-purple-200/40 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/3 -left-16 w-64 h-64 bg-blue-200/40 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+        <div className="absolute bottom-20 right-1/3 w-56 h-56 bg-yellow-200/40 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
+        <div className="absolute bottom-40 left-10 w-48 h-48 bg-green-200/40 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1.5s'}} />
+        
+        {/* Floating emojis */}
+        <div className="absolute top-28 left-[8%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3s'}}>🎮</div>
+        <div className="absolute top-44 right-[12%] text-3xl animate-bounce opacity-30" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}>🏆</div>
+        <div className="absolute bottom-52 left-[15%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3.5s', animationDelay: '1s'}}>⭐</div>
+        <div className="absolute top-60 right-[6%] text-3xl animate-bounce opacity-30" style={{animationDuration: '2.8s', animationDelay: '1.5s'}}>🎯</div>
+        <div className="absolute bottom-36 right-[18%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3.2s', animationDelay: '2s'}}>🦸</div>
+        <div className="absolute top-1/2 left-[3%] text-3xl animate-pulse opacity-30" style={{animationDuration: '2s'}}>✨</div>
+        <div className="absolute top-24 left-[45%] text-3xl animate-bounce opacity-30" style={{animationDuration: '2.7s', animationDelay: '0.8s'}}>🌟</div>
+        <div className="absolute bottom-20 left-[35%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3.3s', animationDelay: '1.2s'}}>🎪</div>
+      </div>
+      
       <Navbar />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 relative z-10">
         {/* ===================== HERO SECTION ===================== */}
         <section className="mb-10 text-center">
           <h1 className="text-4xl font-extrabold mb-3">
             🎮 Learn Your Rights Through Games!
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Play fun missions, earn stars ⭐, and become a Legal Hero 🦸‍♂️
             Learning your rights has never been this exciting!
           </p>
@@ -194,14 +213,14 @@ export default function EducationalGames() {
         {/* ===================== GAMES GRID ===================== */}
         <section className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
           {/* -------- Build Your School -------- */}
-          <Card className="transition-transform hover:scale-[1.04] hover:shadow-xl">
+          <Card className="bg-white border-gray-100 transition-transform hover:scale-[1.04] hover:shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
                 🏫 Build Your School
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-gray-600 mb-4">
                 Design a beautiful school by adding classrooms, playgrounds,
                 ramps, and safety features. Learn child rights by building!
               </p>
@@ -227,7 +246,7 @@ export default function EducationalGames() {
           </Card>
 
           {/* -------- Match The Right -------- */}
-          <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
+          <Card className="bg-white border-gray-100 transition-transform hover:scale-[1.02] hover:shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 🧩 Match The Right
@@ -235,7 +254,7 @@ export default function EducationalGames() {
             </CardHeader>
 
             <CardContent>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-gray-600 mb-4">
                 Drag and match situations with the correct child rights.
                 Think fast and score more!
               </p>
@@ -261,14 +280,14 @@ export default function EducationalGames() {
           </Card>
 
           {/* -------- Broken Story -------- */}
-          <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
+          <Card className="bg-white border-gray-100 transition-transform hover:scale-[1.02] hover:shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 🧩 Broken Story
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-gray-600 mb-4">
                 Fix the broken story by placing the right items in the right spots. Learn about rights as you repair each scene!
               </p>
               <div className="flex items-center justify-between mb-4">
@@ -291,14 +310,14 @@ export default function EducationalGames() {
           </Card>
 
           {/* -------- Legal Hero Journey -------- */}
-          <Card className="transition-transform hover:scale-[1.02] hover:shadow-lg">
+          <Card className="bg-white border-gray-100 transition-transform hover:scale-[1.02] hover:shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 🦸‍♀️ Legal Hero Journey
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-gray-600 mb-4">
                 Complete levels, unlock badges, and become a true Legal Hero.
                 Your journey starts here!
               </p>
@@ -324,10 +343,10 @@ export default function EducationalGames() {
 
         {/* ===================== FUN FACT ===================== */}
         <section className="mt-12 max-w-2xl mx-auto">
-          <Card className="bg-muted">
+          <Card className="bg-white/80 backdrop-blur-sm border border-gray-100">
             <CardContent className="text-center py-6">
-              <p className="text-lg font-semibold">💡 Did you know?</p>
-              <p className="text-muted-foreground mt-2">
+              <p className="text-lg font-semibold text-gray-800">💡 Did you know?</p>
+              <p className="text-gray-500 mt-2">
                 Every child has the right to education, safety, and to be heard.
                 Learning your rights helps you protect yourself and others!
               </p>
@@ -337,6 +356,6 @@ export default function EducationalGames() {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }

@@ -95,31 +95,40 @@ const Resources = () => {
   ];
 
   const gradientClasses = {
-    blue: "gradient-card-blue",
-    green: "gradient-card-green",
-    purple: "gradient-card-purple",
-    pink: "gradient-card-pink",
+    blue: "bg-gradient-to-r from-blue-400 to-blue-600",
+    green: "bg-gradient-to-r from-green-400 to-emerald-600",
+    purple: "bg-gradient-to-r from-purple-400 to-purple-600",
+    pink: "bg-gradient-to-r from-pink-400 to-rose-600",
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#FFF8F0] relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-10 text-6xl animate-bounce opacity-20">💡</div>
+        <div className="absolute top-40 right-20 text-5xl animate-pulse opacity-20">📚</div>
+        <div className="absolute bottom-32 left-1/4 text-4xl animate-bounce opacity-20" style={{animationDelay: '0.5s'}}>🌟</div>
+        <div className="absolute top-1/3 right-10 text-5xl animate-pulse opacity-20" style={{animationDelay: '1s'}}>🦸</div>
+        <div className="absolute bottom-20 right-1/4 text-4xl animate-bounce opacity-20" style={{animationDelay: '1.5s'}}>❓</div>
+        <div className="absolute top-1/2 left-5 text-3xl animate-pulse opacity-20" style={{animationDelay: '2s'}}>✨</div>
+      </div>
       <Navbar />
 
-      <main className="flex-1 py-8 md:py-12">
-        <div className="container mx-auto px-4">
+      <main className="flex-1 py-8 md:py-12 relative z-10">
+        <div className="container mx-auto px-4 max-w-[95%] xl:max-w-[1400px]">
 
           {/* ---------- Header ---------- */}
-          <div className="resources-hero mb-10 rounded-2xl p-6 md:p-12">
+          <div className="mb-10 rounded-2xl p-6 md:p-12 bg-gradient-to-r from-amber-100 to-orange-100 shadow-lg">
             <div className="grid md:grid-cols-2 gap-6 items-center">
               <div className="text-left">
-                <div className="inline-flex items-center justify-center w-24 h-24 gradient-hero rounded-3xl shadow-glow mb-4">
+                <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-amber-400 to-orange-500 rounded-3xl shadow-lg mb-4">
                   <span className="text-5xl">💡</span>
                 </div>
-                <h1 className="font-display font-bold text-4xl md:text-5xl text-foreground mb-3">
+                <h1 className="font-display font-bold text-4xl md:text-5xl text-gray-800 mb-3">
                   Knowledge Hub
                 </h1>
-                <p className="font-body text-muted-foreground text-lg md:text-xl max-w-2xl">
-                  Learn about your rights and stay safe! <span className="text-gradient font-semibold">Knowledge is your superpower! 🦸</span>
+                <p className="font-body text-gray-500 text-lg md:text-xl max-w-2xl">
+                  Learn about your rights and stay safe! <span className="text-amber-600 font-semibold">Knowledge is your superpower! 🦸</span>
                 </p>
               </div>
             </div>
@@ -130,67 +139,71 @@ const Resources = () => {
             {/* ---------- FAQs ---------- */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <MessageCircle className="w-6 h-6 text-primary" />
-                <h2 className="font-display font-bold text-2xl text-foreground">FAQs</h2>
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full flex items-center justify-center">
+                  <MessageCircle className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="font-display font-bold text-2xl text-gray-800">FAQs</h2>
               </div>
 
               <div className="mb-4">
                 <label htmlFor="faq-search" className="sr-only">Search FAQs</label>
-                <div className="faq-search flex items-center gap-3 p-3 rounded-lg border border-border bg-card shadow-sm">
+                <div className="flex items-center gap-3 p-3 rounded-lg border-0 bg-white/80 backdrop-blur-sm shadow-lg">
                   <input
                     id="faq-search"
-                    className="flex-1 bg-transparent outline-none text-base text-foreground p-1"
+                    className="flex-1 bg-transparent outline-none text-base text-gray-800 p-1"
                     placeholder="Search questions or keywords..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                   />
-                  <span className="text-muted-foreground text-sm">{query ? `${filteredFaqs.length} results` : ""}</span>
+                  <span className="text-gray-500 text-sm">{query ? `${filteredFaqs.length} results` : ""}</span>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {filteredFaqs.map((faq, index) => (
-                  <div key={index} className="resources-card overflow-hidden rounded-2xl">
+                  <div key={index} className="overflow-hidden rounded-2xl bg-white/80 backdrop-blur-sm shadow-lg border-0">
                     <button
-                      className="w-full p-5 flex items-center justify-between text-left transition-colors hover:bg-muted/50"
+                      className="w-full p-5 flex items-center justify-between text-left transition-colors hover:bg-white/90"
                       onClick={() => setOpenFaq(openFaq === index ? null : index)}
                       aria-expanded={openFaq === index}
                     >
                       <div className="flex items-center gap-4">
                         <span className="text-3xl">{faq.emoji}</span>
-                        <span className="font-display font-semibold text-foreground">{faq.question}</span>
+                        <span className="font-display font-semibold text-gray-800">{faq.question}</span>
                       </div>
-                      {openFaq === index ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
+                      {openFaq === index ? <ChevronUp className="w-5 h-5 text-gray-500" /> : <ChevronDown className="w-5 h-5 text-gray-500" />}
                     </button>
                     <div className={`accordion-content px-5 pb-5 pt-0 ${openFaq === index ? 'open' : ''}`}>
-                      <div className="bg-muted/50 rounded-2xl p-4">
-                        <p className="font-body text-foreground leading-relaxed">{faq.answer}</p>
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-4">
+                        <p className="font-body text-gray-700 leading-relaxed">{faq.answer}</p>
                       </div>
                     </div>
                   </div>
                 ))}
-                {filteredFaqs.length === 0 && <div className="p-4 rounded-lg bg-card text-muted-foreground">No results found. Try different keywords.</div>}
+                {filteredFaqs.length === 0 && <div className="p-4 rounded-lg bg-white/80 text-gray-500">No results found. Try different keywords.</div>}
               </div>
             </div>
 
             {/* ---------- Bite-sized Articles ---------- */}
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <BookOpen className="w-6 h-6 text-primary" />
-                <h2 className="font-display font-bold text-2xl text-foreground">Bite-sized Articles</h2>
+                <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center">
+                  <BookOpen className="w-5 h-5 text-white" />
+                </div>
+                <h2 className="font-display font-bold text-2xl text-gray-800">Bite-sized Articles</h2>
               </div>
 
               <div className="space-y-5">
                 {articles.map((article, index) => (
-                  <div key={index} className="article-card rounded-2xl p-5 shadow-card bg-card hover:scale-105 transition-transform duration-300 cursor-pointer" onClick={() => setSelectedArticle(article)}>
+                  <div key={index} className="rounded-2xl p-5 shadow-lg bg-white/80 backdrop-blur-sm border-0 hover:scale-105 transition-transform duration-300 cursor-pointer" onClick={() => setSelectedArticle(article)}>
                     <div className="flex items-start gap-5">
-                      <div className={`w-14 h-14 rounded-full flex items-center justify-center ${gradientClasses[article.variant]} text-primary-foreground text-xl ring-1 ring-white/25`}>
+                      <div className={`w-14 h-14 rounded-full flex items-center justify-center ${gradientClasses[article.variant]} text-white text-xl ring-2 ring-white shadow-lg`}>
                         {article.emoji}
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-display font-bold text-lg mb-1">{article.title}</h3>
-                        <p className="font-body text-muted-foreground text-sm mb-3">{article.description}</p>
-                        <Button size="sm">Read Article 📖</Button>
+                        <h3 className="font-display font-bold text-lg text-gray-800 mb-1">{article.title}</h3>
+                        <p className="font-body text-gray-500 text-sm mb-3">{article.description}</p>
+                        <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600">Read Article 📖</Button>
                       </div>
                     </div>
                   </div>

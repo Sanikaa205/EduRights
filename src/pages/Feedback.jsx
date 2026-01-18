@@ -21,21 +21,28 @@ const Feedback = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex flex-col bg-background">
-        <div className="feedback-bg" aria-hidden="true" />
+      <div className="min-h-screen flex flex-col bg-[#FFF8F0] relative overflow-hidden">
+        {/* Decorative Animated Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-16 -left-16 w-64 h-64 bg-green-200/40 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/4 -right-20 w-72 h-72 bg-emerald-200/40 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+          <div className="absolute top-24 left-[10%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3s'}}>🎉</div>
+          <div className="absolute top-40 right-[15%] text-3xl animate-bounce opacity-30" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}>💙</div>
+          <div className="absolute bottom-40 left-[8%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3.5s', animationDelay: '1s'}}>⭐</div>
+        </div>
+        
         <Navbar />
 
         <main className="flex-1 flex items-center justify-center py-12 px-4 relative z-10">
           <div className="max-w-md w-full text-center">
-            <div className="feedback-panel mx-auto w-full bg-card rounded-2xl p-8 shadow-lg text-center">
-              <div className="card-playful animate-bounce-in bg-transparent p-0">
-              <div className="w-20 h-20 gradient-card-green rounded-full flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="w-10 h-10 text-success-foreground" />
+            <div className="bg-white rounded-3xl p-8 shadow-lg text-center border border-gray-100">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                <CheckCircle className="w-10 h-10 text-white" />
               </div>
-              <h1 className="font-display font-bold text-3xl text-foreground mb-3">
+              <h1 className="font-bold text-3xl text-gray-800 mb-3">
                 Thank You! 🎉
               </h1>
-              <p className="font-body text-muted-foreground text-lg mb-6">
+              <p className="text-gray-500 text-lg mb-6">
                 Your feedback helps us make EduRights even better for kids like you!
               </p>
               <div className="text-5xl mb-6">💙</div>
@@ -53,7 +60,6 @@ const Feedback = () => {
                 Send More Feedback
               </Button>
             </div>
-            </div>
           </div>
         </main>
 
@@ -63,32 +69,47 @@ const Feedback = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <div className="feedback-bg" aria-hidden="true" />
+    <div className="min-h-screen flex flex-col bg-[#FFF8F0] relative overflow-hidden">
+      {/* Decorative Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Animated blobs */}
+        <div className="absolute -top-16 -left-16 w-64 h-64 bg-pink-200/40 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/4 -right-20 w-72 h-72 bg-purple-200/40 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}} />
+        <div className="absolute bottom-20 left-1/4 w-56 h-56 bg-blue-200/40 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}} />
+        
+        {/* Floating emojis */}
+        <div className="absolute top-24 left-[10%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3s'}}>💬</div>
+        <div className="absolute top-40 right-[15%] text-3xl animate-bounce opacity-30" style={{animationDuration: '2.5s', animationDelay: '0.5s'}}>💙</div>
+        <div className="absolute bottom-40 left-[8%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3.5s', animationDelay: '1s'}}>⭐</div>
+        <div className="absolute top-60 right-[10%] text-3xl animate-bounce opacity-30" style={{animationDuration: '2.8s', animationDelay: '1.5s'}}>✨</div>
+        <div className="absolute bottom-60 right-[22%] text-4xl animate-bounce opacity-30" style={{animationDuration: '3.2s', animationDelay: '2s'}}>🌟</div>
+        <div className="absolute top-1/2 left-[5%] text-3xl animate-pulse opacity-30" style={{animationDuration: '2s'}}>💖</div>
+      </div>
+      
       <Navbar />
 
       <main className="flex-1 py-8 md:py-12 relative z-10">
-        <div className="container mx-auto px-4">
-          <div className="feedback-panel mx-auto max-w-2xl bg-card rounded-2xl p-8 md:p-10 shadow-lg">
+        <div className="max-w-[95%] xl:max-w-[1400px] mx-auto px-4">
+          <div className="mx-auto max-w-2xl bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-20 h-20 gradient-hero rounded-3xl shadow-button mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl shadow-lg mb-6">
               <span className="text-4xl">💬</span>
             </div>
-            <h1 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-3">
+            <h1 className="font-bold text-3xl md:text-4xl text-gray-800 mb-3">
               Share Your Thoughts!
             </h1>
-            <p className="font-body text-muted-foreground text-lg">
+            <p className="text-gray-500 text-lg">
               We love hearing from you! Your thoughts help us improve 💙
             </p>
           </div>
 
           {/* Feedback Form */}
-          <div className="card-playful">
+          <div>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
               <div className="space-y-2">
-                <Label htmlFor="name" className="font-body font-semibold text-foreground">
+                <Label htmlFor="name" className="font-semibold text-gray-700">
                   Your Name (optional) 👋
                 </Label>
                 <Input
@@ -97,13 +118,13 @@ const Feedback = () => {
                   placeholder="What should we call you?"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="h-12 rounded-xl border-2 border-muted focus:border-primary font-body"
+                  className="h-12 rounded-xl border-2 border-gray-200 focus:border-purple-500"
                 />
               </div>
 
               {/* Star Rating */}
               <div className="space-y-2">
-                <Label className="font-body font-semibold text-foreground">
+                <Label className="font-semibold text-gray-700">
                   How much do you like EduRights? ⭐
                 </Label>
                 <div className="flex items-center gap-2 justify-center py-4">
