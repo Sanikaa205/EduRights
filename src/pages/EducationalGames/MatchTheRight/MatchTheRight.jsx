@@ -8,6 +8,7 @@ import Footer from "@/components/layout/Footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { levels } from "./data"
+import { shuffleArray } from "./utils"
 
 import mascot from "@/assets/mascot.png"
 
@@ -23,11 +24,18 @@ export default function MatchTheRight() {
     const [shakeId, setShakeId] = useState(null)
     const [timeLeft, setTimeLeft] = useState(levels[0].time)
     const [timeUp, setTimeUp] = useState(false)
+    const [shuffledRights, setShuffledRights] = useState([])
 
     const round = levels[currentLevel].rounds[0]
 
     const totalCorrect = Object.keys(round.answers).length
     const levelCompleted = score === totalCorrect
+
+    // Shuffle rights when level changes
+    useEffect(() => {
+        const shuffled = shuffleArray(round.rights);
+        setShuffledRights(shuffled);
+    }, [currentLevel]);
 
     // Unlock next level in localStorage when a level is completed
     useEffect(() => {
@@ -180,7 +188,7 @@ export default function MatchTheRight() {
                     {/* RIGHT – Rights */}
                     <div>
                         <h3 className="font-bold mb-3">Child Rights</h3>
-                        {round.rights.map((right) => {
+                        {shuffledRights.map((right) => {
                             // Check if this right has been matched
                             const isMatched = matched.some(
                                 (sit) => round.answers[sit] === right.name
