@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
@@ -11,26 +11,73 @@ import { schoolLevels } from "./schoolElements";
 
 const UNLOCK_KEY = "buildSchoolLevel";
 
-const getUnlockedLevel = () => {
-  const stored = Number(localStorage.getItem(UNLOCK_KEY));
-  return Number.isFinite(stored) && stored > 0 ? stored : 1;
-};
-
 export default function BuildSchoolLevels() {
   const navigate = useNavigate();
+  const [unlockedLevel, setUnlockedLevel] = useState(1);
+  const [completedLevels, setCompletedLevels] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const unlockedLevel = useMemo(() => getUnlockedLevel(), []);
+  // Fetch progress from database
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+        .then((res) => res.json())
+        .then((data) => {
+          const badges = data.allBadges?.buildSchool || [];
+          if (badges.length === 0) {
+            // New user - only level 1 unlocked
+            setUnlockedLevel(1);
+            setCompletedLevels([]);
+            localStorage.setItem(UNLOCK_KEY, "1");
+          } else {
+            // User has badges
+            const completedIds = badges.map(b => b.levelId);
+            const highestCompleted = Math.max(...completedIds);
+            const nextLevel = Math.min(highestCompleted + 1, schoolLevels.length);
+            setCompletedLevels(completedIds);
+            setUnlockedLevel(nextLevel);
+            localStorage.setItem(UNLOCK_KEY, String(nextLevel));
+          }
+          setLoading(false);
+        })
+        .catch(() => {
+          const stored = Number(localStorage.getItem(UNLOCK_KEY)) || 1;
+          setUnlockedLevel(stored);
+          setLoading(false);
+        });
+    } else {
+      const stored = Number(localStorage.getItem(UNLOCK_KEY)) || 1;
+      setUnlockedLevel(stored);
+      setLoading(false);
+    }
+  }, []);
 
-  const stats = useMemo(() => {
-    const total = schoolLevels.length;
-    const unlocked = Math.min(unlockedLevel, total);
-    const completed = unlocked > 1 ? unlocked - 1 : 0;
-    return { total, completed, unlocked };
-  }, [unlockedLevel]);
+  const stats = {
+    total: schoolLevels.length,
+    completed: completedLevels.length,
+    unlocked: Math.min(unlockedLevel, schoolLevels.length),
+  };
 
   const handlePlay = (levelNumber) => {
     navigate(`/games/build-your-school/level/${levelNumber}`);
   };
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center bg-[#FFF8F0]">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-14 h-14 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-xl font-semibold text-gray-700">Loading your progress...</span>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -82,7 +129,7 @@ export default function BuildSchoolLevels() {
               ).length;
 
               const unlocked = levelNumber <= unlockedLevel;
-              const completed = levelNumber < unlockedLevel;
+              const completed = completedLevels.includes(levelNumber);
 
               const statusBadge = completed
                 ? {

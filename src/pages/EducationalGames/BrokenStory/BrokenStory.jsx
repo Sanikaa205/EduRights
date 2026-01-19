@@ -92,6 +92,22 @@ const BrokenStory = () => {
       if (!completed.includes(levelId)) {
         completed.push(levelId);
         localStorage.setItem(COMPLETION_KEY, JSON.stringify(completed));
+        
+        // 🔥 Save badge to database
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          fetch("http://localhost:5000/api/badges/earn", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userId: userData.id,
+              gameType: "brokenStory",
+              levelId: levelId,
+              badge: levelData?.badge || `Level ${levelId} Badge`,
+            }),
+          }).catch(console.error);
+        }
       }
       
       const nextLevel = levelId + 1;
@@ -102,7 +118,7 @@ const BrokenStory = () => {
       // Save next level progress
       localStorage.setItem("brokenStoryLevel", Math.max(levelId + 1, nextLevel).toString());
     }
-  }, [showCompletionModal, currentSceneIndex, levelId, levelScenes.length]);
+  }, [showCompletionModal, currentSceneIndex, levelId, levelScenes.length, levelData?.badge]);
 
   // celebration + modal
   useEffect(() => {

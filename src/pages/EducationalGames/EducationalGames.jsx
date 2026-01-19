@@ -100,6 +100,21 @@ export default function EducationalGames() {
 
   // Function to calculate all progress from localStorage and API
   const calculateProgress = async () => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        const res = await fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`);
+        const data = await res.json();
+        // Progress for each game from backend
+        setLegalHeroProgress(data.gameProgress?.legalHero ?? 0);
+        setBrokenStoryProgress(data.gameProgress?.brokenStory ?? 0);
+        setBuildSchoolProgress(data.gameProgress?.buildSchool ?? 0);
+        setMatchRightProgress(data.gameProgress?.matchTheRight ?? 0);
+        return;
+      } catch {}
+    }
+    // Fallback for guests or API fail
     // Broken Story
     const brokenStoryCompleted = JSON.parse(
       localStorage.getItem("brokenStoryCompletedLevels") || "[]"
@@ -107,42 +122,18 @@ export default function EducationalGames() {
     setBrokenStoryProgress(Math.round(
       (brokenStoryCompleted.length / brokenStoryLevels.length) * 100
     ));
-
-    // Legal Hero Journey - Fetch from database for logged in users
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        const userData = JSON.parse(storedUser);
-        const res = await fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`);
-        const data = await res.json();
-        const badges = data.badges || [];
-        // Progress = completed levels / total levels
-        setLegalHeroProgress(Math.round(
-          (badges.length / legalHeroLevels.length) * 100
-        ));
-      } catch {
-        // Fallback to localStorage
-        const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
-        setLegalHeroProgress(Math.round(
-          ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
-        ));
-      }
-    } else {
-      // Guest user - use localStorage
-      const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
-      setLegalHeroProgress(Math.round(
-        ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
-      ));
-    }
-
-    // Build Your School (uses "buildSchoolLevel" key)
+    // Legal Hero
+    const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
+    setLegalHeroProgress(Math.round(
+      ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
+    ));
+    // Build Your School
     const buildSchoolLevel = Number(
       localStorage.getItem("buildSchoolLevel") || 1
     );
     setBuildSchoolProgress(Math.round(
       ((buildSchoolLevel - 1) / schoolLevels.length) * 100
     ));
-
     // Match The Right
     const matchRightUnlocked = Number(localStorage.getItem("matchTheRightUnlockedLevel") || 1);
     setMatchRightProgress(Math.round(

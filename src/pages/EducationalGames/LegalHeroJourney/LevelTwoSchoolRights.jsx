@@ -90,9 +90,10 @@ export default function LevelTwoSchoolRights() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: user.id,      // ✅ FIXED
+        userId: user.id,
+        gameType: 'legalHero',
         levelId: 2,
-        badge: "🏫 School Hero",
+        badge: '🏫 School Hero',
       }),
     });
   } catch (err) {

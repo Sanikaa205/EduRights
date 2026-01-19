@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { levels } from "@/data/levelsData";
+import { levels as brokenStoryLevels } from "@/pages/EducationalGames/BrokenStory/levelsData";
+import { schoolLevels } from "@/pages/EducationalGames/BuildYourSchool/schoolElements";
+import { levels as matchTheRightLevels } from "@/pages/EducationalGames/MatchTheRight/data";
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -25,16 +28,23 @@ const Dashboard = () => {
     points: 0,
     badges: 0,
     progress: 0,
+    gamesProgress: 0,
+    learnProgress: 0,
   });
 
-  const [badges, setBadges] = useState([]);
+  const [allBadges, setAllBadges] = useState({
+    legalHero: [],
+    brokenStory: [],
+    buildSchool: [],
+    matchTheRight: [],
+  });
   const [loading, setLoading] = useState(true);
 
   // ---------------- FETCH DASHBOARD ----------------
  useEffect(() => {
   const storedUser = localStorage.getItem("user");
   if (!storedUser) {
-    setLoading(false);   // <-- fixed
+    setLoading(false);
     return;
   }
 
@@ -45,14 +55,28 @@ const Dashboard = () => {
   fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
     .then((res) => res.json())
     .then((data) => {
+      const totalBadges = data.totalBadges || 
+        (data.allBadges ? 
+          data.allBadges.legalHero.length + 
+          data.allBadges.brokenStory.length + 
+          data.allBadges.buildSchool.length + 
+          data.allBadges.matchTheRight.length : 0);
+      
       setUser({
         name: data.name,
         level: data.level,
         points: data.points,
-        badges: data.badges?.length || 0,
+        badges: totalBadges,
         progress: data.progress,
+        gamesProgress: data.gamesProgress || 0,
+        learnProgress: data.learnProgress || 0,
       });
-      setBadges(data.badges || []);
+      setAllBadges(data.allBadges || {
+        legalHero: data.badges || [],
+        brokenStory: [],
+        buildSchool: [],
+        matchTheRight: [],
+      });
       setLoading(false);
     })
     .catch(() => setLoading(false));
@@ -60,7 +84,10 @@ const Dashboard = () => {
 
 
   // ---------------- BADGE LOGIC ----------------
-const earnedLevelIds = badges.map((b) => b.levelId);
+  const earnedLegalHeroIds = allBadges.legalHero.map((b) => b.levelId);
+  const earnedBrokenStoryIds = allBadges.brokenStory.map((b) => b.levelId);
+  const earnedBuildSchoolIds = allBadges.buildSchool.map((b) => b.levelId);
+  const earnedMatchRightIds = allBadges.matchTheRight.map((b) => b.levelId);
 
 
   // ---------------- QUICK ACTIONS ----------------
@@ -155,16 +182,49 @@ const earnedLevelIds = badges.map((b) => b.levelId);
               </div>
             </div>
             
-            {/* Progress Bar */}
-            <div className="w-full bg-gray-100 rounded-full h-5 mb-3 overflow-hidden">
-              <div 
-                className="bg-gradient-to-r from-blue-500 to-purple-500 h-5 rounded-full transition-all duration-500"
-                style={{ width: `${user.progress || 0}%` }}
-              />
+            {/* Overall Progress Bar */}
+            <div className="mb-6">
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-gray-600 font-medium">📊 Overall Progress</span>
+                <span className="font-bold text-gray-700">{user.progress || 0}%</span>
+              </div>
+              <div className="w-full bg-gray-100 rounded-full h-5 overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 h-5 rounded-full transition-all duration-500"
+                  style={{ width: `${user.progress || 0}%` }}
+                />
+              </div>
             </div>
-            <div className="flex justify-between text-base">
-              <span className="text-gray-500">Progress</span>
-              <span className="font-semibold text-gray-700 text-lg">{user.progress || 0}%</span>
+
+            {/* Games & Learn Progress */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Games Progress */}
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-4 border border-red-100">
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-gray-600 font-medium">🎮 Games Progress</span>
+                  <span className="font-bold text-red-600">{user.gamesProgress || 0}%</span>
+                </div>
+                <div className="w-full bg-white rounded-full h-3 overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-red-400 to-orange-500 h-3 rounded-full transition-all duration-500"
+                    style={{ width: `${user.gamesProgress || 0}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Learn Progress */}
+              <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl p-4 border border-cyan-100">
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-gray-600 font-medium">📚 Learn Progress</span>
+                  <span className="font-bold text-cyan-600">{user.learnProgress || 0}%</span>
+                </div>
+                <div className="w-full bg-white rounded-full h-3 overflow-hidden">
+                  <div 
+                    className="bg-gradient-to-r from-cyan-400 to-blue-500 h-3 rounded-full transition-all duration-500"
+                    style={{ width: `${user.learnProgress || 0}%` }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -227,24 +287,106 @@ const earnedLevelIds = badges.map((b) => b.levelId);
 
           {/* YOUR BADGES SECTION */}
           <div className="bg-white rounded-3xl p-6 md:p-8 mb-8 shadow-sm border border-gray-100">
-            <h2 className="font-bold text-lg md:text-xl text-gray-800 mb-4">Your Badges</h2>
-            <div className="flex flex-wrap gap-3">
-              {levels.map((level) => {
-                const earned = earnedLevelIds.includes(level.id);
-                return (
-                  <div
-                    key={level.id}
-                    className={`flex items-center gap-3 px-5 py-3 rounded-full border-2 transition-all ${
-                      earned
-                        ? "bg-blue-50 border-blue-200 text-blue-700"
-                        : "bg-gray-50 border-gray-200 text-gray-400"
-                    }`}
-                  >
-                    <Award className="w-5 h-5" />
-                    <span className="text-base font-semibold">{level.badge}</span>
-                  </div>
-                );
-              })}
+            <h2 className="font-bold text-lg md:text-xl text-gray-800 mb-6">Your Badges</h2>
+            
+            {/* Legal Hero Journey Badges */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-md text-gray-700 mb-3 flex items-center gap-2">
+                🗺️ Legal Hero Journey
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {levels.map((level) => {
+                  const earned = earnedLegalHeroIds.includes(level.id);
+                  return (
+                    <div
+                      key={`lh-${level.id}`}
+                      className={`flex items-center gap-3 px-5 py-3 rounded-full border-2 transition-all ${
+                        earned
+                          ? "bg-blue-50 border-blue-200 text-blue-700"
+                          : "bg-gray-50 border-gray-200 text-gray-400"
+                      }`}
+                    >
+                      <Award className="w-5 h-5" />
+                      <span className="text-base font-semibold">{level.badge}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Broken Story Badges */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-md text-gray-700 mb-3 flex items-center gap-2">
+                🧩 Broken Story
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {brokenStoryLevels.map((level) => {
+                  const earned = earnedBrokenStoryIds.includes(level.id);
+                  return (
+                    <div
+                      key={`bs-${level.id}`}
+                      className={`flex items-center gap-3 px-5 py-3 rounded-full border-2 transition-all ${
+                        earned
+                          ? "bg-green-50 border-green-200 text-green-700"
+                          : "bg-gray-50 border-gray-200 text-gray-400"
+                      }`}
+                    >
+                      <Award className="w-5 h-5" />
+                      <span className="text-base font-semibold">{level.badge}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Build Your School Badges */}
+            <div className="mb-6">
+              <h3 className="font-semibold text-md text-gray-700 mb-3 flex items-center gap-2">
+                🏗️ Build Your School
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {schoolLevels.map((level, idx) => {
+                  const earned = earnedBuildSchoolIds.includes(idx + 1);
+                  return (
+                    <div
+                      key={`bys-${idx}`}
+                      className={`flex items-center gap-3 px-5 py-3 rounded-full border-2 transition-all ${
+                        earned
+                          ? "bg-purple-50 border-purple-200 text-purple-700"
+                          : "bg-gray-50 border-gray-200 text-gray-400"
+                      }`}
+                    >
+                      <Award className="w-5 h-5" />
+                      <span className="text-base font-semibold">{level.badge}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Match The Right Badges */}
+            <div>
+              <h3 className="font-semibold text-md text-gray-700 mb-3 flex items-center gap-2">
+                🎯 Match The Right
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {matchTheRightLevels.map((level) => {
+                  const earned = earnedMatchRightIds.includes(level.level);
+                  return (
+                    <div
+                      key={`mtr-${level.level}`}
+                      className={`flex items-center gap-3 px-5 py-3 rounded-full border-2 transition-all ${
+                        earned
+                          ? "bg-amber-50 border-amber-200 text-amber-700"
+                          : "bg-gray-50 border-gray-200 text-gray-400"
+                      }`}
+                    >
+                      <Award className="w-5 h-5" />
+                      <span className="text-base font-semibold">{level.badge}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
 

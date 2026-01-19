@@ -8,34 +8,71 @@ import Mascot from "@/assets/mascot.png";
 
 export default function BrokenStoryLevels() {
   const maxLevel = initialLevels.length;
-  const LEVELS_KEY = "brokenStoryUnlockedLevels";
   const COMPLETION_KEY = "brokenStoryCompletedLevels";
 
-  // Read progress
-  const savedLevel = Number(localStorage.getItem("brokenStoryLevel")) || 1;
-  const [completedLevels, setCompletedLevels] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem(COMPLETION_KEY)) || [];
-    } catch {
-      return [];
-    }
-  });
-
+  const [completedLevels, setCompletedLevels] = useState([]);
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const [loading, setLoading] = useState(true);
   const [showCongrats, setShowCongrats] = useState(false);
 
-  // Always derive levels from savedLevel
+  // Fetch progress from database for logged in users
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+        .then((res) => res.json())
+        .then((data) => {
+          const badges = data.allBadges?.brokenStory || [];
+          if (badges.length === 0) {
+            // New user - no badges, only level 1 unlocked
+            setCurrentLevel(1);
+            setCompletedLevels([]);
+            localStorage.setItem("brokenStoryLevel", "1");
+            localStorage.setItem(COMPLETION_KEY, JSON.stringify([]));
+          } else {
+            // User has badges - calculate progress
+            const completedIds = badges.map(b => b.levelId);
+            const highestCompleted = Math.max(...completedIds);
+            const nextLevel = Math.min(highestCompleted + 1, maxLevel + 1);
+            setCompletedLevels(completedIds);
+            setCurrentLevel(nextLevel);
+            localStorage.setItem("brokenStoryLevel", String(nextLevel));
+            localStorage.setItem(COMPLETION_KEY, JSON.stringify(completedIds));
+          }
+          setLoading(false);
+        })
+        .catch(() => {
+          // Fallback to localStorage
+          const saved = Number(localStorage.getItem("brokenStoryLevel")) || 1;
+          const completed = JSON.parse(localStorage.getItem(COMPLETION_KEY) || "[]");
+          setCurrentLevel(saved);
+          setCompletedLevels(completed);
+          setLoading(false);
+        });
+    } else {
+      // Guest user - use localStorage
+      const saved = Number(localStorage.getItem("brokenStoryLevel")) || 1;
+      const completed = JSON.parse(localStorage.getItem(COMPLETION_KEY) || "[]");
+      setCurrentLevel(saved);
+      setCompletedLevels(completed);
+      setLoading(false);
+    }
+  }, [maxLevel]);
+
+  // Derive levels from currentLevel
   const levels = initialLevels.map((level) => ({
     ...level,
-    unlocked: level.id <= savedLevel,
+    unlocked: level.id <= currentLevel,
     completed: completedLevels.includes(level.id),
   }));
 
   // Show completion screen when all levels are done
   useEffect(() => {
-    if (savedLevel > maxLevel) {
+    if (currentLevel > maxLevel && !loading) {
       setShowCongrats(true);
     }
-  }, [savedLevel, maxLevel]);
+  }, [currentLevel, maxLevel, loading]);
 
   // Redirect after completion
   useEffect(() => {
@@ -49,6 +86,22 @@ export default function BrokenStoryLevels() {
       return () => clearTimeout(timer);
     }
   }, [showCongrats]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center bg-[#FFF8F0]">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-14 h-14 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-xl font-semibold text-gray-700">Loading your progress...</span>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   if (showCongrats) {
     return (
@@ -96,7 +149,7 @@ export default function BrokenStoryLevels() {
             </div>
             <div className="bg-green-50 border border-green-200 rounded-xl px-6 py-2 flex flex-col items-center min-w-[80px] shadow-sm">
               <span className="text-2xl font-bold text-green-600">
-                {savedLevel}/{maxLevel}
+                {currentLevel > maxLevel ? maxLevel : currentLevel}/{maxLevel}
               </span>
               <span className="text-xs text-green-500 font-semibold">Unlocked</span>
             </div>

@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import Navbar from "@/components/layout/Navbar"
@@ -13,68 +13,84 @@ import { levels } from "./data"
 const UNLOCK_KEY = "matchTheRightUnlockedLevel"
 const COMPLETE_KEY = "matchTheRightCompletedLevels"
 const STARS_KEY = "matchTheRightStars"
-const BADGES_KEY = "matchTheRightBadges"
-
-const getUnlockedLevel = () => {
-    const stored = Number(localStorage.getItem(UNLOCK_KEY))
-    return Number.isFinite(stored) && stored > 0 ? stored : 1
-}
-
-const getCompletedLevels = () => {
-    try {
-        const parsed = JSON.parse(localStorage.getItem(COMPLETE_KEY))
-        return Array.isArray(parsed) ? parsed : []
-    } catch {
-        return []
-    }
-}
-
-const getLevelStars = () => {
-    try {
-        const parsed = JSON.parse(localStorage.getItem(STARS_KEY))
-        return typeof parsed === "object" && parsed !== null ? parsed : {}
-    } catch {
-        return {}
-    }
-}
-
-const getUnlockedBadges = () => {
-    try {
-        const parsed = JSON.parse(localStorage.getItem(BADGES_KEY))
-        return Array.isArray(parsed) ? parsed : []
-    } catch {
-        return []
-    }
-}
 
 export default function MatchTheRightLevels() {
     const navigate = useNavigate();
+    const [unlockedLevel, setUnlockedLevel] = useState(1);
+    const [completedLevels, setCompletedLevels] = useState([]);
+    const [levelStars, setLevelStars] = useState({});
+    const [loading, setLoading] = useState(true);
 
-    const unlockedLevel = useMemo(() => getUnlockedLevel(), []);
-    const completedLevels = useMemo(() => getCompletedLevels(), []);
-    const levelStars = useMemo(() => getLevelStars(), []);
-    const unlockedBadges = useMemo(() => getUnlockedBadges(), []);
-
-    const stats = useMemo(() => {
-        const total = levels.length;
-        const completed = completedLevels.length;
-        const unlocked = Math.min(unlockedLevel, total);
-        const totalStars = Object.values(levelStars).reduce((a, b) => a + b, 0);
-        return { total, completed, unlocked, totalStars };
-    }, [completedLevels.length, unlockedLevel, levelStars]);
-
-    // Find the first unlocked but not completed level for 'Continue' button
-    const nextPlayableLevel = useMemo(() => {
-        for (let i = 1; i <= stats.unlocked; i++) {
-            if (!completedLevels.includes(i)) return i;
+    // Fetch progress from database
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const userData = JSON.parse(storedUser);
+            fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+                .then((res) => res.json())
+                .then((data) => {
+                    const badges = data.allBadges?.matchTheRight || [];
+                    if (badges.length === 0) {
+                        // New user - only level 1 unlocked
+                        setUnlockedLevel(1);
+                        setCompletedLevels([]);
+                        localStorage.setItem(UNLOCK_KEY, "1");
+                        localStorage.setItem(COMPLETE_KEY, JSON.stringify([]));
+                    } else {
+                        // User has badges
+                        const completedIds = badges.map(b => b.levelId);
+                        const highestCompleted = Math.max(...completedIds);
+                        const nextLevel = Math.min(highestCompleted + 1, levels.length);
+                        setCompletedLevels(completedIds);
+                        setUnlockedLevel(nextLevel);
+                        localStorage.setItem(UNLOCK_KEY, String(nextLevel));
+                        localStorage.setItem(COMPLETE_KEY, JSON.stringify(completedIds));
+                    }
+                    setLoading(false);
+                })
+                .catch(() => {
+                    const stored = Number(localStorage.getItem(UNLOCK_KEY)) || 1;
+                    const completed = JSON.parse(localStorage.getItem(COMPLETE_KEY) || "[]");
+                    setUnlockedLevel(stored);
+                    setCompletedLevels(completed);
+                    setLoading(false);
+                });
+        } else {
+            const stored = Number(localStorage.getItem(UNLOCK_KEY)) || 1;
+            const completed = JSON.parse(localStorage.getItem(COMPLETE_KEY) || "[]");
+            const stars = JSON.parse(localStorage.getItem(STARS_KEY) || "{}");
+            setUnlockedLevel(stored);
+            setCompletedLevels(completed);
+            setLevelStars(stars);
+            setLoading(false);
         }
-        // If all unlocked are completed, fallback to first unlocked
-        return stats.unlocked;
-    }, [stats.unlocked, completedLevels]);
+    }, []);
+
+    const stats = {
+        total: levels.length,
+        completed: completedLevels.length,
+        unlocked: Math.min(unlockedLevel, levels.length),
+        totalStars: Object.values(levelStars).reduce((a, b) => a + b, 0),
+    };
 
     const handlePlay = (level) => {
         navigate(`/games/match-the-right/level/${level}`);
     };
+
+    if (loading) {
+        return (
+            <>
+                <Navbar />
+                <div className="min-h-screen flex items-center justify-center bg-[#FFF8F0]">
+                    <div className="flex flex-col items-center gap-4">
+                        <div className="w-14 h-14 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                        <span className="text-xl font-semibold text-gray-700">Loading your progress...</span>
+                    </div>
+                </div>
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>
