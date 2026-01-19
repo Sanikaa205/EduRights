@@ -36,12 +36,12 @@ const Index = () => {
     },
   ];
 
-  const stats = [
-    { value: "10K+", label: "Happy Learners", emoji: "🎉", color: "gradient-card-pink" },
-    { value: "50+", label: "Fun Lessons", emoji: "📚", color: "gradient-card-blue" },
-    { value: "100+", label: "Quizzes", emoji: "🧠", color: "gradient-card-purple" },
-    { value: "25+", label: "Badges to Earn", emoji: "🏆", color: "gradient-card-yellow" },
-  ];
+  // const stats = [
+  //   { value: "10K+", label: "Happy Learners", emoji: "🎉", color: "gradient-card-pink" },
+  //   { value: "50+", label: "Fun Lessons", emoji: "📚", color: "gradient-card-blue" },
+  //   { value: "100+", label: "Quizzes", emoji: "🧠", color: "gradient-card-purple" },
+  //   { value: "25+", label: "Badges to Earn", emoji: "🏆", color: "gradient-card-yellow" },
+  // ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background overflow-hidden">
@@ -127,7 +127,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats Section
       <section className="py-12 bg-card relative">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
@@ -150,7 +150,7 @@ const Index = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Features Section */}
       <section className="py-16 md:py-24 bg-card relative overflow-hidden">
