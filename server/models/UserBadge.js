@@ -6,6 +6,11 @@ const userBadgeSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  gameType: {
+    type: String,
+    enum: ["legalHero", "brokenStory", "buildSchool", "matchTheRight"],
+    default: "legalHero",
+  },
   levelId: {
     type: Number,
     required: true,

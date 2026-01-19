@@ -99,9 +99,10 @@ export default function LevelFourWorkplace() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: user.id,       // ✅ correct id
+        userId: user.id,
+        gameType: 'legalHero',
         levelId: 4,
-        badge: "🏢 Workplace Hero",
+        badge: '🏢 Workplace Hero',
       }),
     });
 

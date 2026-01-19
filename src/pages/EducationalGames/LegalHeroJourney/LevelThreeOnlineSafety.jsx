@@ -100,6 +100,7 @@ export default function LevelThreeOnlineSafety() {
       },
       body: JSON.stringify({
         userId: user.id,
+        gameType: 'legalHero',
         levelId: 3,
         badge: "💻 Online Safety Hero",
       }),

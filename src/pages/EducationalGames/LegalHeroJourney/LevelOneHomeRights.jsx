@@ -83,14 +83,15 @@ export default function LevelOneHomeRights() {
 
           if (user?.id) {
             try {
-              await fetch("/api/badges/earn", {
+              await fetch("http://localhost:5000/api/badges/earn", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                   userId: user.id,
-                  levelId: levelData.id,
+                  gameType: "legalHero",
+                  levelId: 1,
                   badge: levelData.badge,
                 }),
               });

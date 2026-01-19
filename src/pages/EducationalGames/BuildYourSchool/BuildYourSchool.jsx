@@ -264,12 +264,28 @@ export default function BuildYourSchool(){
         audio.play().catch(() => {});
       } catch {}
 
+      // 🔥 Save badge to database
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        fetch("http://localhost:5000/api/badges/earn", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: userData.id,
+            gameType: "buildSchool",
+            levelId: levelNumber,
+            badge: currentLevel?.badge || `Level ${levelNumber} Badge`,
+          }),
+        }).catch(console.error);
+      }
+
       // Hide "Yayy!" text after 2 seconds, image stays visible
       setTimeout(() => setShowCelebration(false), 2000);
       // Show modal after 5 seconds (image visible for 3 more seconds after Yayy disappears)
       setTimeout(() => setShowLevelCompleteModal(true), 5000);
     }
-  }, [levelCompleted]);
+  }, [levelCompleted, levelNumber, currentLevel?.badge]);
 
   return (
     <>

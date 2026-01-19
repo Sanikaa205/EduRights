@@ -102,9 +102,10 @@ export default function LevelFiveEquality() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: user.id,          // ✅ correct user id
+        userId: user.id,
+        gameType: 'legalHero',
         levelId: 5,
-        badge: "⚖ Equality Guardian",
+        badge: '⚖ Equality Guardian',
       }),
     });
 

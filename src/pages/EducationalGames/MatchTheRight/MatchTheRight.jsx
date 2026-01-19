@@ -38,6 +38,23 @@ export default function MatchTheRight() {
             if (thisLevel >= currentUnlocked && thisLevel < levels.length) {
                 localStorage.setItem(unlockedKey, String(thisLevel + 1));
             }
+            
+            // 🔥 Save badge to database
+            const storedUser = localStorage.getItem("user");
+            if (storedUser) {
+                const userData = JSON.parse(storedUser);
+                const levelData = levels[currentLevel];
+                fetch("http://localhost:5000/api/badges/earn", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        userId: userData.id,
+                        gameType: "matchTheRight",
+                        levelId: thisLevel,
+                        badge: levelData?.badge || `Level ${thisLevel} Badge`,
+                    }),
+                }).catch(console.error);
+            }
         }
     }, [levelCompleted, currentLevel]);
 
