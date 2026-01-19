@@ -29,6 +29,24 @@ const saveProgressToAPI = async (moduleKey, progress) => {
   }
 };
 
+const submitQuizScoreToAPI = async (moduleId, score) => {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) return;
+
+    await fetch(`${API_BASE_URL}/points/submit/${user.id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        moduleId,
+        score,
+      }),
+    });
+  } catch (error) {
+    console.error("Error submitting quiz score:", error);
+  }
+};
+
 export default function Module3Quiz() {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState(null);
@@ -62,6 +80,7 @@ export default function Module3Quiz() {
     } else {
       setShowResult(true);
       saveProgressToAPI("module-3-progress", 100);
+      submitQuizScoreToAPI("module-3", score);
     }
   };
 

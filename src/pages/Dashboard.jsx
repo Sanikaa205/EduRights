@@ -66,25 +66,25 @@ const earnedLevelIds = badges.map((b) => b.levelId);
   // ---------------- QUICK ACTIONS ----------------
   const quickActions = [
     {
-      title: "Learning Modules",
+      title: "📚 Learning Modules",
       description: "Continue learning about your rights",
       icon: BookOpen,
       href: "/modules",
-      bgColor: "bg-[#3B82F6]",
+      gradient: "from-cyan-500 to-blue-800",
     },
     {
-      title: "Games",
+      title: "🎮 Games",
       description: "Play and learn with interactive games",
       icon: Zap,
       href: "/games",
-      bgColor: "bg-[#A855F7]",
+      gradient: "from-red-400 to-red-800",
     },
     {
-      title: "Resources",
+      title: "📖 Resources",
       description: "Find helpful articles and FAQs",
       icon: HelpCircle,
       href: "/resources",
-      bgColor: "bg-[#22C55E]",
+      gradient: "from-yellow-400 to-yellow-600",
     },
   ];
 
@@ -171,30 +171,57 @@ const earnedLevelIds = badges.map((b) => b.levelId);
           {/* STATS CARDS */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
             {/* Current Level */}
-            <div className="bg-amber-400 rounded-3xl p-6 relative overflow-hidden min-h-[130px]">
-              <p className="text-amber-900 text-sm font-semibold mb-1">Current Level</p>
-              <p className="text-white text-5xl font-bold">{user.level || 1}</p>
-              <div className="absolute top-5 right-5 w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <Trophy className="w-6 h-6 text-white" />
+              <div className="bg-gradient-to-br from-green-500 to-emerald-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
+              <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full -ml-8 -mb-8"></div>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-white text-xl font-black tracking-wide drop-shadow-md">🏆 Current Level</p>
+                <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center animate-pulse">
+                  <Trophy className="w-5 h-5 text-white" />
+                </div>
               </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-3 mb-4 border border-white/30">
+                <p className="text-white text-sm font-semibold leading-relaxed">
+                  📈 Level up by learning more! Keep going champ!
+                </p>
+              </div>
+              <p className="text-white text-7xl font-black mt-auto drop-shadow-lg" style={{textShadow: '3px 3px 0 rgba(0,0,0,0.2)'}}>{user.level || 1}</p>
             </div>
 
             {/* Total Points */}
-            <div className="bg-emerald-500 rounded-3xl p-6 relative overflow-hidden min-h-[130px]">
-              <p className="text-emerald-900 text-sm font-semibold mb-1">Total Points</p>
-              <p className="text-white text-5xl font-bold">{user.points || 0}</p>
-              <div className="absolute top-5 right-5 w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <Star className="w-6 h-6 text-white" />
+              <div className="bg-gradient-to-br from-violet-500 to-violet-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
+              <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full -ml-8 -mb-8"></div>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-white text-xl font-black tracking-wide drop-shadow-md">⭐ Total Points</p>
+                <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center animate-pulse">
+                  <Star className="w-5 h-5 text-white" />
+                </div>
               </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-3 mb-4 border border-white/30">
+                <p className="text-white text-sm font-semibold leading-relaxed">
+                  🎯 Score high in quizzes & become a star!
+                </p>
+              </div>
+              <p className="text-white text-7xl font-black mt-auto drop-shadow-lg" style={{textShadow: '3px 3px 0 rgba(0,0,0,0.2)'}}>{user.points || 0}</p>
             </div>
 
             {/* Badges Earned */}
-            <div className="bg-blue-500 rounded-3xl p-6 relative overflow-hidden min-h-[130px]">
-              <p className="text-blue-100 text-sm font-semibold mb-1">Badges Earned</p>
-              <p className="text-white text-5xl font-bold">{user.badges || 0}</p>
-              <div className="absolute top-5 right-5 w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <Award className="w-6 h-6 text-white" />
+               <div className="bg-gradient-to-br from-cyan-500 to-blue-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
+              <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full -ml-8 -mb-8"></div>
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-white text-xl font-black tracking-wide drop-shadow-md">🏅 Badges Earned</p>
+                <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center animate-pulse">
+                  <Award className="w-5 h-5 text-white" />
+                </div>
               </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-3 mb-4 border border-white/30">
+                <p className="text-white text-sm font-semibold leading-relaxed">
+                  🎮 Play games & collect awesome badges!
+                </p>
+              </div>
+              <p className="text-white text-7xl font-black mt-auto drop-shadow-lg" style={{textShadow: '3px 3px 0 rgba(0,0,0,0.2)'}}>{user.badges || 0}</p>
             </div>
           </div>
 
@@ -231,29 +258,28 @@ const earnedLevelIds = badges.map((b) => b.levelId);
             {quickActions.map((action, index) => (
               <Link key={index} to={action.href} className="group">
                 <div
-                  className={`${action.bgColor} rounded-3xl p-6 h-full min-h-[240px] transition-all duration-200 hover:scale-[1.02] hover:shadow-lg`}
+                  className={`bg-gradient-to-br ${action.gradient} rounded-3xl p-6 h-full min-h-[240px] transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl relative overflow-hidden`}
                 >
-                  <div className="flex flex-col h-full">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
+                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-10 -mb-10"></div>
+                  <div className="flex flex-col h-full relative z-10">
                     {/* Icon */}
                     <div className="mb-4">
-                      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-2">
-                        <action.icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center">
-                        <action.icon className="w-4 h-4 text-white/70" />
+                      <div className="w-14 h-14 bg-white/25 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform">
+                        <action.icon className="w-7 h-7 text-white" />
                       </div>
                     </div>
                     
                     {/* Content */}
                     <div className="mt-auto">
-                      <h3 className="font-bold text-xl text-white mb-2">
+                      <h3 className="font-black text-2xl text-white mb-2 drop-shadow-md">
                         {action.title}
                       </h3>
-                      <p className="text-white/80 text-base mb-4">
+                      <p className="text-white/90 text-base font-medium mb-4">
                         {action.description}
                       </p>
-                      <button className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white font-semibold px-5 py-3 rounded-full transition-all">
-                        Go Now <ArrowRight className="w-5 h-5" />
+                      <button className="flex items-center gap-2 bg-white/25 hover:bg-white/40 text-white font-bold px-5 py-3 rounded-full transition-all border border-white/30 group-hover:translate-x-1">
+                        Let's Go! <ArrowRight className="w-5 h-5" />
                       </button>
                     </div>
                   </div>
