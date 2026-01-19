@@ -1,3 +1,4 @@
+
 @import "@fontsource/fredoka/400.css";
 @import "@fontsource/fredoka/500.css";
 @import "@fontsource/fredoka/600.css";
@@ -114,18 +115,12 @@
     @apply bg-background text-foreground font-body antialiased;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     @apply font-display;
   }
 }
 
 @layer components {
-
   /* Cartoon 3D Card */
   .card-cartoon {
     @apply bg-card rounded-3xl p-6 relative transition-all duration-200;
@@ -150,10 +145,12 @@
 
   /* Gradient Backgrounds */
   .gradient-hero {
-    background: linear-gradient(135deg,
-        hsl(200 100% 50%) 0%,
-        hsl(280 85% 60%) 50%,
-        hsl(330 90% 60%) 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(200 100% 50%) 0%,
+      hsl(280 85% 60%) 50%,
+      hsl(330 90% 60%) 100%
+    );
   }
 
   /* Cooler teal/blue hero variant for forms */
@@ -163,9 +160,11 @@
   }
 
   .gradient-fun {
-    background: linear-gradient(135deg,
-        hsl(45 100% 55%) 0%,
-        hsl(25 100% 55%) 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(45 100% 55%) 0%,
+      hsl(25 100% 55%) 100%
+    );
   }
 
   /* Subtle focus state for feedback panel to harmonize with hero button */
@@ -220,8 +219,7 @@
   }
 
   .accordion-content.open {
-    max-height: 480px;
-    /* enough for a couple of paragraphs */
+    max-height: 480px; /* enough for a couple of paragraphs */
   }
 
   /* Article card hover
@@ -276,10 +274,7 @@
   }
 
   @media (min-width: 768px) {
-    .resources-hero-illustration {
-      transform: translateY(0);
-      animation: float-slow 6s ease-in-out infinite;
-    }
+    .resources-hero-illustration { transform: translateY(0); animation: float-slow 6s ease-in-out infinite; }
   }
 
   .text-gradient {
@@ -339,161 +334,68 @@
   }
 
   /* Stagger delays */
-  .stagger-1 {
-    animation-delay: 0.1s;
-  }
-
-  .stagger-2 {
-    animation-delay: 0.2s;
-  }
-
-  .stagger-3 {
-    animation-delay: 0.3s;
-  }
-
-  .stagger-4 {
-    animation-delay: 0.4s;
-  }
-
-  .stagger-5 {
-    animation-delay: 0.5s;
-  }
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
 }
 
 @keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-15px) rotate(3deg);
-  }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
 }
 
 @keyframes bounce-fun {
-
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
-  }
-
-  50% {
-    transform: translateY(-10px) scale(1.05);
-  }
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
 }
 
 @keyframes wiggle {
-
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-
-  25% {
-    transform: rotate(-8deg);
-  }
-
-  75% {
-    transform: rotate(8deg);
-  }
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
 }
 
 @keyframes pulse-glow {
-
-  0%,
-  100% {
+  0%, 100% { 
     box-shadow: 0 0 20px hsl(200 100% 50% / 0.4);
     transform: scale(1);
   }
-
-  50% {
+  50% { 
     box-shadow: 0 0 40px hsl(200 100% 50% / 0.6);
     transform: scale(1.02);
   }
 }
 
 @keyframes blob-morph {
-
-  0%,
-  100% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
-
-  25% {
-    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-  }
-
-  50% {
-    border-radius: 50% 60% 30% 60% / 30% 70% 50% 60%;
-  }
-
-  75% {
-    border-radius: 60% 40% 60% 40% / 70% 30% 50% 50%;
-  }
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50% { border-radius: 50% 60% 30% 60% / 30% 70% 50% 60%; }
+  75% { border-radius: 60% 40% 60% 40% / 70% 30% 50% 50%; }
 }
 
 @keyframes bounce-in {
-  0% {
-    transform: scale(0.3) rotate(-10deg);
-    opacity: 0;
-  }
-
-  50% {
-    transform: scale(1.1) rotate(3deg);
-  }
-
-  70% {
-    transform: scale(0.9) rotate(-2deg);
-  }
-
-  100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 1;
-  }
+  0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+  50% { transform: scale(1.1) rotate(3deg); }
+  70% { transform: scale(0.9) rotate(-2deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
 @keyframes pop-in {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-
-  70% {
-    transform: scale(1.1);
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes slide-up {
-  0% {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  0% { transform: translateY(30px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes sparkle {
-
-  0%,
-  100% {
-    opacity: 0;
-    transform: scale(0) rotate(0deg);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1) rotate(180deg);
-  }
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
 }
 
 .animate-bounce-in {
@@ -522,7 +424,7 @@
   position: absolute;
   background: white;
   border-radius: 50%;
-  box-shadow:
+  box-shadow: 
     25px 0 0 10px white,
     -25px 0 0 5px white,
     10px -15px 0 8px white;
@@ -610,8 +512,7 @@
 /* Feedback content panel (centered box for the feedback page) */
 .feedback-panel {
   @apply bg-card text-foreground rounded-2xl;
-  padding: 1.25rem;
-  /* 20px */
+  padding: 1.25rem; /* 20px */
   box-shadow: 0 8px 30px hsl(200 50% 50% / 0.08);
   border: 1px solid hsl(var(--border) / 0.8);
   backdrop-filter: blur(6px);
@@ -621,8 +522,7 @@
 /* Make panel padding larger on md screens */
 @media (min-width: 768px) {
   .feedback-panel {
-    padding: 1.75rem;
-    /* 28px */
+    padding: 1.75rem; /* 28px */
   }
 }
 

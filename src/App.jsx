@@ -24,7 +24,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Modules from "./pages/Modules";
-import Quiz from "./pages/Quiz";
 import Resources from "./pages/Resources";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
