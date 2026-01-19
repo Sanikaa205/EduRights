@@ -39,7 +39,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-6 pt-6 border-t border-border/50 text-center text-xs text-muted-foreground font-body">
-          <p>© 2024 EduRights. Helping children learn their rights through play! 🌟</p>
+          <p>© 2026 EduRights. Helping children learn their rights through play! 🌟</p>
         </div>
       </div>
     </footer>
