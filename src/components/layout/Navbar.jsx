@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   BookOpen,
@@ -7,15 +7,32 @@ import {
   HelpCircle,
   MessageSquare,
   LogIn,
+  LogOut,
   Menu,
   X,
   Sparkles
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    setUser(null);
+    setMobileMenuOpen(false);
+    navigate("/");
+  };
 
   const navItems = [
     { path: "/", label: "Home", icon: Home },
@@ -61,26 +78,40 @@ const Navbar = () => {
 
           {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center gap-3 flex-shrink-0">
-            <Link to="/login">
+            {user ? (
               <Button
                 variant="outline"
                 size="default"
                 className="gap-2 px-5 text-base font-semibold"
+                onClick={handleLogout}
               >
-                <LogIn className="w-5 h-5" />
-                Login
+                <LogOut className="w-5 h-5" />
+                Logout
               </Button>
-            </Link>
-            <Link to="/register">
-              <Button
-                variant="hero"
-                size="default"
-                className="gap-2 px-5 text-base font-semibold"
-              >
-                <Sparkles className="w-5 h-5" />
-                Join Free
-              </Button>
-            </Link>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button
+                    variant="outline"
+                    size="default"
+                    className="gap-2 px-5 text-base font-semibold"
+                  >
+                    <LogIn className="w-5 h-5" />
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button
+                    variant="hero"
+                    size="default"
+                    className="gap-2 px-5 text-base font-semibold"
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    Join Free
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -117,30 +148,43 @@ const Navbar = () => {
               ))}
 
               <div className="flex gap-3 mt-4 pt-4 border-t-2 border-border">
-                <Link
-                  to="/login"
-                  className="flex-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                {user ? (
                   <Button
                     variant="outline"
-                    className="w-full py-3 text-lg font-semibold"
+                    className="w-full py-3 text-lg font-semibold gap-2"
+                    onClick={handleLogout}
                   >
-                    Login
+                    <LogOut className="w-5 h-5" />
+                    Logout
                   </Button>
-                </Link>
-                <Link
-                  to="/register"
-                  className="flex-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Button
-                    variant="hero"
-                    className="w-full py-3 text-lg font-semibold"
-                  >
-                    Join Free ✨
-                  </Button>
-                </Link>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="flex-1"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full py-3 text-lg font-semibold"
+                      >
+                        Login
+                      </Button>
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="flex-1"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Button
+                        variant="hero"
+                        className="w-full py-3 text-lg font-semibold"
+                      >
+                        Join Free ✨
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
