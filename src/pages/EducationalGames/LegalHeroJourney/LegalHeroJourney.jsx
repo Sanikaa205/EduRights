@@ -11,24 +11,59 @@ export default function LegalHeroJourney() {
   const maxLevel = initialLevels.length;
   const COMPLETION_LEVEL = maxLevel + 1;
 
-  // Read progress
-  const savedLevel = Number(localStorage.getItem("legalHeroLevel")) || 1;
-
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const [loading, setLoading] = useState(true);
   const [showCongrats, setShowCongrats] = useState(false);
 
-  // ✅ Always derive levels from savedLevel (NO useState here)
+  // ✅ Fetch user's actual progress from database
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+        .then((res) => res.json())
+        .then((data) => {
+          // Get highest level from badges (completed levels)
+          const badges = data.badges || [];
+          if (badges.length === 0) {
+            // New user - no badges earned, start at level 1
+            setCurrentLevel(1);
+            localStorage.setItem("legalHeroLevel", "1");
+          } else {
+            // Find highest levelId from badges and add 1 (next unlocked level)
+            const highestCompletedLevel = Math.max(...badges.map(b => b.levelId));
+            const nextLevel = Math.min(highestCompletedLevel + 1, COMPLETION_LEVEL);
+            setCurrentLevel(nextLevel);
+            localStorage.setItem("legalHeroLevel", String(nextLevel));
+          }
+          setLoading(false);
+        })
+        .catch(() => {
+          // Fallback to localStorage if API fails
+          const savedLevel = Number(localStorage.getItem("legalHeroLevel")) || 1;
+          setCurrentLevel(savedLevel);
+          setLoading(false);
+        });
+    } else {
+      // Guest user - use localStorage
+      const savedLevel = Number(localStorage.getItem("legalHeroLevel")) || 1;
+      setCurrentLevel(savedLevel);
+      setLoading(false);
+    }
+  }, [COMPLETION_LEVEL]);
+
+  // ✅ Derive levels from currentLevel (database-synced)
   const levels = initialLevels.map((level) => ({
     ...level,
-   unlocked: level.id <= savedLevel,
-
+    unlocked: level.id <= currentLevel,
   }));
 
   // 🎉 Show completion screen ONLY when finished
   useEffect(() => {
-    if (savedLevel === COMPLETION_LEVEL) {
+    if (currentLevel === COMPLETION_LEVEL) {
       setShowCongrats(true);
     }
-  }, [savedLevel, COMPLETION_LEVEL]);
+  }, [currentLevel, COMPLETION_LEVEL]);
 
   // ⏳ Redirect + reset progress
   useEffect(() => {
@@ -43,6 +78,22 @@ export default function LegalHeroJourney() {
       return () => clearTimeout(timer);
     }
   }, [showCongrats]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-14 h-14 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <span className="text-xl font-semibold text-gray-700">Loading your progress...</span>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>

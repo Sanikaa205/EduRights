@@ -98,8 +98,8 @@ export default function EducationalGames() {
   const [buildSchoolProgress, setBuildSchoolProgress] = useState(0);
   const [matchRightProgress, setMatchRightProgress] = useState(0);
 
-  // Function to calculate all progress from localStorage
-  const calculateProgress = () => {
+  // Function to calculate all progress from localStorage and API
+  const calculateProgress = async () => {
     // Broken Story
     const brokenStoryCompleted = JSON.parse(
       localStorage.getItem("brokenStoryCompletedLevels") || "[]"
@@ -108,11 +108,32 @@ export default function EducationalGames() {
       (brokenStoryCompleted.length / brokenStoryLevels.length) * 100
     ));
 
-    // Legal Hero Journey
-    const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
-    setLegalHeroProgress(Math.round(
-      ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
-    ));
+    // Legal Hero Journey - Fetch from database for logged in users
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        const res = await fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`);
+        const data = await res.json();
+        const badges = data.badges || [];
+        // Progress = completed levels / total levels
+        setLegalHeroProgress(Math.round(
+          (badges.length / legalHeroLevels.length) * 100
+        ));
+      } catch {
+        // Fallback to localStorage
+        const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
+        setLegalHeroProgress(Math.round(
+          ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
+        ));
+      }
+    } else {
+      // Guest user - use localStorage
+      const legalHeroLevel = Number(localStorage.getItem("legalHeroLevel") || 1);
+      setLegalHeroProgress(Math.round(
+        ((legalHeroLevel - 1) / legalHeroLevels.length) * 100
+      ));
+    }
 
     // Build Your School (uses "buildSchoolLevel" key)
     const buildSchoolLevel = Number(
