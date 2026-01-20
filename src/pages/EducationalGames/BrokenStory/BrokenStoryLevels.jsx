@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import { motion } from "framer-motion";
 import LevelCard from "./LevelCard";
 import Mascot from "@/assets/mascot.png";
+import API_BASE_URL from "@/config/api";
 
 export default function BrokenStoryLevels() {
   const maxLevel = initialLevels.length;
@@ -20,7 +21,7 @@ export default function BrokenStoryLevels() {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const userData = JSON.parse(storedUser);
-      fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+      fetch(`${API_BASE_URL}/api/user/${userData.id}/dashboard`)
         .then((res) => res.json())
         .then((data) => {
           const badges = data.allBadges?.brokenStory || [];

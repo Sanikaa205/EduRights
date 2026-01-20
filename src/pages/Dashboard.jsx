@@ -3,6 +3,7 @@ import { levels } from "@/data/levelsData";
 import { levels as brokenStoryLevels } from "@/pages/EducationalGames/BrokenStory/levelsData";
 import { schoolLevels } from "@/pages/EducationalGames/BuildYourSchool/schoolElements";
 import { levels as matchTheRightLevels } from "@/pages/EducationalGames/MatchTheRight/data";
+import API_BASE_URL from "@/config/api";
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -52,7 +53,7 @@ const Dashboard = () => {
 
   setUser(prev => ({ ...prev, name: userData.name }));
 
-  fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+  fetch(`${API_BASE_URL}/api/user/${userData.id}/dashboard`)
     .then((res) => res.json())
     .then((data) => {
       const totalBadges = data.totalBadges || 

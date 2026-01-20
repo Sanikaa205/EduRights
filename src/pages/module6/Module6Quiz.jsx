@@ -4,15 +4,14 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import questions from "./module6QuizQuestions";
-
-const API_BASE_URL = "http://localhost:5000/api";
+import API_BASE_URL from "@/config/api";
 
 const saveProgressToAPI = async (moduleKey, progress) => {
   try {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || !user.id) return;
 
-    await fetch(`${API_BASE_URL}/learn/progress`, {
+    await fetch(`${API_BASE_URL}/api/learn/progress`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -33,7 +32,7 @@ const submitQuizScoreToAPI = async (moduleId, score) => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user || !user.id) return;
 
-    await fetch(`${API_BASE_URL}/points/submit/${user.id}`, {
+    await fetch(`${API_BASE_URL}/api/points/submit/${user.id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import LevelUpAnimation from "./LevelUpAnimation";
+import API_BASE_URL from "@/config/api";
 
 import { levels } from "@/data/levelsData"; // ✅ ADD THIS
 
@@ -83,7 +84,7 @@ export default function LevelOneHomeRights() {
 
           if (user?.id) {
             try {
-              await fetch("http://localhost:5000/api/badges/earn", {
+              await fetch(`${API_BASE_URL}/api/badges/earn`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

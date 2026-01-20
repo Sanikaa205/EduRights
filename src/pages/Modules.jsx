@@ -4,6 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ModuleCard from "@/components/ui/ModuleCard";
 import CircularProgress from "@/components/ui/CircularProgress";
+import API_BASE_URL from "@/config/api";
 import {
   BookOpen,
   Shield,
@@ -13,8 +14,6 @@ import {
   MessageSquare,
   Trophy
 } from "lucide-react";
-
-const API_BASE_URL = "http://localhost:5000/api";
 
 // ================= MODULE DATA =================
 const MODULES = [
@@ -89,7 +88,7 @@ const Modules = () => {
           return;
         }
 
-        const response = await fetch(`${API_BASE_URL}/learn/progress/${user.id}`);
+        const response = await fetch(`${API_BASE_URL}/api/learn/progress/${user.id}`);
         if (response.ok) {
           const data = await response.json();
           const progressMap = data.progress || {};
