@@ -230,9 +230,9 @@ const Dashboard = () => {
           </div>
 
           {/* STATS CARDS */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
             {/* Current Level */}
-              <div className="bg-gradient-to-br from-green-500 to-emerald-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
+              {/* <div className="bg-gradient-to-br from-green-500 to-emerald-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
               <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full -ml-8 -mb-8"></div>
               <div className="flex items-center justify-between mb-3">
@@ -247,10 +247,10 @@ const Dashboard = () => {
                 </p>
               </div>
               <p className="text-white text-7xl font-black mt-auto drop-shadow-lg" style={{textShadow: '3px 3px 0 rgba(0,0,0,0.2)'}}>{user.level || 1}</p>
-            </div>
+            </div> */}
 
             {/* Total Points */}
-              <div className="bg-gradient-to-br from-violet-500 to-violet-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
+              <div className="bg-gradient-to-br from-green-500 to-green-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
               <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full -ml-8 -mb-8"></div>
               <div className="flex items-center justify-between mb-3">
@@ -268,7 +268,7 @@ const Dashboard = () => {
             </div>
 
             {/* Badges Earned */}
-               <div className="bg-gradient-to-br from-cyan-500 to-blue-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
+               <div className="bg-gradient-to-br from-violet-500 to-violet-900 rounded-3xl p-6 relative overflow-hidden min-h-[200px] flex flex-col shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all cursor-pointer">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10"></div>
               <div className="absolute bottom-0 left-0 w-20 h-20 bg-white/10 rounded-full -ml-8 -mb-8"></div>
               <div className="flex items-center justify-between mb-3">
