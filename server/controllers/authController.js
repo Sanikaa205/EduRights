@@ -6,6 +6,15 @@ export const registerUser = async (req, res) => {
   try {
     const { name, email, password, age } = req.body;
 
+    if (!name || !email || !password || age === undefined || age === null || age === "") {
+      return res.status(400).json({ message: "All fields (name, email, password, age) are required" });
+    }
+
+    const numericAge = Number(age);
+    if (Number.isNaN(numericAge) || numericAge < 0) {
+      return res.status(400).json({ message: "Age must be a valid number" });
+    }
+
     const userExists = await User.findOne({ email });
     if (userExists)
       return res.status(400).json({ message: "User already exists" });
@@ -15,7 +24,7 @@ export const registerUser = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      age,
+      age: numericAge,
       password: hashedPassword,
     });
 

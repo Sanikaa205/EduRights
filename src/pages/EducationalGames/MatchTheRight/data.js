@@ -1,3 +1,5 @@
+import { time } from "framer-motion";
+
 export const levels = [
     {
         level: 1,
@@ -56,6 +58,7 @@ export const levels = [
         level: 3,
         title: "Level 3 – Freedom & Health",
         time: 15,
+        
         badge: "❤️ Freedom Friend",
         rounds: [
             {
@@ -120,7 +123,7 @@ export const levels = [
     {
         level: 5,
         title: "Level 5 – Equality & Play",
-        time: 15,
+        time: 25,
         badge: "⚖️ Equality Achiever",
         rounds: [
             {
@@ -161,7 +164,7 @@ export const levels = [
     {
         level: 6,
         title: "Level 6 – Nutrition & Care",
-        time: 15,
+        time: 60,
         badge: "🍎 Nutrition Ninja",
         rounds: [
             {
@@ -208,7 +211,7 @@ export const levels = [
     {
         level: 7,
         title: "Level 7 – Dignity & Respect",
-        time: 15,
+        time: 60,
         badge: "👑 Dignity Defender",
         rounds: [
             {
