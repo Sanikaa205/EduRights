@@ -10,6 +10,7 @@ import { schoolLevels } from "./BuildYourSchool/schoolElements";
 import { levels as matchTheRightLevels } from "./MatchTheRight/data";
 import { useEffect, useState } from "react";
 import { Trophy } from "lucide-react";
+import API_BASE_URL from "@/config/api";
 
 // Custom Large Linear Progress Bar
 function LargeLinearProgress({ value }) {
@@ -104,7 +105,7 @@ export default function EducationalGames() {
     if (storedUser) {
       try {
         const userData = JSON.parse(storedUser);
-        const res = await fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`);
+        const res = await fetch(`${API_BASE_URL}/api/user/${userData.id}/dashboard`);
         const data = await res.json();
         // Progress for each game from backend
         setLegalHeroProgress(data.gameProgress?.legalHero ?? 0);

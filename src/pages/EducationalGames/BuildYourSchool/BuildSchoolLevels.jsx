@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import mascot from "@/assets/mascot.png";
 import { schoolLevels } from "./schoolElements";
+import API_BASE_URL from "@/config/api";
 
 const UNLOCK_KEY = "buildSchoolLevel";
 
@@ -22,7 +23,7 @@ export default function BuildSchoolLevels() {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const userData = JSON.parse(storedUser);
-      fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+      fetch(`${API_BASE_URL}/api/user/${userData.id}/dashboard`)
         .then((res) => res.json())
         .then((data) => {
           const badges = data.allBadges?.buildSchool || [];

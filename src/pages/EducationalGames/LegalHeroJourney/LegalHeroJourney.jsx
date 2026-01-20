@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Mascot from "@/assets/mascot.png";
 import { Lock } from "lucide-react";
+import API_BASE_URL from "@/config/api";
 
 export default function LegalHeroJourney() {
   const maxLevel = initialLevels.length;
@@ -20,7 +21,7 @@ export default function LegalHeroJourney() {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const userData = JSON.parse(storedUser);
-      fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+      fetch(`${API_BASE_URL}/api/user/${userData.id}/dashboard`)
         .then((res) => res.json())
         .then((data) => {
           // Get highest level from badges (completed levels)

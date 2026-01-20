@@ -8,6 +8,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useToast } from "@/hooks/use-toast";
+import API_BASE_URL from "@/config/api";
 
 // ✅ SINGLE SOURCE OF DATA
 import { sceneData } from "./SceneData";
@@ -97,7 +98,7 @@ const BrokenStory = () => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
           const userData = JSON.parse(storedUser);
-          fetch("http://localhost:5000/api/badges/earn", {
+          fetch(`${API_BASE_URL}/api/badges/earn`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

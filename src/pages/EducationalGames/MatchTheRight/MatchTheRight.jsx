@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import Confetti from "react-confetti"
+import API_BASE_URL from "@/config/api";
 
 import Navbar from "@/components/layout/Navbar"
 import Footer from "@/components/layout/Footer"
@@ -44,7 +45,7 @@ export default function MatchTheRight() {
             if (storedUser) {
                 const userData = JSON.parse(storedUser);
                 const levelData = levels[currentLevel];
-                fetch("http://localhost:5000/api/badges/earn", {
+                fetch(`${API_BASE_URL}/api/badges/earn`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

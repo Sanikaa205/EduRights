@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import mascot from "@/assets/mascot.png"
 import { levels } from "./data"
+import API_BASE_URL from "@/config/api";
 
 const UNLOCK_KEY = "matchTheRightUnlockedLevel"
 const COMPLETE_KEY = "matchTheRightCompletedLevels"
@@ -26,7 +27,7 @@ export default function MatchTheRightLevels() {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             const userData = JSON.parse(storedUser);
-            fetch(`http://localhost:5000/api/user/${userData.id}/dashboard`)
+            fetch(`${API_BASE_URL}/api/user/${userData.id}/dashboard`)
                 .then((res) => res.json())
                 .then((data) => {
                     const badges = data.allBadges?.matchTheRight || [];

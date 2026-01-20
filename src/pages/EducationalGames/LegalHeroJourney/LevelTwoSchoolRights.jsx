@@ -5,6 +5,7 @@ import Footer from "@/components/layout/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import API_BASE_URL from "@/config/api";
 
 import Aryan from "@/assets/aryan.png";
 import correctSound from "@/assets/correct.mp3";
@@ -84,7 +85,7 @@ export default function LevelTwoSchoolRights() {
 
     const user = JSON.parse(storedUser);
 
-    await fetch("http://localhost:5000/api/badges/earn", {
+    await fetch(`${API_BASE_URL}/api/badges/earn`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

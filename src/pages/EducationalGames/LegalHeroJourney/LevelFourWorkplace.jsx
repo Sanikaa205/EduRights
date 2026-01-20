@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import LevelUpAnimation from "./LevelUpAnimation";
+import API_BASE_URL from "@/config/api";
 
 import WorkplaceImg from "@/assets/workplace.png";
 import correctSound from "@/assets/correct.mp3";
@@ -93,7 +94,7 @@ export default function LevelFourWorkplace() {
     const user = JSON.parse(storedUser);
 
     // 🔥 Save badge in DB
-    await fetch("http://localhost:5000/api/badges/earn", {
+    await fetch(`${API_BASE_URL}/api/badges/earn`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
